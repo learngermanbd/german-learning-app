@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🇩🇪 German Learning App — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--card:#16162a;--border:#2a2a4a;--text:#e1e1e1;--text2:#8888aa;--accent:#6c5ce7;--accent2:#00d4aa;--accent3:#ff6b6b;--gold:#ffd700;--orange:#ff9f43;--pink:#fd79a8;--blue:#74b9ff;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,0.3)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+#app{min-height:100vh;display:flex;flex-direction:column}
+.hidden{display:none!important}
+.container{max-width:1200px;margin:0 auto;padding:0 20px;width:100%}
+a{color:var(--accent);text-decoration:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:var(--radius);font-weight:600;font-size:14px;cursor:pointer;border:none;transition:all .3s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#5a4bd1;transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,0.3)}
+.btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-secondary:hover{background:var(--border);transform:translateY(-1px)}
+.btn-success{background:var(--accent2);color:#0a0a0f}
+.btn-success:hover{background:#00c49a;transform:translateY(-2px)}
+.btn-danger{background:var(--accent3);color:#fff}
+.btn-danger:hover{background:#e05555;transform:translateY(-2px)}
+.btn-sm{padding:6px 14px;font-size:12px}
+.btn-lg{padding:14px 32px;font-size:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;transition:all .3s}
+.card:hover{box-shadow:var(--shadow);border-color:var(--accent)}
+.card-glow:hover{box-shadow:0 0 30px rgba(108,92,231,0.15);border-color:rgba(108,92,231,0.3)}
+input,select,textarea{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-family:'Inter',sans-serif;font-size:14px;width:100%;transition:border-color .3s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(108,92,231,0.15)}
+textarea{resize:vertical;min-height:100px}
+label{display:block;font-weight:500;margin-bottom:6px;color:var(--text2);font-size:13px}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-beginner{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.badge-intermediate{background:rgba(255,159,67,0.15);color:var(--orange)}
+.badge-advanced{background:rgba(255,107,107,0.15);color:var(--accent3)}
+.badge-progress{background:rgba(108,92,231,0.15);color:var(--accent)}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
+.avatar-sm{width:32px;height:32px;font-size:12px}
+.avatar-lg{width:60px;height:60px;font-size:24px}
+.progress-bar{height:8px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s ease}
+.grid{display:grid;gap:20px}
+.grid-2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.grid-3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.grid-4{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.flex{display:flex;gap:16px}
+.flex-wrap{flex-wrap:wrap}
+.items-center{align-items:center}
+.justify-between{justify-content:space-between}
+.gap-sm{gap:8px}
+.gap-lg{gap:24px}
+.mt-1{margin-top:8px}
+.mt-2{margin-top:16px}
+.mt-3{margin-top:24px}
+.mt-4{margin-top:32px}
+.mb-2{margin-bottom:16px}
+.mb-3{margin-bottom:24px}
+.text-center{text-align:center}
+.text-right{text-align:right}
+.text-muted{color:var(--text2)}
+.text-accent{color:var(--accent)}
+.text-success{color:var(--accent2)}
+.text-danger{color:var(--accent3)}
+.text-gold{color:var(--gold)}
+.fw-6{font-weight:600}
+.fw-7{font-weight:700}
+.fw-8{font-weight:800}
+.fs-sm{font-size:13px}
+.fs-lg{font-size:18px}
+.fs-xl{font-size:24px}
+.fs-2xl{font-size:32px}
+.truncate{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Student Navbar */
+.student-nav{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;position:sticky;top:0;z-index:100}
+.student-nav .container{display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer}
+.nav-links{display:flex;gap:4px}
+.nav-links a{padding:8px 16px;border-radius:8px;color:var(--text2);font-size:14px;font-weight:500;transition:all .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--bg3)}
+.nav-user{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:8px;transition:all .3s}
+.nav-user:hover{background:var(--bg3)}
+.mobile-menu-btn{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+
+/* Admin Sidebar */
+.admin-layout{display:flex;min-height:100vh}
+.admin-sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--border);padding:20px 0;position:fixed;top:0;left:0;bottom:0;overflow-y:auto;z-index:200;transition:transform .3s}
+.admin-sidebar .logo{padding:0 20px 24px;font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;border-bottom:1px solid var(--border);margin-bottom:16px}
+.admin-sidebar .nav-item{display:flex;align-items:center;gap:12px;padding:10px 20px;color:var(--text2);font-size:14px;cursor:pointer;transition:all .3s;border-left:3px solid transparent}
+.admin-sidebar .nav-item:hover{background:var(--bg3);color:var(--text)}
+.admin-sidebar .nav-item.active{background:var(--bg3);color:var(--accent);border-left-color:var(--accent)}
+.admin-sidebar .nav-item .icon{width:20px;text-align:center}
+.admin-main{margin-left:260px;flex:1;padding:24px 32px}
+.admin-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.admin-topbar h1{font-size:24px;font-weight:700}
+.hamburger{display:none;background:none;border:none;color:var(--text);font-size:24px;cursor:pointer}
+
+/* Page transitions */
+.page{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.animate-float{animation:float 3s ease-in-out infinite}
+
+/* Hero Section */
+.hero{text-align:center;padding:80px 0 60px;background:linear-gradient(180deg,rgba(108,92,231,0.08) 0%,transparent 100%)}
+.hero h1{font-size:52px;font-weight:900;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{font-size:18px;color:var(--text2);max-width:600px;margin:0 auto 32px}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:48px;padding:32px;background:var(--card);border:1px solid var(--border);border-radius:16px;max-width:700px;margin-left:auto;margin-right:auto}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:28px;font-weight:800}
+.hero-stat .label{font-size:13px;color:var(--text2);margin-top:4px}
+
+/* Features */
+.features{padding:60px 0}
+.section-title{font-size:32px;font-weight:800;text-align:center;margin-bottom:8px}
+.section-sub{color:var(--text2);text-align:center;margin-bottom:40px;font-size:16px}
+.feature-card{padding:32px;text-align:center}
+.feature-card .icon{font-size:40px;margin-bottom:16px}
+.feature-card h3{font-size:18px;margin-bottom:8px}
+.feature-card p{color:var(--text2);font-size:14px}
+
+/* Course cards */
+.course-card .thumb{height:140px;border-radius:8px;margin:-24px -24px 16px;background-size:cover;background-position:center;position:relative}
+.course-card .thumb .badge{position:absolute;top:12px;left:12px}
+.course-card h3{font-size:16px;margin-bottom:6px}
+.course-card .meta{display:flex;gap:16px;font-size:13px;color:var(--text2)}
+
+/* Lesson page */
+.lesson-header{margin-bottom:24px}
+.lesson-content{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px;line-height:1.9}
+.lesson-content h2{font-size:24px;margin:24px 0 12px}
+.lesson-content p{margin-bottom:16px;color:var(--text2)}
+.lesson-content .german{background:var(--bg2);padding:16px 20px;border-radius:8px;border-left:3px solid var(--accent);margin:16px 0;font-size:16px}
+.lesson-content .german .translation{color:var(--text2);font-size:14px;margin-top:4px}
+
+/* Quiz */
+.quiz-question{padding:24px;background:var(--bg2);border-radius:var(--radius);margin-bottom:16px}
+.quiz-question h3{margin-bottom:16px;font-size:16px}
+.quiz-option{display:block;padding:12px 16px;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all .3s}
+.quiz-option:hover{background:var(--bg3);border-color:var(--accent)}
+.quiz-option.selected{background:rgba(108,92,231,0.15);border-color:var(--accent)}
+.quiz-option.correct{background:rgba(0,212,170,0.15);border-color:var(--accent2)}
+.quiz-option.wrong{background:rgba(255,107,107,0.15);border-color:var(--accent3)}
+
+/* Chat */n.chat-container{height:500px;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:80%;padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.6}
+.chat-msg.user{background:var(--accent);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-msg.ai{background:var(--bg2);color:var(--text);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--border)}
+.chat-input{display:flex;gap:8px;padding:16px;border-top:1px solid var(--border)}
+.chat-input input{flex:1}
+.chat-typing{display:flex;gap:4px;padding:12px 16px;background:var(--bg2);border-radius:12px;align-self:flex-start;border:1px solid var(--border)}
+.chat-typing span{width:8px;height:8px;border-radius:50%;background:var(--text2);animation:pulse 1s infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+
+/* Tables */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{padding:12px 16px;text-align:left;font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border)}
+.data-table td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:14px}
+.data-table tr:hover td{background:var(--bg2)}
+.data-table .actions{display:flex;gap:8px}
+.data-table .actions button{padding:6px 12px;font-size:12px}
+
+/* Media grid */
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.media-item{background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .3s}
+.media-item:hover{border-color:var(--accent);transform:translateY(-2px)}
+.media-item .preview{height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:32px}
+.media-item .info{padding:12px}
+.media-item .info p{font-size:13px}
+.media-item .info span{font-size:11px;color:var(--text2)}
+
+/* Flashcard */
+.flashcard{perspective:1000px;cursor:pointer;height:200px}
+.flashcard-inner{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-front,.flashcard-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);padding:24px;text-align:center}
+.flashcard-front{background:var(--card);border:1px solid var(--border)}
+.flashcard-back{background:var(--accent);transform:rotateY(180deg);color:#fff}
+.flashcard-front .big{font-size:28px;font-weight:700}
+.flashcard-front .hint{font-size:13px;color:var(--text2);margin-top:8px}
+.flashcard-back .big{font-size:24px;font-weight:600}
+
+/* Stats cards */
+.stat-card{padding:24px;text-align:center}
+.stat-card .stat-icon{font-size:32px;margin-bottom:12px}
+.stat-card .stat-value{font-size:32px;font-weight:800;margin-bottom:4px}
+.stat-card .stat-label{font-size:13px;color:var(--text2)}
+
+/* Tab system */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:24px}
+.tab{display:flex;align-items:center;gap:8px;padding:12px 20px;cursor:pointer;color:var(--text2);font-size:14px;font-weight:500;border-bottom:2px solid transparent;transition:all .3s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+/* AI Training cards */
+.training-card{padding:24px}
+.training-card .model-name{font-size:18px;font-weight:600;margin-bottom:4px}
+.training-card .model-desc{color:var(--text2);font-size:13px;margin-bottom:16px}
+.training-card .model-stat{display:flex;justify-content:space-between;font-size:13px;padding:8px 0;border-bottom:1px solid var(--border)}
+
+/* Responsive */
+@media(max-width:1024px){
+.admin-sidebar{transform:translateX(-100%)}
+.admin-sidebar.open{transform:translateX(0)}
+.admin-main{margin-left:0}
+.hamburger{display:block}
+}
+@media(max-width:768px){
+.hero h1{font-size:36px}
+.hero-stats{gap:24px;flex-wrap:wrap}
+.nav-links{display:none}
+.mobile-menu-btn{display:block}
+.nav-links.open{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--bg2);padding:16px;border-bottom:1px solid var(--border)}
+.container{padding:0 16px}
+.admin-main{padding:16px}
+.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
+.hero-stats{flex-direction:column;gap:16px}
+.quiz-option{padding:10px 14px}
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text2)}
+
+/* Misc */
+.empty-state{text-align:center;padding:60px 20px}
+.empty-state .icon{font-size:64px;margin-bottom:16px;opacity:.5}
+.empty-state h3{font-size:20px;margin-bottom:8px}
+.empty-state p{color:var(--text2);max-width:400px;margin:0 auto 24px}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
+.tag-blue{background:rgba(116,185,255,0.15);color:var(--blue)}
+.tag-green{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.tag-red{background:rgba(255,107,107,0.15);color:var(--accent3)}
+.tag-orange{background:rgba(255,159,67,0.15);color:var(--orange)}
+.tag-purple{background:rgba(108,92,231,0.15);color:var(--accent)}
+.tag-pink{background:rgba(253,121,168,0.15);color:var(--pink)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+// ===== MOCK DATA =====
+const DATA={user:{name:'Alex Müller',email:'alex@email.com',avatar:'AM',level:'A2',streak:12,xp:2840,joinDate:'Jan 2025',lessonsCompleted:47,exercisesDone:156,quizAvg:78,speakingScore:65,writingScore:71,readingScore:82,listeningScore:68,timeSpent:'42h',goals:{daily:30,thisWeek:180,lastWeek:150}},
+courses:[{id:1,title:'German Basics A1',desc:'Start from zero — greetings, numbers, colors',lessons:24,progress:100,level:'Beginner',color:'#00d4aa',students:1240,rating:4.8},{id:2,title:'Everyday Conversations A2',desc:'Order food, ask directions, make friends',lessons:32,progress:72,level:'Beginner',color:'#6c5ce7',students:980,rating:4.7},{id:3,title:'Grammar Mastery B1',desc:'Cases, prepositions, sentence structure',lessons:40,progress:45,level:'Intermediate',color:'#ff9f43',students:756,rating:4.9},{id:4,title:'Business German B2',desc:'Emails, meetings, presentations',lessons:28,progress:18,level:'Intermediate',color:'#ff6b6b',students:423,rating:4.6},{id:5,title:'Advanced Fluency C1',desc:'Idioms, literature, debate',lessons:36,progress:0,level:'Advanced',color:'#fd79a8',students:210,rating:4.8},{id:6,title:'Pronunciation & Accent',desc:'Perfect your accent with AI feedback',lessons:16,progress:0,level:'All Levels',color:'#74b9ff',students:540,rating:4.5}],
+lessons:[{id:1,courseId:1,title:'Hallo! — Greetings',duration:'15 min',completed:true,content:'<p>In this lesson you will learn the most common German greetings.</p><div class="german"><strong>Guten Morgen!</strong><div class="translation">Good morning!</div></div><div class="german"><strong>Guten Abend!</strong><div class="translation">Good evening!</div></div><div class="german"><strong>Tschüss!</strong><div class="translation">Bye!</div></div><p>Practice these greetings with the AI chat feature!</p>'},{id:2,courseId:1,title:'Numbers 1-20',duration:'20 min',completed:true},{id:3,courseId:1,title:'Colors & Descriptions',duration:'18 min',completed:true},{id:4,courseId:1,title:'Family Members',duration:'22 min',completed:true},{id:5,courseId:2,title:'Im Restaurant',duration:'20 min',completed:false},{id:6,courseId:2,title:'Nach dem Weg fragen',duration:'25 min',completed:false},{id:7,courseId:2,title:'Einkaufen gehen',duration:'20 min',completed:false},{id:8,courseId:3,title:'Nominativ & Akkusativ',duration:'30 min',completed:false},{id:9,courseId:3,title:'Dativ & Genitiv',duration:'35 min',completed:false}],
+quizzes:[{id:1,title:'A1 Vocabulary Check',questions:10,time:'10 min',score:80},{id:2,title:'Articles & Gender',questions:15,time:'15 min',score:null},{id:3,title:'Verb Conjugation',questions:12,time:'12 min',score:null}],
+chatMessages:[{role:'ai',text:'Hallo! 👋 Ich bin dein deutscher KI-Tutor. Wie kann ich dir heute helfen?'},{role:'user',text:'How do I say "Where is the train station?" in German?'},{role:'ai',text:'Great question! You say: <br><br><strong>"Wo ist der Bahnhof?"</strong><br><br>Pronunciation: "Vo ist der Bahn-hof?"<br><br>The word <strong>Bahnhof</strong> means train station. <br>Want to practice this in a conversation?'},{role:'user',text:'Ja, ich möchte üben! (Yes, I want to practice!)'}],
+vocabulary:[{de:'der Apfel',en:'apple',hint:'Fruit'},{de:'das Brot',en:'bread',hint:'Food'},{de:'die Milch',en:'milk',hint:'Drink'},{de:'der Hund',en:'dog',hint:'Animal'},{de:'die Katze',en:'cat',hint:'Animal'},{de:'das Haus',en:'house',hint:'Building'},{de:'der Tisch',en:'table',hint:'Furniture'},{de:'die Schule',en:'school',hint:'Place'},{de:'das Wasser',en:'water',hint:'Drink'},{de:'der Freund',en:'friend',hint:'People'}],
+exercises:[{id:1,title:'Fill the Blank: Greetings',desc:'Complete the sentences with correct greetings',questions:8,completed:true,score:100},{id:2,title:'Match the Article',desc:'Match der/die/das to the correct nouns',questions:12,completed:true,score:92},{id:3,title:'Sentence Builder',desc:'Arrange words to form correct sentences',questions:6,completed:false},{id:4,title:'Verb Conjugation Drill',desc:'Conjugate the given verbs',questions:10,completed:false}],
+adminStats:{totalUsers:2840,newUsers:48,totalCourses:6,totalLessons:89,totalExercises:156,activeToday:342,courseCompletions:127,avgScore:73,revenue:0,retention:68.5,popularCourse:'German Basics A1',topPerformer:'A2 Conversations'},
+recentUsers:[{name:'Sarah Schmidt',email:'sarah@email.com',level:'A1',joined:'2 days ago',status:'Active'},{name:'Tom Weber',email:'tom@email.com',level:'B1',joined:'1 week ago',status:'Active'},{name:'Lisa Fischer',email:'lisa@email.com',level:'A2',joined:'2 weeks ago',status:'Suspended'},{name:'Markus Klein',email:'markus@email.com',level:'B2',joined:'3 weeks ago',status:'Active'},{name:'Anna Braun',email:'anna@email.com',level:'C1',joined:'1 month ago',status:'Inactive'}],
+mediaItems:[{name:'germany-flag.png',type:'image',size:'240 KB',date:'2 days ago'},{name:'alphabet-chart.pdf',type:'document',size:'1.2 MB',date:'5 days ago'},{name:'lesson1-cover.jpg',type:'image',size:'890 KB',date:'1 week ago'},{name:'pronunciation-audio.mp3',type:'audio',size:'3.4 MB',date:'1 week ago'},{name:'grammar-cheatsheet.pdf',type:'document',size:'520 KB',date:'2 weeks ago'},{name:'german-cities.mp4',type:'video',size:'24 MB',date:'2 weeks ago'}],
+adminUsers:[{name:'Admin Master',email:'admin@learnGerman.de',role:'Super Admin',lastActive:'Now',permissions:'All'},{name:'Content Editor',email:'editor@learngerman.de',role:'Editor',lastActive:'2h ago',permissions:'Content Only'},{name:'Moderator User',email:'mod@learngerman.de',role:'Moderator',lastActive:'1d ago',permissions:'Users + Content'}]};
+
+// ===== ROUTER =====
+let currentPage='home';let isAdmin=false;
+function navigate(page,data){
+  if(page.startsWith('admin')){isAdmin=true;document.body.classList.add('admin-mode')}
+  else if(page==='home'&&!data){}else{isAdmin=false;document.body.classList.remove('admin-mode')}
+  currentPage=page;render(data)}
+function goBack(){window.history.back()||navigate('home')}
+function $id(id){return document.getElementById(id)}
+function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// ===== STUDENT NAVBAR =====
+function studentNav(active,user=DATA.user){
+  const links=[
+    {id:'home',label:'🏠 Home',icon:'🏠'},
+    {id:'dashboard',label:'📊 Dashboard',icon:'📊'},
+    {id:'courses',label:'📚 Courses',icon:'📚'},
+    {id:'ai-chat',label:'🤖 AI Chat',icon:'🤖'},
+    {id:'vocabulary',label:'📝 Vocabulary',icon:'📝'}]
+  return `<nav class="student-nav">
+    <div class="container">
+      <div class="nav-logo" onclick="navigate('home')">🇩🇪 LearnGerman</div>
+      <div class="nav-links" id="navLinks">
+        ${links.map(l=>`<a href="#" onclick="navigate('${l.id}')" class="${active===l.id?'active':''}">${l.label}</a>`).join('')}
+        <a href="#" onclick="navigate('admin-dashboard')" style="color:var(--accent2)">🔐 Admin</a>
+      </div>
+      <div class="nav-user" onclick="navigate('profile')">
+        <div class="avatar avatar-sm">${user.avatar[0]}</div>
+        <span style="font-size:13px;font-weight:500">${user.name.split(' ')[0]}</span>
+      </div>
+      <button class="mobile-menu-btn" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+    </div></nav>`}
+
+// ===== PAGE TEMPLATES =====
+
+function pageHome(){
+  return `${studentNav('home')}
+    <section class="hero">
+      <div class="container">
+        <h1>Learn German<br>with AI Power 🇩🇪</h1>
+        <p>Master German through interactive lessons, AI conversation practice, and personalized feedback — all for free.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary btn-lg" onclick="navigate('register')">✨ Start Learning Free</button>
+          <button class="btn btn-secondary btn-lg" onclick="navigate('courses')">Browse Courses</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num" style="color:var(--accent)">2,840+</div><div class="label">Active Students</div></div>
+          <div class="hero-stat"><div class="num" style="color:var(--accent2)">156</div><div class="label">Interactive Lessons</div></div>
+          <div class="hero-stat"><div class="num" style="color:var(--gold)">4.8 ★</div><div class="label">Average Rating</div></div>
+        </div>
+      </div>
+    </section>
+    <div class="features container">
+      <h2 class="section-title">Everything You Need to Learn German</h2>
+      <p class="section-sub">AI-powered tools that adapt to your learning style</p>
+      <div class="grid grid-3">
+        <div class="card feature-card card-glow">
+          <div class="icon">🗣️</div>
+          <h3>AI Conversation Practice</h3>
+          <p>Chat with an AI tutor that corrects your grammar and suggests improvements in real-time</p>
+        </div>
+        <div class="card feature-card card-glow">
+          <div class="icon">🎯</div>
+          <h3>Smart Exercises</h3>
+          <p>Exercises that adapt to your skill level using AI-powered difficulty adjustment</p>
+        </div>
+        <div class="card feature-card card-glow">
+          <div class="icon">📊</div>
+          <h3>Progress Analytics</h3>
+          <p>Detailed insights into your learning journey with AI-suggested study plans</p>
+        </div>
+        <div class="card feature-card card-glow">
+          <div class="icon">🎤</div>
+          <h3>Speech Recognition</h3>
+          <p>Practice pronunciation with AI-powered speech analysis and feedback</p>
+        </div>
+        <div class="card feature-card card-glow">
+          <div class="icon">📝</div>
+          <h3>Writing Assistant</h3>
+          <p>Get instant feedback on your German writing with grammar and style suggestions</p>
+        </div>
+        <div class="card feature-card card-glow">
+          <div class="icon">📚</div>
+          <h3>Structured Curriculum</h3>
+          <p>Follow a proven A1-C1 curriculum designed by German language experts</p>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="padding-bottom:60px">
+      <h2 class="section-title">Popular Courses</h2>
+      <p class="section-sub">Start your journey with our most loved courses</p>
+      <div class="grid grid-3">
+        ${DATA.courses.slice(0,3).map(c=>`
+          <div class="card course-card card-glow" onclick="navigate('course-detail',{id:${c.id}})" style="cursor:pointer">
+            <div class="thumb" style="background:linear-gradient(135deg,${c.color}22,${c.color}44)">
+              <span class="badge badge-${c.level.toLowerCase().replace(' ','-')}">${c.level}</span>
+            </div>
+            <h3>${c.title}</h3>
+            <p style="font-size:13px;color:var(--text2);margin-bottom:12px">${c.desc}</p>
+            <div class="flex items-center justify-between">
+              <span class="meta">📖 ${c.lessons} lessons</span>
+              <span class="meta" style="color:var(--gold)">⭐ ${c.rating}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`}
+
+function pageLogin(){
+  return `${studentNav('')}
+    <div class="container" style="min-height:80vh;display:flex;align-items:center;justify-content:center">
+      <div class="card" style="max-width:420px;width:100%;padding:40px">
+        <h2 style="font-size:24px;font-weight:700;margin-bottom:8px;text-align:center">Welcome Back! 👋</h2>
+        <p style="text-align:center;color:var(--text2);margin-bottom:32px">Log in to continue your German journey</p>
+        <form onsubmit="event.preventDefault();navigate('dashboard')">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" value="alex@email.com" style="margin-bottom:16px">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••" value="password123" style="margin-bottom:8px">
+          <div style="text-align:right;margin-bottom:24px">
+            <a href="#" style="font-size:13px">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px">Log In</button>
+          <p style="text-align:center;margin-top:20px;font-size:14px;color:var(--text2)">
+            No account yet? <a href="#" onclick="navigate('register')">Sign up free</a>
+          </p>
+        </form>
+      </div>
+    </div>`}
+
+function pageRegister(){
+  return `${studentNav('')}
+    <div class="container" style="min-height:80vh;display:flex;align-items:center;justify-content:center">
+      <div class="card" style="max-width:480px;width:100%;padding:40px">
+        <h2 style="font-size:24px;font-weight:700;margin-bottom:8px;text-align:center">Start Learning Free! 🚀</h2>
+        <p style="text-align:center;color:var(--text2);margin-bottom:32px">Create your account — no credit card needed</p>
+        <form onsubmit="event.preventDefault();navigate('dashboard')">
+          <div class="grid grid-2" style="gap:12px">
+            <div><label>First Name</label><input placeholder="Alex" value="Alex"></div>
+            <div><label>Last Name</label><input placeholder="Müller" value="Müller"></div>
+          </div>
+          <label style="margin-top:12px">Email</label>
+          <input type="email" placeholder="your@email.com" value="alex@email.com" style="margin-bottom:12px">
+          <label>Password</label>
+          <input type="password" placeholder="Min 8 characters" style="margin-bottom:12px">
+          <label>Your Level</label>
+          <select style="margin-bottom:24px">
+            <option>Complete Beginner (A0)</option>
+            <option selected>Beginner (A1-A2)</option>
+            <option>Intermediate (B1-B2)</option>
+            <option>Advanced (C1-C2)</option>
+          </select>
+          <button type="submit" class="btn btn-primary btn-lg" style="width:100%;justify-content:center;padding:14px">✨ Create Free Account</button>
+          <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text2)">
+            By signing up you agree to our Terms & Privacy Policy<br>
+            Already have an account? <a href="#" onclick="navigate('login')">Log in</a>
+          </p>
+        </form>
+      </div>
+    </div>`}
+
+function pageDashboard(){
+  const u=DATA.user;
+  return `${studentNav('dashboard')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h1 style="font-size:28px;font-weight:800">Welcome back, ${u.name.split(' ')[0]}! 👋</h1>
+          <p style="color:var(--text2);font-size:14px">Level ${u.level} • ${u.streak}-day streak 🔥 • ${u.xp} XP</p>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('ai-chat')">🤖 Practice with AI</button>
+      </div>
+      <div class="grid grid-4">
+        <div class="card stat-card card-glow"><div class="stat-icon">📖</div><div class="stat-value">${u.lessonsCompleted}</div><div class="stat-label">Lessons Done</div></div>
+        <div class="card stat-card card-glow"><div class="stat-icon">✍️</div><div class="stat-value">${u.exercisesDone}</div><div class="stat-label">Exercises</div></div>
+        <div class="card stat-card card-glow"><div class="stat-icon">⭐</div><div class="stat-value">${u.quizAvg}%</div><div class="stat-label">Quiz Average</div></div>
+        <div class="card stat-card card-glow"><div class="stat-icon">⏱️</div><div class="stat-value">${u.timeSpent}</div><div class="stat-label">Time Spent</div></div>
+      </div>
+      <h2 class="section-title" style="font-size:22px;text-align:left;margin-top:32px;margin-bottom:4px">Your Progress</h2>
+      <p style="color:var(--text2);font-size:14px;margin-bottom:20px">Skills breakdown across all areas</p>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 style="margin-bottom:16px;font-size:16px">Skill Scores</h3>
+          ${[['🗣️ Speaking',u.speakingScore],['📝 Writing',u.writingScore],['📖 Reading',u.readingScore],['👂 Listening',u.listeningScore]].map(([name,score]) => `
+            <div style="margin-bottom:12px">
+              <div class="flex items-center justify-between" style="margin-bottom:4px">
+                <span style="font-size:13px">${name}</span>
+                <span style="font-size:13px;font-weight:600">${score}%</span>
+              </div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${score}%"></div></div>
+            </div>`).join('')}
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:16px;font-size:16px">Daily Goal</h3>
+          <div style="text-align:center;padding:16px">
+            <div style="font-size:48px;font-weight:900;color:var(--accent2)">${u.goals.daily}</div>
+            <div style="color:var(--text2);font-size:14px">minutes today</div>
+            <div class="progress-bar" style="margin:16px 0;height:12px">
+              <div class="progress-fill" style="width:${Math.min(100,(u.goals.thisWeek/u.goals.lastWeek)*100)}%"></div>
+            </div>
+            <div class="flex items-center justify-between" style="font-size:13px;color:var(--text2)">
+              <span>This week: ${u.goals.thisWeek} min</span>
+              <span>Last week: ${u.goals.lastWeek} min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-3">
+        <h3 style="margin-bottom:16px;font-size:16px">📚 Continue Learning</h3>
+        <div class="grid grid-2">
+          ${DATA.courses.filter(c=>c.progress>0&&c.progress<100).slice(0,2).map(c=>`
+            <div class="flex items-center gap-sm" style="cursor:pointer" onclick="navigate('course-detail',{id:${c.id}})">
+              <div style="width:48px;height:48px;border-radius:8px;background:${c.color}33;display:flex;align-items:center;justify-content:center;font-size:20px">📖</div>
+              <div style="flex:1">
+                <div style="font-weight:600;font-size:14px">${c.title}</div>
+                <div class="progress-bar" style="margin-top:6px"><div class="progress-fill" style="width:${c.progress}%"></div></div>
+                <div style="font-size:12px;color:var(--text2);margin-top:2px">${c.progress}% complete</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`}
+
+function pageCourses(){
+  return `${studentNav('courses')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:28px;font-weight:800">📚 All Courses</h1><p style="color:var(--text2);font-size:14px">${DATA.courses.length} courses available</p></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm btn-secondary" onclick="filterCourses('all')">All</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterCourses('beginner')">Beginner</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterCourses('intermediate')">Intermediate</button>
+          <button class="btn btn-sm btn-secondary" onclick="filterCourses('advanced')">Advanced</button>
+        </div>
+      </div>
+      <div class="grid grid-3" id="courseGrid">
+        ${DATA.courses.map(c=>`
+          <div class="card course-card card-glow" onclick="navigate('course-detail',{id:${c.id}})" style="cursor:pointer" data-level="${c.level.toLowerCase()}">
+            <div class="thumb" style="background:linear-gradient(135deg,${c.color}22,${c.color}44)">
+              <span class="badge badge-${c.level.toLowerCase().replace(' ','-')}">${c.level}</span>
+            </div>
+            <h3>${c.title}</h3>
+            <p style="font-size:13px;color:var(--text2);margin-bottom:12px">${c.desc}</p>
+            <div class="progress-bar" style="margin-bottom:12px"><div class="progress-fill" style="width:${c.progress}%"></div></div>
+            <div class="flex items-center justify-between" style="font-size:13px">
+              <span style="color:var(--text2)">📖 ${c.lessons} lessons</span>
+              <span style="color:var(--gold)">⭐ ${c.rating}</span>
+              <span style="color:var(--text2)">👥 ${c.students}</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`}
+
+function pageCourseDetail(data){
+  const c=DATA.courses.find(x=>x.id===data.id)||DATA.courses[0];
+  const courseLessons=DATA.lessons.filter(l=>l.courseId===c.id);
+  return `${studentNav('courses')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center gap-sm mb-3" style="cursor:pointer" onclick="navigate('courses')">
+        <span style="font-size:14px;color:var(--text2)">← Back to Courses</span>
+      </div>
+      <div class="card" style="padding:32px">
+        <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
+          <div style="width:80px;height:80px;border-radius:16px;background:${c.color}33;display:flex;align-items:center;justify-content:center;font-size:36px">📖</div>
+          <div style="flex:1;min-width:200px">
+            <div class="flex items-center gap-sm">
+              <h1 style="font-size:28px;font-weight:800">${c.title}</h1>
+              <span class="badge badge-${c.level.toLowerCase().replace(' ','-')}">${c.level}</span>
+            </div>
+            <p style="color:var(--text2);margin:8px 0 16px;font-size:15px">${c.desc}</p>
+            <div class="flex gap-lg" style="font-size:13px">
+              <span>📖 ${c.lessons} lessons</span><span>⭐ ${c.rating} rating</span><span>👥 ${c.students} students</span>
+            </div>
+            <div style="margin-top:12px"><div class="progress-bar" style="max-width:300px"><div class="progress-fill" style="width:${c.progress}%"></div></div><span style="font-size:12px;color:var(--text2)">${c.progress}% complete</span></div>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="navigate('lesson-view',{courseId:${c.id},lessonId:${courseLessons.find(l=>!l.completed)?.id||courseLessons[0]?.id||1}})">▶ Continue</button>
+        </div>
+      </div>
+      <h2 style="font-size:20px;font-weight:700;margin:24px 0 16px">Course Lessons</h2>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${courseLessons.map(l=>`
+          <div class="card flex items-center justify-between" style="cursor:pointer;${l.completed?'opacity:.7':''}" onclick="navigate('lesson-view',{courseId:${c.id},lessonId:${l.id}})">
+            <div class="flex items-center gap-sm">
+              <div style="width:36px;height:36px;border-radius:50%;background:${l.completed?'var(--accent2)':'var(--bg3)'};display:flex;align-items:center;justify-content:center;font-size:16px">${l.completed?'✅':'📄'}</div>
+              <div><div style="font-weight:600;font-size:14px">${l.title}</div><div style="font-size:12px;color:var(--text2)">${l.duration}</div></div>
+            </div>
+            <span style="font-size:13px;color:var(--text2)">${l.completed?'Completed':'Start →'}</span>
+          </div>`).join('')}
+      </div>
+    </div>`}
+
+function pageLessonView(data){
+  const lesson=DATA.lessons.find(l=>l.id===data.lessonId)||DATA.lessons[0];
+  return `${studentNav('courses')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="lesson-header">
+        <div class="flex items-center gap-sm mb-2" style="cursor:pointer" onclick="navigate('course-detail',{id:${data.courseId||1}})">
+          <span style="font-size:14px;color:var(--text2)">← Back to course</span>
+        </div>
+        <h1 style="font-size:24px;font-weight:800">${lesson.title}</h1>
+        <p style="color:var(--text2);font-size:13px">${lesson.duration} • ${lesson.completed?'✅ Completed':'Not started'}</p>
+      </div>
+      <div class="lesson-content">
+        ${lesson.content||`<p>Welcome to this lesson! 🎉</p><p>In this lesson you will learn important German vocabulary and grammar concepts.</p><div class="german"><strong>Willkommen zum Unterricht!</strong><div class="translation">Welcome to the lesson!</div></div><p>Take your time to study the material below. When you're ready, try the exercises to test your understanding.</p><h2>Key Vocabulary</h2><div class="german"><strong>der Unterricht</strong><div class="translation">the lesson / class</div></div><div class="german"><strong>die Vokabeln</strong><div class="translation">the vocabulary</div></div><div class="german"><strong>die Grammatik</strong><div class="translation">the grammar</div></div><p>Practice these words with the AI chatbot after the lesson!</p>`}
+      </div>
+      <div class="flex items-center gap-sm mt-3">
+        <button class="btn btn-primary btn-lg" onclick="navigate('exercise',{id:1})">✍️ Practice Exercise</button>
+        <button class="btn btn-secondary btn-lg" onclick="navigate('ai-chat')">🤖 Ask AI Tutor</button>
+      </div>
+    </div>`}
+
+function pageExercise(data){
+  return `${studentNav('courses')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">✍️ Interactive Exercise</h1><p style="color:var(--text2);font-size:14px">Complete the exercise to test your knowledge</p></div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="margin-bottom:16px">Fill in the blank with the correct German word:</h3>
+        <div class="quiz-question">
+          <p style="font-size:18px;margin-bottom:12px">"Guten _____!" (Good morning!)</p>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Abend</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Morgen</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Nacht</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Tag</div>
+        </div>
+        <div class="quiz-question">
+          <p style="font-size:18px;margin-bottom:12px">"Ich _____ aus Deutschland." (I come from Germany.)</p>
+          <div class="quiz-option" onclick="selectQuizOption(this)">bin</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">komme</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">gehe</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">wohne</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-sm">
+        <button class="btn btn-success btn-lg" onclick="this.textContent='✅ Submitted!';this.style.opacity='.6'">📤 Submit Answers</button>
+        <button class="btn btn-secondary btn-lg" onclick="navigate('lesson-view',{courseId:1,lessonId:1})">← Back to Lesson</button>
+      </div>
+    </div>`}
+
+function pageQuiz(){
+  return `${studentNav('courses')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">📝 Quiz</h1><p style="color:var(--text2);font-size:14px">Test your German knowledge</p></div>
+        <span class="badge badge-progress">⏱️ 10 min</span>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="flex items-center justify-between mb-3">
+          <span style="font-weight:600">A1 Vocabulary Check</span>
+          <span style="font-size:13px;color:var(--text2)">Question 1 of 10</span>
+        </div>
+        <div class="progress-bar" style="margin-bottom:24px"><div class="progress-fill" style="width:10%"></div></div>
+        <div class="quiz-question">
+          <h3>What does "der Bahnhof" mean?</h3>
+          <div class="quiz-option" onclick="selectQuizOption(this)">The airport</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">The train station</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">The bus stop</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">The harbor</div>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <button class="btn btn-secondary">← Previous</button>
+        <button class="btn btn-primary">Next →</button>
+      </div>
+      <div class="card mt-3">
+        <h3 style="font-size:16px;margin-bottom:12px">Available Quizzes</h3>
+        ${DATA.quizzes.map(q=>`
+          <div class="flex items-center justify-between" style="padding:12px 0;border-bottom:1px solid var(--border)">
+            <div><div style="font-weight:500;font-size:14px">${q.title}</div><div style="font-size:12px;color:var(--text2)">${q.questions} questions • ${q.time}</div></div>
+            <span style="font-size:14px;font-weight:600;color:${q.score!==null?'var(--accent2)':'var(--text2)'}">${q.score!==null?q.score+'%':'—'}</span>
+          </div>`).join('')}
+      </div>
+    </div>`}
+
+function pageProfile(){
+  const u=DATA.user;
+  return `${studentNav('')}
+    <div class="container" style="padding:32px 20px 60px;max-width:800px">
+      <div class="card" style="padding:32px;text-align:center;margin-bottom:24px">
+        <div class="avatar avatar-lg" style="margin:0 auto 16px;width:80px;height:80px;font-size:32px">${u.avatar[0]}</div>
+        <h1 style="font-size:24px;font-weight:700">${u.name}</h1>
+        <p style="color:var(--text2);font-size:14px">${u.email} • Member since ${u.joinDate}</p>
+        <div style="margin-top:16px;display:flex;gap:8px;justify-content:center">
+          <span class="badge badge-beginner">Level ${u.level}</span>
+          <span class="badge badge-progress">🔥 ${u.streak}-day streak</span>
+          <span class="badge badge-intermediate">⭐ ${u.xp} XP</span>
+        </div>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3 style="font-size:16px;margin-bottom:16px">⚙️ Account Settings</h3>
+          <label>Display Name</label>
+          <input value="${u.name}" style="margin-bottom:12px">
+          <label>Bio</label>
+          <textarea style="margin-bottom:16px;min-height:80px">German learner passionate about reaching fluency! 🇩🇪</textarea>
+          <button class="btn btn-primary" style="width:100%;justify-content:center">💾 Save Changes</button>
+        </div>
+        <div class="card">
+          <h3 style="font-size:16px;margin-bottom:16px">🔔 Learning Preferences</h3>
+          <label>Target Level</label>
+          <select style="margin-bottom:12px"><option>B1 (Intermediate)</option></select>
+          <label>Daily Goal (minutes)</label>
+          <input type="number" value="${u.goals.daily}" style="margin-bottom:12px">
+          <label>Notifications</label>
+          <select style="margin-bottom:16px"><option>Daily reminders</option></select>
+          <button class="btn btn-secondary" style="width:100%;justify-content:center">💾 Save Preferences</button>
+        </div>
+      </div>
+    </div>`}
+
+function pageAIChat(){
+  return `${studentNav('ai-chat')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">🤖 AI German Tutor</h1><p style="color:var(--text2);font-size:14px">Practice German conversation with AI</p></div>
+        <div class="flex gap-sm">
+          <button class="btn btn-sm btn-secondary" onclick="addChatMessage('ai','Guten Tag! Wie geht es dir heute? 🌟')">🎲 Start Chat</button>
+          <button class="btn btn-sm btn-secondary" onclick="addChatMessage('ai','Lass uns über deine Hobbys sprechen. Was machst du gern in deiner Freizeit? 🎯')">💬 Topic: Hobbies</button>
+        </div>
+      </div>
+      <div class="chat-container" id="chatContainer">
+        <div class="chat-messages" id="chatMessages">
+          ${DATA.chatMessages.map(m=>`<div class="chat-msg ${m.role}">${m.text}</div>`).join('')}
+          <div class="chat-typing hidden" id="chatTyping"><span></span><span></span><span></span></div>
+        </div>
+        <div class="chat-input">
+          <input id="chatInput" placeholder="Type your message in German or English..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+          <button class="btn btn-primary" onclick="sendChatMessage()">Send ➤</button>
+        </div>
+      </div>
+    </div>`}
+
+function pageSpeaking(){
+  return `${studentNav('')}
+    <div class="container" style="padding:32px 20px 60px;max-width:700px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">🎤 Speaking Practice</h1><p style="color:var(--text2);font-size:14px">Practice pronunciation with AI feedback</p></div>
+        <span class="badge badge-beginner"><span id="speakingScore">65</span>% Accuracy</span>
+      </div>
+      <div class="card" style="text-align:center;padding:40px;margin-bottom:16px">
+        <div style="font-size:24px;color:var(--text2);margin-bottom:8px">Try saying this sentence:</div>
+        <div style="font-size:28px;font-weight:700;margin-bottom:24px">"Ich möchte Deutsch lernen"</div>
+        <div style="font-size:14px;color:var(--text2);margin-bottom:24px">/ɪç ˈmœçtə ˈdɔʏtʃ ˈlɛʁnən/</div>
+        <button class="btn btn-primary btn-lg" onclick="this.textContent='🎙️ Recording... (simulated)';setTimeout(()=>{this.textContent='🔊 Playback';document.getElementById('speakingScore').textContent=Math.floor(65+Math.random()*25);alert('🎤 AI Analysis: Good pronunciation! Your vowel sounds are clear. Try to emphasize the "ch" sound more.')},2000)">🎙️ Start Recording</button>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:12px">📊 Your Pronunciation Analysis</h3>
+        <div class="grid grid-2">
+          <div><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Vowels</span><span style="font-size:13px;font-weight:600;color:var(--accent2)">85%</span></div><div class="progress-bar"><div class="progress-fill" style="width:85%"></div></div></div>
+          <div><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Consonants</span><span style="font-size:13px;font-weight:600;color:var(--orange)">62%</span></div><div class="progress-bar"><div class="progress-fill" style="width:62%;background:linear-gradient(90deg,var(--orange),var(--gold))"></div></div></div>
+          <div><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Intonation</span><span style="font-size:13px;font-weight:600;color:var(--accent)">70%</span></div><div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div></div>
+          <div><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Fluency</span><span style="font-size:13px;font-weight:600;color:var(--pink)">55%</span></div><div class="progress-bar"><div class="progress-fill" style="width:55%;background:linear-gradient(90deg,var(--pink),var(--accent3))"></div></div></div>
+        </div>
+        <div class="divider"></div>
+        <p style="font-size:13px;color:var(--text2)">💡 <strong>Tip:</strong> Practice the "ch" sound — place your tongue like you're saying "yes" and push air through. Try: Ich, dich, mich, sprechen.</p>
+      </div>
+    </div>`}
+
+function pageReading(){
+  return `${studentNav('')}
+    <div class="container" style="padding:32px 20px 60px;max-width:800px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">📖 Reading Comprehension</h1><p style="color:var(--text2);font-size:14px">Read and understand German texts</p></div>
+        <select style="width:auto" onchange="">
+          <option>A1 - Beginner</option>
+          <option>A2 - Elementary</option>
+          <option>B1 - Intermediate</option>
+        </select>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <h3 style="font-size:16px">🇩🇪 Mein Tag</h3>
+          <span style="font-size:13px;color:var(--text2)">124 words • A1 Level</span>
+        </div>
+        <div style="background:var(--bg2);padding:20px;border-radius:8px;line-height:1.9;font-size:15px">
+          <p>Hallo! Ich heiße Anna und ich bin 25 Jahre alt. Ich wohne in Berlin. Jeden Morgen stehe ich um 7 Uhr auf. Ich frühstücke um 7:30 Uhr. Ich esse Brot mit Käse und trinke Kaffee. Um 8 Uhr gehe ich zur Arbeit. Ich arbeite in einer Schule. Ich bin Lehrerin. Um 12 Uhr esse ich zu Mittag. Nach der Arbeit gehe ich nach Hause. Am Abend lese ich gern Bücher oder sehe fern. Um 22 Uhr gehe ich ins Bett. Das ist mein Tag!</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">📝 Comprehension Questions</h3>
+        <div class="quiz-question">
+          <p style="margin-bottom:12px">1. Wo wohnt Anna?</p>
+          <div class="quiz-option" onclick="selectQuizOption(this)">In München</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">In Berlin</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">In Hamburg</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">In Köln</div>
+        </div>
+        <div class="quiz-question">
+          <p style="margin-bottom:12px">2. Was ist Anna von Beruf?</p>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Ärztin</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Ingenieurin</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Lehrerin</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Studentin</div>
+        </div>
+        <div class="quiz-question">
+          <p style="margin-bottom:12px">3. Was macht Anna am Abend gern?</p>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Sport treiben</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Bücher lesen oder fernsehen</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Freunde treffen</div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">Kochen</div>
+        </div>
+        <button class="btn btn-success mt-2" onclick="this.textContent='✅ Checked!';this.style.opacity='.6'">✅ Check Answers</button>
+      </div>
+    </div>`}
+
+function pageWriting(){
+  return `${studentNav('')}
+    <div class="container" style="padding:32px 20px 60px;max-width:800px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">✍️ Writing Practice</h1><p style="color:var(--text2);font-size:14px">Write in German and get AI feedback</p></div>
+        <span class="badge badge-progress">Score: 71/100</span>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <h3 style="font-size:16px;margin-bottom:8px">📝 Write about: "Describe your family"</h3>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:16px">Write 5-8 sentences in German. Include names, ages, and what each person does.</p>
+        <textarea id="writingArea" style="min-height:160px">Meine Familie ist groß. Ich habe einen Vater, eine Mutter und zwei Brüder. Mein Vater heißt Thomas und er ist 52 Jahre alt. Meine Mutter heißt Maria und sie ist 48 Jahre alt. Meine Brüder sind jünger als ich. Wir wohnen zusammen in einem Haus. Am Wochenende kochen wir zusammen.</textarea>
+        <div class="flex items-center justify-between mt-2">
+          <span style="font-size:12px;color:var(--text2)">📊 Word count: 48</span>
+          <button class="btn btn-primary" onclick="document.getElementById('writingFeedback').classList.remove('hidden')">🤖 Get AI Feedback</button>
+        </div>
+      </div>
+      <div class="card hidden" id="writingFeedback">
+        <h3 style="font-size:16px;margin-bottom:12px">🤖 AI Feedback</h3>
+        <div style="padding:12px;background:rgba(0,212,170,0.1);border-radius:8px;border-left:3px solid var(--accent2);margin-bottom:12px">
+          <div style="font-weight:600;font-size:13px">✅ Grammar — Good!</div>
+          <p style="font-size:13px;margin-top:4px;color:var(--text2)">Your sentence structure is correct. Great use of "haben" and "sein" verbs!</p>
+        </div>
+        <div style="padding:12px;background:rgba(255,159,67,0.1);border-radius:8px;border-left:3px solid var(--orange);margin-bottom:12px">
+          <div style="font-weight:600;font-size:13px">🔶 Vocabulary — Could improve</div>
+          <p style="font-size:13px;margin-top:4px;color:var(--text2)">Try using more specific words. Instead of "groß", you could say "sehr verbunden" (very close) or "fünfköpfig" (of five people).</p>
+        </div>
+        <div style="padding:12px;background:rgba(108,92,231,0.1);border-radius:8px;border-left:3px solid var(--accent)">
+          <div style="font-weight:600;font-size:13px">💡 Suggestions</div>
+          <p style="font-size:13px;margin-top:4px;color:var(--text2)">Try adding more details about what your family likes to do together. Use "gern" + verb constructions!</p>
+        </div>
+      </div>
+    </div>`}
+
+function pageVocabulary(){
+  let flippedIndex=-1;
+  window.flipCard=function(i){const cards=document.querySelectorAll('.flashcard');cards.forEach((c,j)=>{if(j===i)c.classList.toggle('flipped')})};
+  return `${studentNav('vocabulary')}
+    <div class="container" style="padding:32px 20px 60px">
+      <div class="flex items-center justify-between mb-3">
+        <div><h1 style="font-size:24px;font-weight:800">📝 Vocabulary Flashcards</h1><p style="color:var(--text2);font-size:14px">${DATA.vocabulary.length} words to learn</p></div>
+        <button class="btn btn-sm btn-secondary" onclick="document.querySelectorAll('.flashcard').forEach(c=>c.classList.remove('flipped'))">🔄 Reset All</button>
+      </div>
+      <div class="grid grid-4">
+        ${DATA.vocabulary.map((v,i)=>`
+          <div class="flashcard" onclick="flipCard(${i})">
+            <div class="flashcard-inner">
+              <div class="flashcard-front">
+                <div><div class="big">${v.de}</div><div class="hint">${v.hint}</div></div>
+              </div>
+              <div class="flashcard-back">
+                <div><div class="big">${v.en}</div><div style="font-size:14px;margin-top:8px;opacity:.8">${v.de}</div></div>
+              </div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`}
+
+// ===== ADMIN PANEL =====
+function adminSidebar(active){
+  const items=[
+    {id:'admin-dashboard',icon:'📊',label:'Dashboard'},
+    {id:'admin-courses',icon:'📚',label:'Courses'},
+    {id:'admin-lessons',icon:'📄',label:'Lessons'},
+    {id:'admin-exercises',icon:'✍️',label:'Exercises'},
+    {id:'admin-quizzes',icon:'📝',label:'Quizzes'},
+    {id:'admin-users',icon:'👥',label:'Users'},
+    {id:'admin-media',icon:'🖼️',label:'Media'},
+    {id:'admin-analytics',icon:'📈',label:'Analytics'},
+    {id:'admin-settings',icon:'⚙️',label:'Settings'},
+    {id:'admin-ai-training',icon:'🧠',label:'AI Training'},
+    {id:'admin-admins',icon:'🔐',label:'Admin Mgmt'}
+  ];
+  return `<div class="admin-layout">
+    <div class="admin-sidebar" id="adminSidebar">
+      <div class="logo" onclick="navigate('admin-dashboard')">🇩🇪 LearnGerman Admin</div>
+      ${items.map(i=>`
+        <div class="nav-item ${active===i.id?'active':''}" onclick="navigate('${i.id}')">
+          <span class="icon">${i.icon}</span>
+          <span>${i.label}</span>
+        </div>`).join('')}
+      <div style="margin-top:auto;padding:20px;border-top:1px solid var(--border);margin-top:16px">
+        <div class="nav-item" onclick="navigate('home')" style="border-left-color:var(--accent2)">
+          <span class="icon">🔙</span>
+          <span>Back to Site</span>
+        </div>
+      </div>
+    </div>
+    <div class="admin-main">
+      <div class="admin-topbar">
+        <div class="flex items-center gap-sm">
+          <button class="hamburger" onclick="document.getElementById('adminSidebar').classList.toggle('open')">☰</button>
+          <h1 id="adminPageTitle">Dashboard</h1>
+        </div>
+        <div class="flex items-center gap-sm">
+          <span class="badge badge-progress">🟢 Live</span>
+          <div class="avatar avatar-sm" style="background:var(--accent2);color:#000" onclick="navigate('admin-admins')">AM</div>
+        </div>
+      </div>
+      <div id="adminContent" class="page">`
+}
+
+function adminFooter(){return `</div></div></div>`}
+
+function pageAdminDashboard(){
+  const s=DATA.adminStats;
+  return `${adminSidebar('admin-dashboard')}
+    <div class="grid grid-4">
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--accent)">👥</div><div class="stat-value">${s.totalUsers}</div><div class="stat-label">Total Users <span style="color:var(--accent2)">(+${s.newUsers})</span></div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--accent2)">📚</div><div class="stat-value">${s.totalCourses}</div><div class="stat-label">Courses • ${s.totalLessons} lessons</div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--gold)">🔥</div><div class="stat-value">${s.activeToday}</div><div class="stat-label">Active Today • ${s.retention}% retention</div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--orange)">⭐</div><div class="stat-value">${s.avgScore}%</div><div class="stat-label">Avg Score • ${s.courseCompletions} completions</div></div>
+    </div>
+    <div class="grid grid-2 mt-3">
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">📈 Weekly Activity</h3>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:120px;padding:8px 0">
+          ${[40,65,45,80,55,90,70].map((h,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:${h}%;background:linear-gradient(180deg,var(--accent),var(--accent2));border-radius:4px 4px 0 0;transition:height .5s"></div><span style="font-size:10px;color:var(--text2)">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i]}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">🏆 Top Performing Courses</h3>
+        <div style="margin-bottom:8px"><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">German Basics A1</span><span style="font-size:13px;font-weight:600">1,240 students</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div></div>
+        <div style="margin-bottom:8px"><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Everyday Conversations A2</span><span style="font-size:13px;font-weight:600">980 students</span></div><div class="progress-bar"><div class="progress-fill" style="width:79%"></div></div></div>
+        <div><div class="flex items-center justify-between" style="margin-bottom:4px"><span style="font-size:13px">Grammar Mastery B1</span><span style="font-size:13px;font-weight:600">756 students</span></div><div class="progress-bar"><div class="progress-fill" style="width:61%"></div></div></div>
+      </div>
+    </div>
+    <div class="card mt-3">
+      <div class="flex items-center justify-between mb-3">
+        <h3 style="font-size:16px">👥 Recent Users</h3>
+        <button class="btn btn-sm btn-secondary" onclick="navigate('admin-users')">View All</button>
+      </div>
+      <table class="data-table">
+        <tr><th>Name</th><th>Email</th><th>Level</th><th>Joined</th><th>Status</th></tr>
+        ${DATA.recentUsers.map(u=>`<tr><td><div class="flex items-center gap-sm"><div class="avatar avatar-sm">${u.name[0]}</div>${u.name}</div></td><td style="color:var(--text2)">${u.email}</td><td><span class="badge badge-beginner">${u.level}</span></td><td style="color:var(--text2)">${u.joined}</td><td><span class="tag ${u.status==='Active'?'tag-green':u.status==='Suspended'?'tag-red':'tag-orange'}">${u.status}</span></td></tr>`).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminCourses(){
+  return `${adminSidebar('admin-courses')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">Manage your course catalog</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('📚 Course creation form would open here')">+ New Course</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <tr><th>Course</th><th>Level</th><th>Lessons</th><th>Students</th><th>Rating</th><th>Status</th><th>Actions</th></tr>
+        ${DATA.courses.map(c=>`<tr>
+          <td><div style="font-weight:500">${c.title}</div></td>
+          <td><span class="badge badge-${c.level.toLowerCase().replace(' ','-')}">${c.level}</span></td>
+          <td>${c.lessons}</td>
+          <td>${c.students}</td>
+          <td>⭐ ${c.rating}</td>
+          <td><span class="tag tag-green">${c.progress>0?'Active':'Draft'}</span></td>
+          <td class="actions"><button class="btn btn-sm btn-secondary" onclick="alert('✏️ Edit: ${c.title}')">✏️</button><button class="btn btn-sm btn-secondary" onclick="alert('📄 View course')">👁️</button><button class="btn btn-sm btn-danger" onclick="alert('❌ Delete: ${c.title}')">🗑️</button></td>
+        </tr>`).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminLessons(){
+  return `${adminSidebar('admin-lessons')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">Manage lesson content across courses</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('📄 New lesson form would open')">+ New Lesson</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <tr><th>Lesson</th><th>Course</th><th>Duration</th><th>Status</th><th>Actions</th></tr>
+        ${DATA.lessons.map(l=>{const c=DATA.courses.find(x=>x.id===l.courseId);return `<tr><td>${l.title}</td><td style="color:var(--text2)">${c?c.title:'—'}</td><td>${l.duration}</td><td><span class="tag ${l.completed?'tag-green':'tag-orange'}">${l.completed?'Published':'Draft'}</span></td><td class="actions"><button class="btn btn-sm btn-secondary">✏️</button><button class="btn btn-sm btn-secondary">👁️</button><button class="btn btn-sm btn-danger">🗑️</button></td></tr>`}).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminExercises(){
+  return `${adminSidebar('admin-exercises')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">Create and manage interactive exercises</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('✍️ Exercise builder would open')">+ New Exercise</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <tr><th>Exercise</th><th>Questions</th><th>Completions</th><th>Avg Score</th><th>Actions</th></tr>
+        ${DATA.exercises.map(e=>`<tr><td>${e.title}</td><td>${e.questions}</td><td style="color:var(--text2)">${e.completed?Math.floor(Math.random()*200)+50:0}</td><td><span style="color:${e.score&&e.score>=80?'var(--accent2)':'var(--orange)'}">${e.score||'—'}${e.score?'%':''}</span></td><td class="actions"><button class="btn btn-sm btn-secondary">✏️</button><button class="btn btn-sm btn-secondary">👁️</button><button class="btn btn-sm btn-danger">🗑️</button></td></tr>`).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminQuizzes(){
+  return `${adminSidebar('admin-quizzes')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">Manage quizzes and assessments</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('📝 Quiz builder would open')">+ New Quiz</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <tr><th>Quiz</th><th>Questions</th><th>Time Limit</th><th>Avg Score</th><th>Actions</th></tr>
+        ${DATA.quizzes.map(q=>`<tr><td>${q.title}</td><td>${q.questions}</td><td>${q.time}</td><td><span style="color:${q.score!==null?'var(--accent2)':'var(--text2)'}">${q.score!==null?q.score+'%':'No data'}</span></td><td class="actions"><button class="btn btn-sm btn-secondary">✏️</button><button class="btn btn-sm btn-secondary">👁️</button><button class="btn btn-sm btn-danger">🗑️</button></td></tr>`).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminUsers(){
+  return `${adminSidebar('admin-users')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">${DATA.adminStats.totalUsers} registered users</p>
+      <div class="flex gap-sm"><button class="btn btn-sm btn-secondary">📤 Export</button><button class="btn btn-sm btn-primary" onclick="alert('Invite user form')">+ Invite</button></div>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <table class="data-table">
+        <tr><th>User</th><th>Email</th><th>Level</th><th>Joined</th><th>Progress</th><th>Status</th><th>Actions</th></tr>
+        ${DATA.recentUsers.map(u=>`<tr><td><div class="flex items-center gap-sm"><div class="avatar avatar-sm">${u.name[0]}</div>${u.name}</div></td><td style="color:var(--text2)">${u.email}</td><td><span class="badge badge-beginner">${u.level}</span></td><td style="color:var(--text2)">${u.joined}</td><td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:${Math.floor(Math.random()*60)+20}%"></div></div></td><td><span class="tag ${u.status==='Active'?'tag-green':u.status==='Suspended'?'tag-red':'tag-orange'}">${u.status}</span></td><td class="actions"><button class="btn btn-sm btn-secondary">✏️</button><button class="btn btn-sm ${u.status==='Active'?'btn-danger':'btn-success'}">${u.status==='Active'?'🚫':'✅'}</button></td></tr>`).join('')}
+      </table>
+    </div>${adminFooter()}`}
+
+function pageAdminMedia(){
+  return `${adminSidebar('admin-media')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">${DATA.mediaItems.length} files • Manage your media library</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('📤 Upload dialog would open')">📤 Upload</button>
+    </div>
+    <div class="media-grid">
+      ${DATA.mediaItems.map(m=>`
+        <div class="media-item">
+          <div class="preview">${m.type==='image'?'🖼️':m.type==='document'?'📄':m.type==='audio'?'🎵':'🎬'}</div>
+          <div class="info"><p>${m.name}</p><span>${m.size} • ${m.date}</span></div>
+        </div>`).join('')}
+    </div>${adminFooter()}`}
+
+function pageAdminAnalytics(){
+  const s=DATA.adminStats;
+  return `${adminSidebar('admin-analytics')}
+    <div class="grid grid-4">
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--accent)">👥</div><div class="stat-value">${s.totalUsers}</div><div class="stat-label">Total Users</div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--accent2)">📈</div><div class="stat-value">${s.retention}%</div><div class="stat-label">Retention Rate</div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--gold)">🏆</div><div class="stat-value">${s.courseCompletions}</div><div class="stat-label">Completions</div></div>
+      <div class="card stat-card"><div class="stat-icon" style="color:var(--pink)">📊</div><div class="stat-value">${s.totalExercises}</div><div class="stat-label">Exercises</div></div>
+    </div>
+    <div class="grid grid-2 mt-3">
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">📊 Engagement Metrics</h3>
+        <div class="model-stat"><span>Popular Course</span><span style="color:var(--accent)">${s.popularCourse}</span></div>
+        <div class="model-stat"><span>Top Performer</span><span style="color:var(--accent2)">${s.topPerformer}</span></div>
+        <div class="model-stat"><span>Avg Session</span><span>24 min</span></div>
+        <div class="model-stat"><span>Completion Rate</span><span>${s.retention}%</span></div>
+        <div class="model-stat"><span>Revenue</span><span style="color:var(--text2)">${s.revenue === 0 ? 'Free Tier' : '$' + s.revenue}</span></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">📅 User Growth</h3>
+        <div style="display:flex;align-items:flex-end;gap:6px;height:100px;padding:8px 0">
+          ${[120,180,250,310,400,520,680,750,900,1100,1450,1840].map((h,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:100%;height:${(h/1840)*100}%;background:linear-gradient(180deg,var(--accent),var(--blue));border-radius:3px 3px 0 0"></div><span style="font-size:8px;color:var(--text2)">${['J','F','M','A','M','J','J','A','S','O','N','D'][i]}</span></div>`).join('')}
+        </div>
+      </div>
+    </div>${adminFooter()}`}
+
+function pageAdminSettings(){
+  return `${adminSidebar('admin-settings')}
+    <div class="grid grid-2">
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">⚙️ General Settings</h3>
+        <label>Site Name</label><input value="LearnGerman" style="margin-bottom:12px">
+        <label>Site Description</label><textarea style="margin-bottom:12px;min-height:80px">Learn German with AI-powered interactive lessons</textarea>
+        <label>Default Language</label><select style="margin-bottom:16px"><option>English</option><option>German</option></select>
+        <button class="btn btn-primary" style="width:100%;justify-content:center">💾 Save</button>
+      </div>
+      <div class="card">
+        <h3 style="font-size:16px;margin-bottom:16px">📧 Email Configuration</h3>
+        <label>SMTP Host</label><input value="smtp.sendgrid.net" style="margin-bottom:12px">
+        <label>SMTP Port</label><input value="587" style="margin-bottom:12px">
+        <label>From Email</label><input value="noreply@learngerman.de" style="margin-bottom:16px">
+        <button class="btn btn-secondary" style="width:100%;justify-content:center">💾 Save</button>
+      </div>
+    </div>${adminFooter()}`}
+
+function pageAdminAiTraining(){
+  return `${adminSidebar('admin-ai-training')}
+    <p style="color:var(--text2);font-size:14px;margin-bottom:24px">🧠 Train and configure AI models for content generation, evaluation, and tutoring</p>
+    <div class="grid grid-2">
+      <div class="card training-card card-glow">
+        <div class="model-name">📝 Content Generator</div>
+        <div class="model-desc">Generates lessons, exercises, and quizzes based on your templates</div>
+        <div class="model-stat"><span>Provider</span><span class="tag tag-green">Gemini 2.5 Flash</span></div>
+        <div class="model-stat"><span>Prompt Template</span><span style="color:var(--accent2)">12 templates</span></div>
+        <div class="model-stat"><span>Last Trained</span><span>2 days ago</span></div>
+        <div class="model-stat"><span>Accuracy</span><span>94%</span></div>
+        <button class="btn btn-sm btn-primary mt-2" style="width:100%;justify-content:center" onclick="alert('🧠 Opening AI training dashboard for Content Generator')">🧠 Train Model</button>
+      </div>
+      <div class="card training-card card-glow">
+        <div class="model-name">💬 Conversation Tutor</div>
+        <div class="model-desc">Powers the AI chat feature for student conversation practice</div>
+        <div class="model-stat"><span>Provider</span><span class="tag tag-purple">Groq (Llama 3)</span></div>
+        <div class="model-stat"><span>Prompt Template</span><span style="color:var(--accent2)">8 templates</span></div>
+        <div class="model-stat"><span>Context Window</span><span>128K tokens</span></div>
+        <div class="model-stat"><span>Avg Response</span><span>1.2s</span></div>
+        <button class="btn btn-sm btn-primary mt-2" style="width:100%;justify-content:center" onclick="alert('🧠 Opening AI training dashboard for Conversation Tutor')">🧠 Train Model</button>
+      </div>
+      <div class="card training-card card-glow">
+        <div class="model-name">📖 Reading Evaluator</div>
+        <div class="model-desc">Analyzes reading comprehension and generates level-appropriate texts</div>
+        <div class="model-stat"><span>Provider</span><span class="tag tag-orange">DeepSeek R1</span></div>
+        <div class="model-stat"><span>Few-Shot Examples</span><span>25 examples</span></div>
+        <div class="model-stat"><span>Text Gen</span><span>A1-C1 levels</span></div>
+        <button class="btn btn-sm btn-primary mt-2" style="width:100%;justify-content:center" onclick="alert('🧠 Opening AI training dashboard')">🧠 Train Model</button>
+      </div>
+      <div class="card training-card card-glow">
+        <div class="model-name">🎙️ Speech Analyzer</div>
+        <div class="model-desc">Evaluates pronunciation, fluency, and provides speaking feedback</div>
+        <div class="model-stat"><span>Provider</span><span class="tag tag-pink">Whisper + Custom</span></div>
+        <div class="model-stat"><span>Phoneme Map</span><span>German IPA</span></div>
+        <div class="model-stat"><span>Feedback Type</span><span>Phonetic + Prosody</span></div>
+        <button class="btn btn-sm btn-primary mt-2" style="width:100%;justify-content:center" onclick="alert('🧠 Opening AI training dashboard')">🧠 Train Model</button>
+      </div>
+    </div>${adminFooter()}`}
+
+function pageAdminAdmins(){
+  return `${adminSidebar('admin-admins')}
+    <div class="flex items-center justify-between mb-3">
+      <p style="color:var(--text2);font-size:14px">${DATA.adminUsers.length} admin accounts</p>
+      <button class="btn btn-primary btn-sm" onclick="alert('➕ Create new admin user form')">+ Add Admin</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px">
+      <table class="data-table">
+        <tr><th>Name</th><th>Email</th><th>Role</th><th>Permissions</th><th>Last Active</th><th>Actions</th></tr>
+        ${DATA.adminUsers.map(a=>`<tr>
+          <td><div class="flex items-center gap-sm"><div class="avatar avatar-sm">${a.name[0]}</div>${a.name}</div></td>
+          <td style="color:var(--text2)">${a.email}</td>
+          <td><span class="tag tag-purple">${a.role}</span></td>
+          <td style="font-size:12px;color:var(--text2)">${a.permissions}</td>
+          <td style="font-size:13px;color:var(--text2)">${a.lastActive}</td>
+          <td class="actions"><button class="btn btn-sm btn-secondary">✏️</button><button class="btn btn-sm btn-danger">🚫</button></td>
+        </tr>`).join('')}
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="font-size:16px;margin-bottom:12px">📋 Recent Admin Activity Log</h3>
+      <div style="font-size:13px">
+        <div class="flex items-center justify-between" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>Admin Master edited course "German Basics A1"</span><span style="color:var(--text2)">2 min ago</span></div>
+        <div class="flex items-center justify-between" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>Content Editor created lesson "Numbers 1-20"</span><span style="color:var(--text2)">15 min ago</span></div>
+        <div class="flex items-center justify-between" style="padding:8px 0;border-bottom:1px solid var(--border)"><span>Moderator User suspended account "Lisa Fischer"</span><span style="color:var(--text2)">1h ago</span></div>
+        <div class="flex items-center justify-between" style="padding:8px 0"><span>Admin Master updated AI training prompt templates</span><span style="color:var(--text2)">3h ago</span></div>
+      </div>
+    </div>${adminFooter()}`}
+
+// ===== RENDER FUNCTION =====
+function titleForPage(page,data){
+  const titles={
+    home:'🇩🇪 Learn German with AI',dashboard:'📊 Dashboard',courses:'📚 Courses',
+    'course-detail':'📖 Course Details','lesson-view':'📄 Lesson',exercise:'✍️ Exercise',
+    quiz:'📝 Quiz',profile:'👤 Profile','ai-chat':'🤖 AI Chat',speaking:'🎤 Speaking',
+    reading:'📖 Reading',writing:'✍️ Writing',vocabulary:'📝 Vocabulary',
+    login:'🔐 Login',register:'📝 Register',
+    'admin-dashboard':'📊 Admin Dashboard','admin-courses':'📚 Manage Courses',
+    'admin-lessons':'📄 Manage Lessons','admin-exercises':'✍️ Manage Exercises',
+    'admin-quizzes':'📝 Manage Quizzes','admin-users':'👥 Manage Users',
+    'admin-media':'🖼️ Media Library','admin-analytics':'📈 Analytics',
+    'admin-settings':'⚙️ Settings','admin-ai-training':'🧠 AI Training',
+    'admin-admins':'🔐 Admin Management'
+  };
+  return titles[page]||'🇩🇪 Learn German';
+}
+
+function render(data){
+  const pageFunctions={
+    home:pageHome,login:pageLogin,register:pageRegister,dashboard:pageDashboard,
+    courses:pageCourses,'course-detail':()=>pageCourseDetail(data||{}),
+    'lesson-view':()=>pageLessonView(data||{}),exercise:()=>pageExercise(data||{}),
+    quiz:pageQuiz,profile:pageProfile,'ai-chat':pageAIChat,speaking:pageSpeaking,
+    reading:pageReading,writing:pageWriting,vocabulary:pageVocabulary,
+    'admin-dashboard':pageAdminDashboard,'admin-courses':pageAdminCourses,
+    'admin-lessons':pageAdminLessons,'admin-exercises':pageAdminExercises,
+    'admin-quizzes':pageAdminQuizzes,'admin-users':pageAdminUsers,
+    'admin-media':pageAdminMedia,'admin-analytics':pageAdminAnalytics,
+    'admin-settings':pageAdminSettings,'admin-ai-training':pageAdminAiTraining,
+    'admin-admins':pageAdminAdmins
+  };
+  const fn=pageFunctions[currentPage]||pageFunctions.home;
+  document.title=titleForPage(currentPage,data);
+  document.getElementById('app').innerHTML=fn();
+  // Update admin page title
+  const t=document.getElementById('adminPageTitle');
+  if(t)t.textContent=titleForPage(currentPage,data).replace(/^[^\s]*\s/,'');
+  window.scrollTo(0,0);
+}
+
+// ===== UTILITY FUNCTIONS =====
+function selectQuizOption(el){
+  const parent=el.parentElement;
+  parent.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function filterCourses(level){
+  if(level==='all'){document.querySelectorAll('[data-level]').forEach(c=>c.style.display='')}
+  else{document.querySelectorAll('[data-level]').forEach(c=>{c.style.display=c.dataset.level.includes(level)?'':'none'})}
+}
+
+function sendChatMessage(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  const msgs=document.getElementById('chatMessages');
+  const typing=document.getElementById('chatTyping');
+  msgs.innerHTML+=`<div class="chat-msg user">${escHtml(msg)}</div>`;
+  input.value='';
+  typing.classList.remove('hidden');
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    typing.classList.add('hidden');
+    const responses=[
+      'Das ist eine gute Frage! 🤔 Lass mich dir helfen...',
+      'Gut gemacht! 👍 Versuchen wir einen anderen Satz.',
+      'Interessant! 🧐 Hier ist ein Tipp für dich:',
+      'Prima! 🌟 Du machst große Fortschritte!',
+      'Verstehe! 💡 Lass uns das genauer betrachten.'
+    ];
+    msgs.innerHTML+=`<div class="chat-msg ai">${responses[Math.floor(Math.random()*responses.length)]}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },1500);
+}
+
+function addChatMessage(role,text){
+  const msgs=document.getElementById('chatMessages');
+  const typing=document.getElementById('chatTyping');
+  if(role==='ai'){
+    typing.classList.remove('hidden');
+    setTimeout(()=>{
+      typing.classList.add('hidden');
+      msgs.innerHTML+=`<div class="chat-msg ai">${text}</div>`;
+      msgs.scrollTop=msgs.scrollHeight;
+    },1000);
+  }else{
+    msgs.innerHTML+=`<div class="chat-msg user">${text}</div>`;
+  }
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+// ===== INIT =====
+navigate('home');
+</script>
+</body>
+</html>

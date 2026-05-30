@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./frontend/src/*"],
+      "@admin/*": ["./admin/src/*"],
+      "@backend/*": ["./backend/src/*"],
+      "@ai/*": ["./ai-engine/*"]
+    }
+  },
+  "include": [
+    "frontend/src/**/*",
+    "admin/src/**/*",
+    "backend/src/**/*",
+    "ai-engine/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build"
+  ]
+}

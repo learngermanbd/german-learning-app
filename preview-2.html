@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🇩🇪 LEARNGERMAN — Website &amp; Admin Panel Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--card:#16162a;--border:#2a2a4a;--text:#e1e1e1;--text2:#8888aa;--accent:#6c5ce7;--accent2:#00d4aa;--accent3:#ff6b6b;--gold:#ffd700;--orange:#ff9f43;--pink:#fd79a8;--blue:#74b9ff;--radius:12px;--shadow:0 8px 32px rgba(0,0,0,0.4)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+a{color:var(--accent);text-decoration:none}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Hero */
+.hero{text-align:center;padding:60px 0 40px;background:linear-gradient(180deg,rgba(108,92,231,0.06) 0%,transparent 100%)}
+.hero-h1{font-size:48px;font-weight:900;line-height:1.15;margin-bottom:12px;background:linear-gradient(135deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-p{font-size:17px;color:var(--text2);max-width:640px;margin:0 auto 28px}
+.hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap}
+.hero-stat{text-align:center}
+.hero-stat .is-num{font-size:26px;font-weight:800}
+.hero-stat .is-label{font-size:13px;color:var(--text2);margin-top:2px}
+
+/* Tabs */
+.mode-tabs{display:flex;justify-content:center;gap:4px;margin-bottom:36px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:4px;max-width:400px;margin-left:auto;margin-right:auto}
+.mode-tab{padding:10px 28px;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;border:none;background:transparent;color:var(--text2);transition:all .3s}
+.mode-tab.is-active{background:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(108,92,231,0.3)}
+
+/* Sections */
+.preview-section{display:none}
+.preview-section.is-active{display:block;animation:pageIn .4s ease}
+
+@keyframes pageIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+.section-header{text-align:center;margin-bottom:40px}
+.section-header h2{font-size:28px;font-weight:800;margin-bottom:6px}
+.section-header p{font-size:15px;color:var(--text2);max-width:500px;margin:0 auto}
+
+/* Page Cards */
+.page-grid{display:grid;gap:28px;margin-bottom:48px}
+.pg-2{grid-template-columns:repeat(auto-fit,minmax(540px,1fr))}
+.pg-3{grid-template-columns:repeat(auto-fit,minmax(350px,1fr))}
+
+.page-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .4s}
+.page-card:hover{box-shadow:var(--shadow);border-color:rgba(108,92,231,0.25);transform:translateY(-3px)}
+.page-card .is-header{padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.page-card .is-header .is-title{font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px}
+.page-card .is-header .is-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+.is-badge-website{background:rgba(108,92,231,0.15);color:var(--accent)}
+.is-badge-admin{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.is-badge-ai{background:rgba(255,159,67,0.15);color:var(--orange)}
+.is-badge-core{background:rgba(116,185,255,0.15);color:var(--blue)}
+.page-card .is-body{padding:20px;min-height:200px;position:relative}
+
+/* Mockup Screens */
+.mockup{background:var(--bg2);border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.mockup-nav{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.mockup-nav .is-logo{font-size:13px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mockup-nav .is-links{display:flex;gap:12px}
+.mockup-nav .is-links span{font-size:11px;color:var(--text2)}
+.mockup-nav .is-avatar{width:24px;height:24px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;font-weight:700}
+.mockup-content{padding:14px}
+
+/* Hero mockup */
+.mockup-hero{text-align:center;padding:28px 14px 20px;background:linear-gradient(180deg,rgba(108,92,231,0.08),transparent)}
+.mockup-hero h3{font-size:22px;font-weight:800;margin-bottom:6px;background:linear-gradient(135deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mockup-hero p{font-size:12px;color:var(--text2);max-width:360px;margin:0 auto 14px}
+.mockup-hero .is-btns{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.mockup-hero .is-btn{display:inline-block;padding:7px 18px;border-radius:8px;font-size:11px;font-weight:600;border:none;cursor:default}
+.is-btn-primary{background:var(--accent);color:#fff}
+.is-btn-secondary{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.mockup-hero .is-stats{display:flex;gap:24px;justify-content:center;padding:12px;background:var(--card);border-radius:10px;max-width:400px;margin:0 auto}
+.mockup-hero .is-stats div{text-align:center}
+.mockup-hero .is-stats .num{font-size:16px;font-weight:800}
+.mockup-hero .is-stats .lbl{font-size:10px;color:var(--text2)}
+
+/* Features grid */
+.mockup-features{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px}
+.mockup-features .feat{background:var(--bg3);border-radius:10px;padding:14px;text-align:center}
+.mockup-features .feat .fi{font-size:20px;margin-bottom:6px}
+.mockup-features .feat h4{font-size:12px;font-weight:600;margin-bottom:4px}
+.mockup-features .feat p{font-size:10px;color:var(--text2)}
+
+/* Dashboard mockup */
+.mockup-dash .is-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.mockup-dash .is-stats .ds{background:var(--bg3);border-radius:8px;padding:10px;text-align:center}
+.mockup-dash .is-stats .ds .dv{font-size:18px;font-weight:800}
+.mockup-dash .is-stats .ds .dl{font-size:10px;color:var(--text2)}
+.mockup-dash .is-charts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mockup-dash .is-charts .ch{background:var(--bg3);border-radius:8px;padding:12px}
+.mockup-dash .is-charts .ch .ch-title{font-size:12px;font-weight:600;margin-bottom:8px}
+.mockup-dash .is-charts .ch .bar-group{display:flex;flex-direction:column;gap:6px}
+.mockup-dash .is-charts .ch .bar-row{display:flex;align-items:center;gap:8px;font-size:11px}
+.mockup-dash .is-charts .ch .bar-row .bar{height:6px;border-radius:3px;flex:1;background:var(--border)}
+.mockup-dash .is-charts .ch .bar-row .bar .fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.mockup-dash .is-charts .ch .bar-row .bar .fill-orange{background:linear-gradient(90deg,var(--orange),var(--gold))}
+.mockup-dash .is-charts .ch .bar-row .bar .fill-pink{background:linear-gradient(90deg,var(--pink),var(--accent3))}
+
+/* Courses grid */
+.mockup-courses{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:4px}
+.mockup-courses .mc{background:var(--bg3);border-radius:10px;padding:12px;cursor:default}
+.mockup-courses .mc .mc-thumb{height:60px;border-radius:6px;margin-bottom:8px}
+.mockup-courses .mc h4{font-size:12px;font-weight:600;margin-bottom:2px}
+.mockup-courses .mc .mc-meta{display:flex;gap:8px;font-size:10px;color:var(--text2);margin-bottom:6px}
+.mockup-courses .mc .mc-progress{height:4px;background:var(--border);border-radius:2px}
+.mockup-courses .mc .mc-progress .fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+
+/* Lesson mockup */
+.mockup-lesson{padding:14px}
+.mockup-lesson .ls-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.mockup-lesson .ls-header h4{font-size:14px;font-weight:700}
+.mockup-lesson .ls-content{background:var(--bg3);border-radius:8px;padding:14px;margin-bottom:10px}
+.mockup-lesson .ls-content .german-box{background:var(--card);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 6px 6px 0;margin:8px 0}
+.mockup-lesson .ls-content .german-box strong{font-size:13px}
+.mockup-lesson .ls-content .german-box .trans{font-size:11px;color:var(--text2);margin-top:2px}
+.mockup-lesson .ls-actions{display:flex;gap:8px}
+
+/* Quiz mockup */
+.mockup-quiz .quiz-q{background:var(--bg3);border-radius:8px;padding:12px;margin-bottom:8px}
+.mockup-quiz .quiz-q h4{font-size:12px;margin-bottom:8px}
+.mockup-quiz .quiz-q .qo{display:block;padding:7px 10px;border-radius:6px;border:1px solid var(--border);margin-bottom:4px;font-size:11px;cursor:default}
+.mockup-quiz .quiz-q .qo.is-sel{background:rgba(108,92,231,0.15);border-color:var(--accent)}
+.mockup-quiz .quiz-q .qo.is-cor{background:rgba(0,212,170,0.15);border-color:var(--accent2)}
+
+/* Chat mockup */
+.mockup-chat{border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.mockup-chat .ch-msgs{padding:12px;display:flex;flex-direction:column;gap:8px;min-height:160px;max-height:200px;overflow-y:auto;background:var(--bg2)}
+.mockup-chat .ch-msgs .msg{max-width:80%;padding:8px 12px;border-radius:10px;font-size:11px;line-height:1.5}
+.mockup-chat .ch-msgs .msg.is-user{background:var(--accent);color:#fff;align-self:flex-end}
+.mockup-chat .ch-msgs .msg.is-ai{background:var(--bg3);color:var(--text);align-self:flex-start;border:1px solid var(--border)}
+.mockup-chat .ch-inp{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--border)}
+.mockup-chat .ch-inp .fake-inp{flex:1;background:var(--bg3);border-radius:6px;padding:6px 10px;font-size:11px;color:var(--text2)}
+.mockup-chat .ch-inp .send-btn{padding:6px 14px;border-radius:6px;background:var(--accent);color:#fff;font-size:10px;border:none;font-weight:600}
+
+/* Speaking mockup */
+.mockup-speaking{text-align:center;padding:14px}
+.mockup-speaking .sp-phrase{font-size:18px;font-weight:700;margin:12px 0 6px}
+.mockup-speaking .sp-phonetic{font-size:11px;color:var(--text2);margin-bottom:12px}
+.mockup-speaking .sp-record-btn{display:inline-block;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent3),var(--pink));border:none;font-size:18px;cursor:default;margin-bottom:12px}
+.mockup-speaking .sp-bars{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;text-align:left}
+.mockup-speaking .sp-bars .sb{display:flex;align-items:center;gap:8px;font-size:11px}
+.mockup-speaking .sp-bars .sb .bar{flex:1;height:5px;border-radius:3px;background:var(--border)}
+.mockup-speaking .sp-bars .sb .bar .fill{height:100%;border-radius:3px}
+
+/* Reading mockup */
+.mockup-reading{padding:14px}
+.mockup-reading .r-text{background:var(--bg3);padding:12px;border-radius:8px;font-size:11px;line-height:1.7;margin-bottom:10px}
+.mockup-reading .r-qs .rq{background:var(--bg3);border-radius:6px;padding:8px 10px;margin-bottom:6px}
+.mockup-reading .r-qs .rq p{font-size:11px;margin-bottom:4px}
+.mockup-reading .r-qs .rq .ro{display:inline-block;padding:3px 10px;border-radius:4px;background:var(--card);border:1px solid var(--border);font-size:10px;margin-right:4px;margin-bottom:4px;cursor:default}
+.mockup-reading .r-qs .rq .ro.is-sel{background:rgba(108,92,231,0.15);border-color:var(--accent)}
+
+/* Writing mockup */
+.mockup-writing{padding:14px}
+.mockup-writing .w-prompt{font-size:12px;font-weight:600;margin-bottom:8px;color:var(--accent2)}
+.mockup-writing .w-area{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;min-height:60px;font-size:11px;color:var(--text);margin-bottom:8px;line-height:1.6}
+.mockup-writing .w-feedback{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mockup-writing .w-feedback .wf{padding:8px;border-radius:6px;font-size:10px}
+.mockup-writing .w-feedback .wf.is-good{background:rgba(0,212,170,0.1);border-left:2px solid var(--accent2)}
+.mockup-writing .w-feedback .wf.is-imp{background:rgba(255,159,67,0.1);border-left:2px solid var(--orange)}
+.mockup-writing .w-feedback .wf.is-tip{background:rgba(108,92,231,0.1);border-left:2px solid var(--accent)}
+
+/* Vocab mockup */
+.mockup-vocab{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:6px}
+.mockup-vocab .vc{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center;cursor:default;transition:all .3s}
+.mockup-vocab .vc:hover{background:var(--accent);border-color:var(--accent)}
+.mockup-vocab .vc .vc-de{font-size:13px;font-weight:600}
+.mockup-vocab .vc .vc-en{font-size:10px;color:var(--text2);margin-top:2px}
+.mockup-vocab .vc .vc-hint{font-size:9px;color:var(--text2);opacity:.6;margin-top:2px}
+.mockup-vocab .vc:hover .vc-en,.mockup-vocab .vc:hover .vc-hint{color:#fff;opacity:.9}
+
+/* Hearing Practice - Listening Comprehension */
+.mockup-hearing{padding:14px}
+.mockup-hearing .he-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mockup-hearing .he-player{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:8px;padding:8px 12px;margin-bottom:10px}
+.mockup-hearing .he-play-btn{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:default;border:none;color:#fff;flex-shrink:0}
+.mockup-hearing .he-progress{flex:1;height:4px;background:var(--border);border-radius:2px;position:relative;min-width:60px}
+.mockup-hearing .he-progress .fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.mockup-hearing .he-time{font-size:10px;color:var(--text2);white-space:nowrap}
+.mockup-hearing .he-transcript{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:11px;line-height:1.7;margin-bottom:10px}
+.mockup-hearing .he-q{background:var(--bg3);border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:11px}
+.mockup-hearing .he-q .he-q-text{margin-bottom:4px;color:var(--text)}
+.mockup-hearing .he-q .he-qo{display:inline-block;padding:3px 10px;border-radius:4px;background:var(--card);border:1px solid var(--border);font-size:10px;margin-right:4px;margin-bottom:4px;cursor:default}
+.mockup-hearing .he-q .he-qo.is-sel{background:rgba(108,92,231,0.15);border-color:var(--accent)}
+
+/* Grammar Practice */
+.mockup-grammar{padding:14px}
+.mockup-grammar .gr-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mockup-grammar .gr-rules{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.mockup-grammar .gr-rule{background:var(--bg3);border-left:3px solid var(--accent);border-radius:0 6px 6px 0;padding:10px}
+.mockup-grammar .gr-rule h4{font-size:11px;font-weight:600;margin-bottom:4px}
+.mockup-grammar .gr-rule p{font-size:10px;color:var(--text2)}
+.mockup-grammar .gr-exercise{padding:10px;background:var(--bg3);border-radius:6px;margin-bottom:6px}
+.mockup-grammar .gr-exercise .gr-ex-q{font-size:11px;margin-bottom:6px;color:var(--text)}
+.mockup-grammar .gr-exercise .gr-fill{display:inline-block;min-width:55px;border-bottom:2px dashed var(--accent);padding:0 5px;font-size:11px;color:var(--accent);text-align:center}
+.mockup-grammar .gr-exercise .gr-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:9px;font-weight:500;margin-right:4px}
+.mockup-grammar .gr-exercise .gr-tag.is-cor{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.mockup-grammar .gr-exercise .gr-tag.is-wro{background:rgba(255,107,107,0.15);color:var(--accent3)}
+
+/* Captcha Widget mockup */
+.mockup-captcha{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:10px}
+.mockup-captcha .mc-check{width:20px;height:20px;border-radius:4px;background:var(--accent2);display:flex;align-items:center;justify-content:center;font-size:12px;color:#000;flex-shrink:0}
+.mockup-captcha .mc-logo{font-size:16px;margin-left:auto;flex-shrink:0}
+.mockup-captcha .mc-text{flex:1;color:var(--text2);font-size:10px;font-weight:500}
+
+/* Password strength bar */
+.mockup-pw-str{display:flex;gap:3px;margin:4px 0 8px}
+.mockup-pw-str .pw-bar{height:3px;flex:1;border-radius:2px;background:var(--border)}
+.mockup-pw-str .pw-bar.is-fill{background:var(--accent2)}
+.mockup-pw-str .pw-bar.is-mid{background:var(--orange)}
+
+/* Profile mockup */
+.mockup-profile{text-align:center;padding:14px}
+.mockup-profile .pr-avatar{width:48px;height:48px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;font-weight:700;margin:0 auto 8px}
+.mockup-profile .pr-name{font-size:15px;font-weight:700}
+.mockup-profile .pr-email{font-size:11px;color:var(--text2);margin-bottom:10px}
+.mockup-profile .pr-badges{display:flex;gap:6px;justify-content:center;margin-bottom:12px}
+.mockup-profile .pr-badges span{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.mockup-profile .pr-badges .lv{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.mockup-profile .pr-badges .st{background:rgba(255,159,67,0.15);color:var(--orange)}
+.mockup-profile .pr-badges .xp{background:rgba(108,92,231,0.15);color:var(--accent)}
+.mockup-profile .pr-settings{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mockup-profile .pr-settings .prs{background:var(--bg3);border-radius:8px;padding:10px;text-align:left}
+.mockup-profile .pr-settings .prs label{font-size:10px;color:var(--text2);margin-bottom:4px;display:block}
+.mockup-profile .pr-settings .prs .prs-inp{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:6px 8px;font-size:11px;color:var(--text)}
+
+/* ===== ADMIN MOCKUPS ===== */
+
+/* Admin sidebar + layout */
+.mockup-admin{display:flex;border:1px solid var(--border);border-radius:10px;overflow:hidden;min-height:280px}
+.mockup-admin .am-sidebar{width:160px;background:var(--bg3);border-right:1px solid var(--border);padding:10px 0;flex-shrink:0}
+.mockup-admin .am-sidebar .am-logo{padding:0 12px 12px;font-size:12px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;border-bottom:1px solid var(--border);margin-bottom:8px}
+.mockup-admin .am-sidebar .am-item{display:flex;align-items:center;gap:6px;padding:6px 12px;font-size:10px;color:var(--text2);cursor:default}
+.mockup-admin .am-sidebar .am-item.is-active{background:var(--bg2);color:var(--accent);border-left:2px solid var(--accent)}
+.mockup-admin .am-main{flex:1;padding:12px;min-width:0}
+
+/* Admin dashboard */
+.mockup-admin .ad-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.mockup-admin .ad-stats .ads{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center}
+.mockup-admin .ad-stats .ads .adv{font-size:14px;font-weight:800}
+.mockup-admin .ad-stats .ads .adl{font-size:9px;color:var(--text2)}
+.mockup-admin .ad-charts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mockup-admin .ad-charts .adc{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px}
+.mockup-admin .ad-charts .adc .adc-title{font-size:11px;font-weight:600;margin-bottom:6px}
+.mockup-admin .ad-charts .adc .bar-chart{display:flex;align-items:flex-end;gap:4px;height:50px}
+.mockup-admin .ad-charts .adc .bar-chart .bc{flex:1;border-radius:2px 2px 0 0}
+.mockup-admin .ad-charts .adc .bar-chart .bc-lbl{font-size:7px;color:var(--text2);text-align:center;margin-top:2px}
+
+/* Data table */
+.mockup-table{width:100%;border-collapse:collapse;font-size:10px}
+.mockup-table th{padding:6px 8px;text-align:left;font-weight:600;color:var(--text2);border-bottom:1px solid var(--border)}
+.mockup-table td{padding:6px 8px;border-bottom:1px solid var(--border);color:var(--text2)}
+.mockup-table .is-tag{display:inline-block;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:500}
+.is-tag-green{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.is-tag-orange{background:rgba(255,159,67,0.15);color:var(--orange)}
+.is-tag-red{background:rgba(255,107,107,0.15);color:var(--accent3)}
+.is-tag-purple{background:rgba(108,92,231,0.15);color:var(--accent)}
+.is-tag-blue{background:rgba(116,185,255,0.15);color:var(--blue)}
+
+/* Media grid */
+.mockup-media{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mockup-media .md{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.mockup-media .md .md-prev{height:50px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px}
+.mockup-media .md .md-info{padding:6px 8px}
+.mockup-media .md .md-info .md-name{font-size:10px;font-weight:500}
+.mockup-media .md .md-info .md-meta{font-size:8px;color:var(--text2)}
+
+/* AI Training cards */
+.mockup-aitrain{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.mockup-aitrain .ait{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px}
+.mockup-aitrain .ait .ait-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.mockup-aitrain .ait .ait-desc{font-size:10px;color:var(--text2);margin-bottom:8px}
+.mockup-aitrain .ait .ait-row{display:flex;justify-content:space-between;font-size:10px;padding:3px 0;border-bottom:1px solid var(--border)}
+.mockup-aitrain .ait .ait-btn{display:block;width:100%;padding:5px;border-radius:4px;background:var(--accent);color:#fff;font-size:10px;font-weight:600;border:none;margin-top:6px;cursor:default;text-align:center}
+
+/* Settings */
+.mockup-settings{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mockup-settings .ms{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px}
+.mockup-settings .ms h4{font-size:11px;font-weight:600;margin-bottom:8px}
+.mockup-settings .ms label{font-size:9px;color:var(--text2);margin-bottom:2px;display:block}
+.mockup-settings .ms .ms-inp{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:10px;color:var(--text);margin-bottom:6px}
+.mockup-settings .ms .ms-btn{padding:5px 12px;border-radius:4px;font-size:10px;font-weight:600;border:none;cursor:default}
+
+/* Admin Users page */
+.mockup-users .usr-tbl{font-size:10px}
+.mockup-users .usr-tbl td .usr-cell{display:flex;align-items:center;gap:6px}
+.mockup-users .usr-tbl td .usr-cell .usr-av{width:20px;height:20px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;font-weight:600;flex-shrink:0}
+
+/* Admin Mgmt / Logs */
+.mockup-logs{font-size:10px}
+.mockup-logs .log-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border)}
+
+/* HTML Editor - WordPress-style WYSIWYG */
+.mockup-editor{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg2)}
+.mockup-editor .ed-toolbar{display:flex;align-items:center;gap:2px;padding:6px 10px;background:var(--bg3);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.mockup-editor .ed-toolbar .ed-btn{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:12px;cursor:default;color:var(--text2);background:transparent;border:none;font-family:'Inter',sans-serif}
+.mockup-editor .ed-toolbar .ed-btn.is-active{background:rgba(108,92,231,0.15);color:var(--accent)}
+.mockup-editor .ed-toolbar .ed-btn:hover{background:var(--bg2)}
+.mockup-editor .ed-toolbar .ed-div{width:1px;height:20px;background:var(--border);margin:0 4px;flex-shrink:0}
+.mockup-editor .ed-toolbar .ed-mode{font-size:10px;padding:3px 8px;border-radius:4px;background:var(--bg2);color:var(--text2);margin-left:auto;cursor:default;font-weight:500}
+.mockup-editor .ed-toolbar .ed-mode.is-active{background:var(--accent);color:#fff}
+.mockup-editor .ed-content{padding:14px;min-height:130px}
+.mockup-editor .ed-content h2{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--text);padding-bottom:4px;border-bottom:1px solid var(--border)}
+.mockup-editor .ed-content p{font-size:11px;line-height:1.7;margin-bottom:8px;color:var(--text2)}
+.mockup-editor .ed-content .ed-list{padding-left:18px;margin-bottom:8px}
+.mockup-editor .ed-content .ed-list li{font-size:11px;color:var(--text2);margin-bottom:3px;list-style:disc}
+.mockup-editor .ed-content .ed-image{background:var(--bg3);border:1px dashed var(--border);border-radius:6px;padding:14px;text-align:center;margin-bottom:8px;font-size:11px;color:var(--text2)}
+.mockup-editor .ed-content .ed-blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin-bottom:8px;background:rgba(108,92,231,0.06);border-radius:0 6px 6px 0;font-style:italic;font-size:11px;color:var(--text)}
+.mockup-editor .ed-footer{display:flex;gap:6px;padding:8px 10px;border-top:1px solid var(--border);background:var(--bg3)}
+
+/* Auto-Update System */
+.mockup-updater{padding:12px}
+.mockup-updater .uu-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mockup-updater .uu-header h4{font-size:13px;font-weight:700}
+.mockup-updater .uu-header .uu-version{padding:3px 10px;border-radius:6px;background:rgba(108,92,231,0.12);color:var(--accent);font-size:11px;font-weight:600}
+.mockup-updater .uu-info{display:flex;gap:16px;margin-bottom:12px;padding:10px 14px;background:var(--bg3);border-radius:8px;font-size:11px}
+.mockup-updater .uu-info .uu-info-item{display:flex;flex-direction:column}
+.mockup-updater .uu-info .uu-info-item .uu-label{font-size:9px;color:var(--text2)}
+.mockup-updater .uu-info .uu-info-item .uu-value{font-size:13px;font-weight:700}
+.mockup-updater .uu-upload{background:var(--bg3);border:1px dashed var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:10px;cursor:default;transition:all .3s}
+.mockup-updater .uu-upload:hover{background:var(--bg2);border-color:var(--accent)}
+.mockup-updater .uu-upload .uu-drop-icon{font-size:26px;margin-bottom:4px}
+.mockup-updater .uu-upload .uu-drop-text{font-size:11px;color:var(--text2)}
+.mockup-updater .uu-upload .uu-drop-hint{font-size:9px;color:var(--text2);opacity:.6;margin-top:2px}
+.mockup-updater .uu-file{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;font-size:11px}
+.mockup-updater .uu-file .uu-file-icon{font-size:16px}
+.mockup-updater .uu-file .uu-file-name{flex:1;font-weight:500}
+.mockup-updater .uu-file .uu-file-badge{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:600;background:rgba(0,212,170,0.15);color:var(--accent2)}
+.mockup-updater .uu-deploy{display:block;width:100%;padding:8px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:12px;font-weight:700;border:none;margin-bottom:12px;cursor:default;text-align:center}
+.mockup-updater .uu-versions{font-size:10px}
+.mockup-updater .uu-versions h5{font-size:11px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.mockup-updater .uu-versions .uv-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border)}
+.mockup-updater .uu-versions .uv-row:last-child{border-bottom:none}
+.mockup-updater .uu-versions .uv-row .uv-tag{padding:2px 7px;border-radius:4px;font-size:8px;font-weight:600}
+.mockup-updater .uu-versions .uv-row .uv-tag.active{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.mockup-updater .uu-versions .uv-row .uv-tag.deploy{background:rgba(108,92,231,0.15);color:var(--accent)}
+.mockup-updater .uu-versions .uv-row .uv-tag.notes{background:rgba(116,185,255,0.12);color:var(--blue)}
+.mockup-updater .uu-migrations{margin-top:10px;padding:10px;background:rgba(0,212,170,0.06);border:1px solid rgba(0,212,170,0.15);border-radius:6px;font-size:10px}
+.mockup-updater .uu-migrations .uu-mig-item{display:flex;align-items:center;gap:6px;margin-bottom:3px;color:var(--accent2)}
+.mockup-updater .uu-migrations .uu-mig-item:last-child{margin-bottom:0}
+
+/* Main Website Page Editor - Full page builder */
+.mockup-pageeditor{display:flex;min-height:260px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg2)}
+.mockup-pageeditor .mpe-tree{width:130px;background:var(--bg3);border-right:1px solid var(--border);padding:8px 0;flex-shrink:0;overflow-y:auto}
+.mockup-pageeditor .mpe-tree .mpe-tree-title{padding:0 10px 8px;font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
+.mockup-pageeditor .mpe-tree .mpe-page{display:flex;align-items:center;gap:5px;padding:5px 10px;font-size:10px;color:var(--text2);cursor:default;border-left:2px solid transparent}
+.mockup-pageeditor .mpe-tree .mpe-page.is-active{background:var(--bg2);color:var(--accent);border-left-color:var(--accent)}
+.mockup-pageeditor .mpe-tree .mpe-page .mpe-status{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.mockup-pageeditor .mpe-tree .mpe-page .mpe-status.published{background:var(--accent2)}
+.mockup-pageeditor .mpe-tree .mpe-page .mpe-status.draft{background:var(--orange)}
+.mockup-pageeditor .mpe-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.mockup-pageeditor .mpe-topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg3);border-bottom:1px solid var(--border);font-size:10px}
+.mockup-pageeditor .mpe-topbar .mpe-breadcrumb{color:var(--text2)}
+.mockup-pageeditor .mpe-topbar .mpe-breadcrumb strong{color:var(--text)}
+.mockup-pageeditor .mpe-canvas{padding:10px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:8px}
+.mockup-pageeditor .mpe-canvas .mpe-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px;position:relative;cursor:default;transition:all .2s}
+.mockup-pageeditor .mpe-canvas .mpe-block:hover{border-color:var(--accent);box-shadow:0 0 0 1px rgba(108,92,231,0.15)}
+.mockup-pageeditor .mpe-canvas .mpe-block .mpe-block-label{font-size:8px;color:var(--text2);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:flex;justify-content:space-between}
+.mockup-pageeditor .mpe-canvas .mpe-block .mpe-block-actions{font-size:8px;color:var(--accent);cursor:default}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-hero-block{text-align:center;padding:16px 10px;background:linear-gradient(180deg,rgba(108,92,231,0.06),transparent)}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-hero-block h3{font-size:14px;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-hero-block p{font-size:10px;color:var(--text2)}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-feat-grid .mpe-feat{background:var(--bg2);border-radius:4px;padding:8px;text-align:center;font-size:9px;color:var(--text2)}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-cta-block{text-align:center;padding:14px;background:linear-gradient(135deg,rgba(108,92,231,0.1),rgba(0,212,170,0.05))}
+.mockup-pageeditor .mpe-canvas .mpe-block.mpe-cta-block .mpe-cta-btn{display:inline-block;padding:5px 16px;border-radius:6px;background:var(--accent);color:#fff;font-size:10px;font-weight:600;margin-top:6px}
+.mockup-pageeditor .mpe-canvas .mpe-text-img{display:flex;gap:8px;align-items:center}
+.mockup-pageeditor .mpe-canvas .mpe-text-img .mpe-ti-text{flex:1;font-size:10px;color:var(--text2)}
+.mockup-pageeditor .mpe-canvas .mpe-text-img .mpe-ti-img{width:50px;height:40px;background:var(--bg2);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.mockup-pageeditor .mpe-canvas .mpe-block .mpe-full{grid-column:1/-1}
+.mockup-pageeditor .mpe-canvas .mpe-cta-block .mpe-cta-title{font-size:12px;font-weight:700;margin-bottom:2px}
+.mockup-pageeditor .mpe-canvas .mpe-cta-block .mpe-cta-sub{font-size:9px;color:var(--text2);margin-bottom:4px}
+.mockup-pageeditor .mpe-seo{background:var(--bg3);border-top:1px solid var(--border);padding:8px 10px;font-size:9px}
+.mockup-pageeditor .mpe-seo .mpe-seo-title{font-size:10px;font-weight:600;color:var(--text)}
+.mockup-pageeditor .mpe-seo .mpe-seo-row{display:flex;gap:10px;margin-top:4px}
+.mockup-pageeditor .mpe-seo .mpe-seo-row .mpe-seo-field{flex:1}
+.mockup-pageeditor .mpe-seo .mpe-seo-row .mpe-seo-field label{color:var(--text2);font-size:8px;display:block;margin-bottom:2px}
+.mockup-pageeditor .mpe-seo .mpe-seo-row .mpe-seo-field .mpe-seo-inp{background:var(--bg2);border:1px solid var(--border);border-radius:3px;padding:3px 5px;font-size:9px;color:var(--text)}
+.mockup-pageeditor .mpe-seo .mpe-seo-note{font-size:8px;color:var(--text2);margin-top:4px;padding:4px 6px;background:rgba(108,92,231,0.06);border-radius:3px}
+
+/* Responsive */
+@media(max-width:1024px){.page-grid.pg-2{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .hero-h1{font-size:32px}
+  .mockup-dash .is-stats{grid-template-columns:repeat(2,1fr)}
+  .mockup-dash .is-charts{grid-template-columns:1fr}
+  .mockup-courses{grid-template-columns:1fr}
+  .mockup-features{grid-template-columns:1fr}
+  .mockup-vocab{grid-template-columns:repeat(2,1fr)}
+  .mockup-admin .am-sidebar{width:120px}
+  .mockup-admin .ad-stats{grid-template-columns:repeat(2,1fr)}
+  .mockup-admin .ad-charts{grid-template-columns:1fr}
+  .mockup-aitrain{grid-template-columns:1fr}
+  .mockup-settings{grid-template-columns:1fr}
+  .mockup-speaking .sp-bars{grid-template-columns:1fr}
+  .mockup-writing .w-feedback{grid-template-columns:1fr}
+  .mockup-profile .pr-settings{grid-template-columns:1fr}
+  .page-grid.pg-3{grid-template-columns:1fr}
+  .hero-stats{gap:20px;flex-wrap:wrap}
+}
+
+/* Auto-generated utility classes from inline styles */
+.is-0{flex:1;display:flex;flex-direction:column;align-items:center}
+.is-1{font-size:10px;color:var(--text2)}
+.is-2{padding:4px 10px;font-size:9px}
+.is-3{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.is-4{color:var(--accent2)}
+.is-5{color:var(--text2)}
+.is-6{color:var(--accent)}
+.is-7{font-size:11px;color:var(--text2)}
+.is-8{font-size:9px;color:var(--text2)}
+.is-9{font-weight:600}
+.is-10{margin:4px;font-size:8px}
+.is-11{color:var(--gold)}
+.is-12{color:var(--accent);font-weight:600}
+.is-13{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.is-14{font-size:20px;margin-bottom:4px}
+.is-15{font-size:12px;font-weight:600}
+.is-16{flex:1}
+.is-17{font-size:9px;color:var(--text2);margin-bottom:2px}
+.is-18{font-size:13px;font-weight:700}
+.is-19{height:4px;background:var(--border);border-radius:2px}
+.is-20{height:3px;background:var(--border);border-radius:2px;width:60px}
+.is-21{color:var(--orange)}
+.is-22{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:10px;color:var(--text)}
+.is-23{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.is-24{display:flex;justify-content:space-between;font-size:9px}
+.is-25{padding:20px}
+.is-26{font-size:20px;font-weight:700;margin-bottom:4px}
+.is-27{margin-bottom:10px}
+.is-28{font-size:10px;color:var(--text2);margin-bottom:3px}
+.is-29{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:7px 10px;font-size:11px;color:var(--text2)}
+.is-30{margin-bottom:8px}
+.is-31{font-size:15px;font-weight:700}
+.is-32{font-size:11px;font-weight:600}
+.is-33{margin-top:3px}
+.is-34{width:100%}
+.is-35{width:72%}
+.is-36{display:flex;gap:4px}
+.is-37{width:0%}
+.is-38{padding:6px 16px;font-size:10px}
+.is-39{padding:12px}
+.is-40{padding:5px 14px;font-size:9px}
+.is-41{color:var(--accent2);font-weight:600}
+.is-42{color:#fff}
+.is-43{flex:1;padding:6px;font-size:10px;text-align:center}
+.is-44{margin-bottom:4px}
+.is-45{padding:3px 8px;font-size:8px}
+.is-46{background:var(--accent2);color:#000}
+.is-47{padding:3px 8px;font-size:9px}
+.is-48{padding-bottom:40px}
+.is-49{display:flex;gap:12px}
+.is-50{text-align:center;margin-bottom:16px}
+.is-51{margin-bottom:14px}
+.is-52{text-align:right;margin-bottom:14px}
+.is-53{font-size:10px;color:var(--accent)}
+.is-54{padding:8px 0;background:var(--accent);border-radius:6px;text-align:center;font-size:12px;font-weight:600;color:#fff}
+.is-55{text-align:center;margin-top:12px;font-size:10px;color:var(--text2)}
+.is-56{text-align:center;margin-bottom:12px}
+.is-57{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px}
+.is-58{margin-bottom:6px}
+.is-59{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:5px 8px;font-size:10px;color:var(--accent2)}
+.is-60{padding:8px 0;background:var(--accent);border-radius:6px;text-align:center;font-size:11px;font-weight:600;color:#fff}
+.is-61{padding:6px 14px;font-size:10px}
+.is-62{width:65%}
+.is-63{width:71%}
+.is-64{width:82%}
+.is-65{width:68%}
+.is-66{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.is-67{width:28px;height:28px;border-radius:6px;background:rgba(108,92,231,0.2);display:flex;align-items:center;justify-content:center;font-size:12px}
+.is-68{display:flex;align-items:center;gap:8px}
+.is-69{width:28px;height:28px;border-radius:6px;background:rgba(0,212,170,0.2);display:flex;align-items:center;justify-content:center;font-size:12px}
+.is-70{margin-top:8px}
+.is-71{text-align:center}
+.is-72{font-size:24px;font-weight:900;color:var(--accent2)}
+.is-73{padding:14px}
+.is-74{background:linear-gradient(135deg,rgba(0,212,170,0.2),rgba(0,212,170,0.4))}
+.is-75{background:linear-gradient(135deg,rgba(108,92,231,0.2),rgba(108,92,231,0.4))}
+.is-76{background:linear-gradient(135deg,rgba(255,159,67,0.2),rgba(255,159,67,0.4))}
+.is-77{width:45%}
+.is-78{background:linear-gradient(135deg,rgba(255,107,107,0.2),rgba(255,107,107,0.4))}
+.is-79{width:18%}
+.is-80{background:linear-gradient(135deg,rgba(253,121,168,0.2),rgba(253,121,168,0.4))}
+.is-81{background:linear-gradient(135deg,rgba(116,185,255,0.2),rgba(116,185,255,0.4))}
+.is-82{font-size:11px;margin-bottom:8px}
+.is-83{font-size:9px}
+.is-84{width:10%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
+.is-85{font-size:9px;color:var(--text2);margin-top:2px}
+.is-86{display:flex;justify-content:space-between;margin-top:8px}
+.is-87{font-size:10px}
+.is-88{display:flex;gap:6px;margin-top:8px}
+.is-89{width:85%}
+.is-90{width:62%}
+.is-91{color:var(--orange);font-weight:600}
+.is-92{width:70%}
+.is-93{width:55%}
+.is-94{color:var(--pink);font-weight:600}
+.is-95{margin-top:8px;padding:6px 10px;background:rgba(108,92,231,0.08);border-radius:6px;font-size:9px;color:var(--text2);text-align:left}
+.is-96{font-size:14px;font-weight:700}
+.is-97{background:var(--accent);border-color:var(--accent)}
+.is-98{color:rgba(255,255,255,.7)}
+.is-99{min-height:28px}
+.is-100{display:flex;gap:8px;margin-top:10px}
+.is-101{height:40%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-102{height:65%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-103{height:45%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-104{height:80%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-105{height:55%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-106{height:90%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-107{height:70%;background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.is-108{width:100%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
+.is-109{width:79%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
+.is-110{width:61%;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px}
+.is-111{width:40%;height:100%;background:var(--accent);border-radius:2px}
+.is-112{width:65%;height:100%;background:var(--accent);border-radius:2px}
+.is-113{background:var(--accent3)}
+.is-114{width:55%;height:100%;background:var(--accent);border-radius:2px}
+.is-115{background:var(--gold);color:#000}
+.is-116{width:80%;height:100%;background:var(--accent);border-radius:2px}
+.is-117{color:var(--pink)}
+.is-118{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px}
+.is-119{height:60px}
+.is-120{height:7%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-121{height:10%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-122{height:14%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-123{height:17%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-124{height:22%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-125{height:28%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-126{height:37%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-127{height:41%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-128{height:49%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-129{height:60%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-130{height:79%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-131{height:100%;background:linear-gradient(180deg,var(--accent),var(--blue))}
+.is-132{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:10px;margin-top:8px}
+.is-133{display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:10px}
+.is-134{font-weight:600;color:var(--text2)}
+.is-135{min-height:30px}
+.is-136{background:var(--accent);color:#fff;margin-top:6px}
+.is-137{background:var(--bg3);color:var(--text);border:1px solid var(--border);margin-top:6px}
+.is-138{font-size:10px;color:var(--text2);margin-bottom:8px}
+.is-139{background:var(--orange)}
+.is-140{margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:8px}
+.is-141{font-size:11px;font-weight:600;margin-bottom:6px}
+.is-142{margin-top:12px}
+.is-143{padding:16px 20px}
+.is-144{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.is-145{margin-top:12px;padding:10px;background:rgba(108,92,231,0.06);border-radius:8px;border-left:3px solid var(--accent);font-size:11px;color:var(--text2)}
+.is-146{text-align:center;padding:40px 0;border-top:1px solid var(--border);margin-top:20px}
+.is-147{font-size:36px;margin-bottom:12px}
+.is-148{font-size:18px;font-weight:700;margin-bottom:4px}
+.is-149{font-size:13px;color:var(--text2);max-width:500px;margin:0 auto}
+
+/* Auto-generated utility classes from inline styles */
+.is-150{width:35%}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-h1">🇩🇪 LEARNGERMAN — Full Preview</div>
+    <div class="hero-p">A complete visual showcase of every page in the student website and admin panel. Built with React, Tailwind CSS, and powered by AI.</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="is-num is-6">14</div><div class="is-label">Website Pages</div></div>
+      <div class="hero-stat"><div class="is-num is-4">9</div><div class="is-label">Admin Panel Pages</div></div>
+      <div class="hero-stat"><div class="is-num is-11">4</div><div class="is-label">App Codebases</div></div>
+      <div class="hero-stat"><div class="is-num is-21">5</div><div class="is-label">AI Providers</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="container is-48">
+  <div class="mode-tabs" id="modeTabs">
+    <button type="button" class="mode-tab is-active" data-mode="student" onclick="switchMode('student')">🎓 Student Website</button>
+    <button type="button" class="mode-tab" data-mode="admin" onclick="switchMode('admin')">🔐 Admin Panel</button>
+  </div>
+
+  <!-- ============================== -->
+  <!-- STUDENT WEBSITE PREVIEWS       -->
+  <!-- ============================== -->
+  <div class="preview-section is-active" id="section-student">
+
+    <div class="section-header">
+      <h2>🎓 Student Website Pages</h2>
+      <p>All pages your students will interact with — from landing to advanced AI features</p>
+    </div>
+
+    <div class="page-grid pg-2">
+      <!-- 1. Home / Landing Page -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🏠</span> Home / Landing Page</div>
+          <span class="is-badge is-badge-core">Entry Point</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav">
+              <div class="is-logo">🇩🇪 LearnGerman</div>
+              <div class="is-links"><span>🏠 Home</span><span>📚 Courses</span><span>🤖 AI Chat</span><span>📝 Vocab</span></div>
+              <div class="is-avatar">AM</div>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-hero">
+                <h3>Learn German with AI Power</h3>
+                <p>Master German through interactive lessons, AI conversation practice, and personalized feedback — all for free.</p>
+                <div class="is-btns">
+                  <span class="is-btn is-btn-primary">✨ Start Learning Free</span>
+                  <span class="is-btn is-btn-secondary">Browse Courses</span>
+                </div>
+                <div class="is-stats">
+                  <div><div class="num is-6">2,840+</div><div class="lbl">Active Students</div></div>
+                  <div><div class="num is-4">156</div><div class="lbl">Interactive Lessons</div></div>
+                  <div><div class="num is-11">4.8 ★</div><div class="lbl">Average Rating</div></div>
+                </div>
+              </div>
+              <div class="mockup-features">
+                <div class="feat"><div class="fi">🗣️</div><h4>AI Conversation</h4><p>Chat with AI tutor in real-time</p></div>
+                <div class="feat"><div class="fi">🎯</div><h4>Smart Exercises</h4><p>Adaptive difficulty levels</p></div>
+                <div class="feat"><div class="fi">📊</div><h4>Progress Analytics</h4><p>Detailed skill insights</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Login / Register -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🔐</span> Login &amp; Register</div>
+          <span class="is-badge is-badge-core">Auth</span>
+        </div>
+        <div class="is-body is-49">
+          <div class="mockup is-16">
+            <div class="mockup-nav"><div class="is-logo">🇩🇪 LearnGerman</div></div>
+            <div class="mockup-content is-25">
+              <div class="is-50">
+                <div class="is-26">Welcome Back! 👋</div>
+                <div class="is-7">Log in to continue your German journey</div>
+              </div>
+              <div class="is-27"><div class="is-28">Email</div><div class="is-29">alex@email.com</div></div>
+              <div class="is-51"><div class="is-28">Password</div><div class="is-29">••••••••</div></div>
+              <div class="is-52"><span class="is-53">Forgot password?</span></div>
+              <!-- Login Captcha -->
+              <div class="mockup-captcha">
+                <div class="mc-check">✓</div>
+                <div class="mc-text">You're verified — no challenge needed</div>
+                <div class="mc-logo">🛡️</div>
+              </div>
+              <div class="is-54">Log In</div>
+              <div class="is-55">No account? <span class="is-6">Sign up free</span></div>
+            </div>
+          </div>
+          <div class="mockup is-16">
+            <div class="mockup-nav"><div class="is-logo">🇩🇪 LearnGerman</div></div>
+            <div class="mockup-content is-25">
+              <div class="is-56">
+                <div class="is-26">Start Learning Free! 🚀</div>
+                <div class="is-1">No credit card needed</div>
+              </div>
+              <div class="is-57">
+                <div><div class="is-17">First Name</div><div class="is-22">Alex</div></div>
+                <div><div class="is-17">Last Name</div><div class="is-22">Müller</div></div>
+              </div>
+              <div class="is-58"><div class="is-17">Email</div><div class="is-22">alex@email.com</div></div>
+              <div class="is-51"><div class="is-28">Password</div><div class="is-29">••••••••</div></div>
+              <!-- Password Strength -->
+              <div class="mockup-pw-str">
+                <div class="pw-bar is-fill"></div>
+                <div class="pw-bar is-fill"></div>
+                <div class="pw-bar is-mid"></div>
+                <div class="pw-bar"></div>
+                <div class="pw-bar"></div>
+              </div>
+              <div class="is-51"><div class="is-28">Confirm Password</div><div class="is-29">••••••••</div></div>
+              <div class="is-30"><div class="is-17">Your Level</div><div class="is-59">Beginner (A1-A2)</div></div>
+              <!-- Register Captcha -->
+              <div class="mockup-captcha">
+                <div class="mc-check">✓</div>
+                <div class="mc-text">You're human — Cloudflare verified</div>
+                <div class="mc-logo">🛡️</div>
+              </div>
+              <div class="is-60">✨ Create Free Account</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="page-grid pg-2">
+      <!-- 3. Dashboard -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📊</span> Student Dashboard</div>
+          <span class="is-badge is-badge-website">Analytics</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav">
+              <div class="is-logo">🇩🇪 LearnGerman</div>
+              <div class="is-links"><span class="is-12">📊 Dashboard</span><span>📚 Courses</span><span>🤖 AI Chat</span></div>
+              <div class="is-avatar">AM</div>
+            </div>
+            <div class="mockup-content">
+              <div class="mockup-dash">
+                <div class="is-23">
+                  <div><div class="is-31">Welcome back, Alex! 👋</div><div class="is-1">Level A2 • 12-day streak 🔥 • 2,840 XP</div></div>
+                  <span class="is-btn is-btn-primary is-61">🤖 Practice with AI</span>
+                </div>
+                <div class="is-stats">
+                  <div class="ds"><div class="dv is-6">47</div><div class="dl">Lessons</div></div>
+                  <div class="ds"><div class="dv is-4">156</div><div class="dl">Exercises</div></div>
+                  <div class="ds"><div class="dv is-11">78%</div><div class="dl">Avg Quiz</div></div>
+                  <div class="ds"><div class="dv is-21">42h</div><div class="dl">Time Spent</div></div>
+                </div>
+                <div class="is-charts">
+                  <div class="ch">
+                    <div class="ch-title">Skill Scores</div>
+                    <div class="bar-group">
+                      <div class="bar-row"><span>🗣️ Speaking</span><div class="bar"><div class="fill is-62"></div></div><span class="is-9">65%</span></div>
+                      <div class="bar-row"><span>📝 Writing</span><div class="bar"><div class="fill is-63"></div></div><span class="is-9">71%</span></div>
+                      <div class="bar-row"><span>📖 Reading</span><div class="bar"><div class="fill is-64"></div></div><span class="is-9">82%</span></div>
+                      <div class="bar-row"><span>👂 Listening</span><div class="bar"><div class="fill is-65"></div></div><span class="is-9">68%</span></div>
+                    </div>
+                  </div>
+                  <div class="ch">
+                    <div class="ch-title">Continue Learning</div>
+                    <div class="is-30">
+                      <div class="is-66">
+                        <div class="is-67">📖</div>
+                        <div class="is-16"><div class="is-32">German Basics A1</div><div class="bar is-33"><div class="fill is-34"></div></div></div>
+                        <span class="is-1">100%</span>
+                      </div>
+                      <div class="is-68">
+                        <div class="is-69">📖</div>
+                        <div class="is-16"><div class="is-32">Everyday Conversations A2</div><div class="bar is-33"><div class="fill is-35"></div></div></div>
+                        <span class="is-1">72%</span>
+                      </div>
+                    </div>
+                    <div class="ch-title is-70">Daily Goal</div>
+                    <div class="is-71"><span class="is-72">30</span><span class="is-1"> min today</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Courses Browser -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📚</span> Courses Browser</div>
+          <span class="is-badge is-badge-website">Browsing</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav">
+              <div class="is-logo">🇩🇪 LearnGerman</div>
+              <div class="is-links"><span>🏠 Home</span><span class="is-12">📚 Courses</span><span>🤖 AI Chat</span></div>
+              <div class="is-avatar">AM</div>
+            </div>
+            <div class="mockup-content is-73">
+              <div class="is-23">
+                <div><div class="is-31">📚 All Courses</div><div class="is-1">6 courses available</div></div>
+                <div class="is-36"><span class="is-btn is-btn-secondary is-2">All</span><span class="is-btn is-btn-primary is-2">Beginner</span><span class="is-btn is-btn-secondary is-2">Advanced</span></div>
+              </div>
+              <div class="mockup-courses">
+                <div class="mc"><div class="mc-thumb is-74"><span class="is-tag is-tag-green is-10">Beginner</span></div><h4>German Basics A1</h4><div class="mc-meta"><span>📖 24 lessons</span><span>⭐ 4.8</span></div><div class="mc-progress"><div class="fill is-34"></div></div></div>
+                <div class="mc"><div class="mc-thumb is-75"><span class="is-tag is-tag-purple is-10">Beginner</span></div><h4>Everyday Conv. A2</h4><div class="mc-meta"><span>📖 32 lessons</span><span>⭐ 4.7</span></div><div class="mc-progress"><div class="fill is-35"></div></div></div>
+                <div class="mc"><div class="mc-thumb is-76"><span class="is-tag is-tag-orange is-10">Intermediate</span></div><h4>Grammar Mastery B1</h4><div class="mc-meta"><span>📖 40 lessons</span><span>⭐ 4.9</span></div><div class="mc-progress"><div class="fill is-77"></div></div></div>
+                <div class="mc"><div class="mc-thumb is-78"><span class="is-tag is-tag-red is-10">Intermediate</span></div><h4>Business German B2</h4><div class="mc-meta"><span>📖 28 lessons</span><span>⭐ 4.6</span></div><div class="mc-progress"><div class="fill is-79"></div></div></div>
+                <div class="mc"><div class="mc-thumb is-80"><span class="is-tag is-tag-blue is-10">Advanced</span></div><h4>Advanced Fluency C1</h4><div class="mc-meta"><span>📖 36 lessons</span><span>⭐ 4.8</span></div><div class="mc-progress"><div class="fill is-37"></div></div></div>
+                <div class="mc"><div class="mc-thumb is-81"><span class="is-tag is-tag-blue is-10">All Levels</span></div><h4>Pronunciation</h4><div class="mc-meta"><span>📖 16 lessons</span><span>⭐ 4.5</span></div><div class="mc-progress"><div class="fill is-37"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="page-grid pg-3">
+      <!-- 5. Lesson View -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📄</span> Lesson View</div>
+          <span class="is-badge is-badge-core">Learning</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav"><div class="is-logo">🇩🇪 LearnGerman</div><div class="is-avatar">AM</div></div>
+            <div class="mockup-lesson">
+              <div class="ls-header"><h4>📖 Hallo! — Greetings</h4><span class="is-1">15 min</span></div>
+              <div class="ls-content">
+                <p class="is-82">Learn the most common German greetings.</p>
+                <div class="german-box"><strong>Guten Morgen!</strong><div class="trans">Good morning!</div></div>
+                <div class="german-box"><strong>Guten Abend!</strong><div class="trans">Good evening!</div></div>
+                <div class="german-box"><strong>Tschüss!</strong><div class="trans">Bye!</div></div>
+              </div>
+              <div class="ls-actions">
+                <span class="is-btn is-btn-primary is-38">✍️ Practice Exercise</span>
+                <span class="is-btn is-btn-secondary is-38">🤖 Ask AI Tutor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Exercise / Quiz -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>✍️</span> Exercise &amp; Quiz</div>
+          <span class="is-badge is-badge-core">Testing</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav"><div class="is-logo">🇩🇪 LearnGerman</div><div class="is-avatar">AM</div></div>
+            <div class="mockup-quiz is-39">
+              <div class="is-3">
+                <div class="is-18">A1 Vocabulary Check</div>
+                <span class="is-tag is-tag-purple is-83">⏱️ 10 min</span>
+              </div>
+              <div class="is-27"><div class="is-19"><div class="is-84"></div></div><div class="is-85">Question 1 of 10</div></div>
+              <div class="quiz-q"><h4>What does "der Bahnhof" mean?</h4><div class="qo">The airport</div><div class="qo is-sel">The train station</div><div class="qo">The bus stop</div><div class="qo">The harbor</div></div>
+              <div class="is-86"><span class="is-btn is-btn-secondary is-40">← Previous</span><span class="is-btn is-btn-primary is-40">Next →</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. AI Chat Tutor -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🤖</span> AI Chat Tutor</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-chat">
+            <div class="ch-msgs">
+              <div class="msg is-ai">Hallo! 👋 Ich bin dein deutscher KI-Tutor. Wie kann ich dir heute helfen?</div>
+              <div class="msg is-user">How do I say "Where is the train station?" in German?</div>
+              <div class="msg is-ai"><strong>"Wo ist der Bahnhof?"</strong><br><span class="is-87">Pronunciation: "Vo ist der Bahn-hof?"<br>Want to practice this in a conversation?</span></div>
+              <div class="msg is-user">Ja, ich möchte üben! (Yes, I want to practice!)</div>
+            </div>
+            <div class="ch-inp">
+              <div class="fake-inp">Type in German or English...</div>
+              <div class="send-btn">Send ➤</div>
+            </div>
+          </div>
+          <div class="is-88">
+            <span class="is-btn is-btn-secondary is-2">🎲 Start Chat</span>
+            <span class="is-btn is-btn-secondary is-2">💬 Topic: Hobbies</span>
+            <span class="is-btn is-btn-secondary is-2">🗣️ Roleplay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="page-grid pg-3">
+      <!-- 8. Speaking Practice -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🎤</span> Speaking Practice</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-speaking">
+            <div class="is-3">
+              <div class="is-18">🎤 Speaking Practice</div>
+              <span class="is-tag is-tag-green"><span class="is-9">65%</span> Accuracy</span>
+            </div>
+            <div class="is-7">Try saying this sentence:</div>
+            <div class="sp-phrase">"Ich möchte Deutsch lernen"</div>
+            <div class="sp-phonetic">/ɪç ˈmœçtə ˈdɔʏtʃ ˈlɛʁnən/</div>
+            <div class="sp-record-btn">🎤</div>
+            <div class="sp-bars">
+              <div class="sb"><span>Vowels</span><div class="bar"><div class="fill is-89"></div></div><span class="is-41">85%</span></div>
+              <div class="sb"><span>Consonants</span><div class="bar"><div class="fill fill-orange is-90"></div></div><span class="is-91">62%</span></div>
+              <div class="sb"><span>Intonation</span><div class="bar"><div class="fill is-92"></div></div><span class="is-12">70%</span></div>
+              <div class="sb"><span>Fluency</span><div class="bar"><div class="fill fill-pink is-93"></div></div><span class="is-94">55%</span></div>
+            </div>
+            <div class="is-95">💡 Tip: Practice the "ch" sound — place your tongue like you're saying "yes" and push air through.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Reading Comprehension -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📖</span> Reading Comprehension</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-reading">
+            <div class="is-3">
+              <div class="is-18">🇩🇪 Mein Tag</div>
+              <span class="is-8">124 words • A1 Level</span>
+            </div>
+            <div class="r-text">
+              Hallo! Ich heiße Anna und ich bin 25 Jahre alt. Ich wohne in Berlin. Jeden Morgen stehe ich um 7 Uhr auf. Ich frühstücke um 7:30 Uhr. Ich esse Brot mit Käse und trinke Kaffee. Um 8 Uhr gehe ich zur Arbeit. Ich arbeite in einer Schule. Ich bin Lehrerin.
+            </div>
+            <div class="r-qs">
+              <div class="rq"><p>1. Wo wohnt Anna?</p><span class="ro">In München</span><span class="ro is-sel">In Berlin</span><span class="ro">In Hamburg</span></div>
+              <div class="rq"><p>2. Was ist Anna von Beruf?</p><span class="ro">Ärztin</span><span class="ro">Ingenieurin</span><span class="ro is-sel">Lehrerin</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Writing Practice -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>✍️</span> Writing Practice</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-writing">
+            <div class="is-3">
+              <div class="is-18">✍️ Writing Practice</div>
+              <span class="is-tag is-tag-purple">Score: 71/100</span>
+            </div>
+            <div class="w-prompt">📝 Write about: "Describe your family"</div>
+            <div class="w-area">Meine Familie ist groß. Ich habe einen Vater, eine Mutter und zwei Brüder. Mein Vater heißt Thomas und er ist 52 Jahre alt. Meine Mutter heißt Maria und sie ist 48 Jahre alt. Wir wohnen zusammen in einem Haus.</div>
+            <div class="is-3"><span class="is-8">📊 48 words</span><span class="is-btn is-btn-primary is-2">🤖 Get AI Feedback</span></div>
+            <div class="w-feedback">
+              <div class="wf is-good"><strong>✅ Grammar — Good!</strong><br>Sentence structure is correct. Great use of "haben" and "sein" verbs!</div>
+              <div class="wf is-imp"><strong>🔶 Vocabulary</strong><br>Try using more specific words instead of "groß".</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="page-grid pg-2">
+      <!-- 11. Vocabulary Flashcards -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📝</span> Vocabulary Flashcards</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup">
+            <div class="mockup-nav"><div class="is-logo">🇩🇪 LearnGerman</div><div class="is-links"><span>🏠 Home</span><span>📚 Courses</span><span class="is-12">📝 Vocab</span></div><div class="is-avatar">AM</div></div>
+            <div class="mockup-content is-39">
+              <div class="is-23">
+                <div><div class="is-96">📝 Vocabulary Flashcards</div><div class="is-1">10 words to learn</div></div>
+                <span class="is-btn is-btn-secondary is-2">🔄 Reset All</span>
+              </div>
+              <div class="mockup-vocab">
+                <div class="vc is-97"><div class="vc-de is-42">der Apfel</div><div class="vc-en is-42">apple</div><div class="vc-hint is-98">Fruit</div></div>
+                <div class="vc"><div class="vc-de">das Brot</div><div class="vc-en">bread</div><div class="vc-hint">Food</div></div>
+                <div class="vc"><div class="vc-de">die Milch</div><div class="vc-en">milk</div><div class="vc-hint">Drink</div></div>
+                <div class="vc"><div class="vc-de">der Hund</div><div class="vc-en">dog</div><div class="vc-hint">Animal</div></div>
+                <div class="vc"><div class="vc-de">das Haus</div><div class="vc-en">house</div><div class="vc-hint">Building</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Profile Settings -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>👤</span> Profile &amp; Settings</div>
+          <span class="is-badge is-badge-core">Account</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-profile">
+            <div class="pr-avatar">AM</div>
+            <div class="pr-name">Alex Müller</div>
+            <div class="pr-email">alex@email.com • Member since Jan 2025</div>
+            <div class="pr-badges">
+              <span class="lv">Level A2</span>
+              <span class="st">🔥 12-day streak</span>
+              <span class="xp">⭐ 2,840 XP</span>
+            </div>
+            <div class="pr-settings">
+              <div class="prs"><label>Display Name</label><div class="prs-inp">Alex Müller</div></div>
+              <div class="prs"><label>Bio</label><div class="prs-inp is-99">German learner passionate about reaching fluency! 🇩🇪</div></div>
+              <div class="prs"><label>Target Level</label><div class="prs-inp">B1 (Intermediate)</div></div>
+              <div class="prs"><label>Daily Goal (min)</label><div class="prs-inp">30</div></div>
+            </div>
+            <div class="is-100">
+              <span class="is-btn is-btn-primary is-43">💾 Save Changes</span>
+              <span class="is-btn is-btn-secondary is-43">💾 Save Preferences</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 6 - New Features -->
+    <div class="page-grid pg-2">
+      <!-- 13. Hearing Practice (Listening Comprehension) -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🎧</span> Hearing Practice</div>
+          <span class="is-badge is-badge-ai">AI Feature</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-hearing">
+            <div class="he-header">
+              <div><div class="is-18">🎧 Listening Exercise</div><div class="is-1">A2 Level • 1:30 min</div></div>
+              <span class="is-tag is-tag-green">▶ 3 of 6</span>
+            </div>
+            <div class="he-player">
+              <div class="he-play-btn">▶</div>
+              <div class="he-progress"><div class="fill is-150"></div></div>
+              <div class="he-time">0:31 / 1:30</div>
+              <div class="is-tag is-tag-purple is-9">🔊 1.2x</div>
+              <div class="is-tag is-tag-blue">🇩🇪 DE</div>
+            </div>
+            <div class="he-transcript">
+              <div><span class="is-5">🎙️ Transcript</span> <span class="is-tag is-tag-orange is-83">Show/Hide</span></div>
+              <div class="is-70 is-7">
+                „Hallo! Ich heiße Lukas und komme aus München. Ich bin 28 Jahre alt und arbeite als Softwareentwickler. In meiner Freizeit spiele ich gerne Fußball und lese Bücher. Nächstes Wochenende fahre ich nach Berlin, um meine Freundin zu besuchen.“
+              </div>
+            </div>
+            <div class="is-3"><span class="is-32">Comprehension Questions</span><span class="is-8">2 correct • 1 incorrect</span></div>
+            <div class="he-q">
+              <div class="he-q-text">1. Woher kommt Lukas?</div>
+              <span class="he-qo">Berlin</span>
+              <span class="he-qo is-sel">München</span>
+              <span class="he-qo">Hamburg</span>
+              <span class="he-qo">Köln</span>
+            </div>
+            <div class="he-q">
+              <div class="he-q-text">2. Was macht Lukas in seiner Freizeit?</div>
+              <span class="he-qo is-sel">Fußball und Lesen</span>
+              <span class="he-qo">Kochen und Reisen</span>
+              <span class="he-qo">Schwimmen und Malen</span>
+            </div>
+            <div class="he-q">
+              <div class="he-q-text">3. Wohin fährt Lukas nächstes Wochenende?</div>
+              <span class="he-qo is-sel">Berlin</span>
+              <span class="he-qo">München</span>
+              <span class="he-qo">Wien</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Grammar Practice -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📐</span> Grammar Practice</div>
+          <span class="is-badge is-badge-core">Exercises</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-grammar">
+            <div class="gr-header">
+              <div><div class="is-18">📐 Grammar Practice</div><div class="is-1">Focus: Nominativ &amp; Akkusativ • B1</div></div>
+              <span class="is-btn is-btn-primary is-2">🔄 Next Topic</span>
+            </div>
+            <div class="gr-rules">
+              <div class="gr-rule">
+                <h4>📌 Nominativ (Subject)</h4>
+                <p>The subject of the sentence — the person/thing doing the action.<br><strong class="is-6">Der</strong> Mann <em class="is-5">liest.</em> (The man reads.)</p>
+              </div>
+              <div class="gr-rule">
+                <h4>📌 Akkusativ (Direct Object)</h4>
+                <p>The direct object — the person/thing receiving the action.<br>Ich sehe <strong class="is-4">den</strong> Mann. (I see the man.)</p>
+              </div>
+            </div>
+            <div class="is-44 is-7"><strong class="is-32">Fill in the correct articles:</strong></div>
+            <div class="gr-exercise">
+              <div class="gr-ex-q">1. Ich sehe <span class="gr-fill">den</span> Hund. (👁️ der Hund)</div>
+              <div><span class="gr-tag is-cor">✓ Correct</span> <span class="gr-tag is-wro">✗ der</span></div>
+            </div>
+            <div class="gr-exercise">
+              <div class="gr-ex-q">2. <span class="gr-fill">Der</span> Lehrer erklärt die Regel. (👨‍🏫 nom.)</div>
+              <div><span class="gr-tag is-cor">✓ Correct</span></div>
+            </div>
+            <div class="gr-exercise">
+              <div class="gr-ex-q">3. Sie kauft <span class="gr-fill">den</span> Tisch. (🪑 der Tisch → akk.)</div>
+              <div><span class="gr-tag is-cor">✓ Correct</span></div>
+            </div>
+            <div class="gr-exercise">
+              <div class="gr-ex-q">4. <span class="gr-fill">Die</span> Katze schläft auf dem Sofa.</div>
+              <div><span class="gr-tag is-cor">✓ Correct</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ============================== -->
+  <!-- ADMIN PANEL PREVIEWS           -->
+  <!-- ============================== -->
+  <div class="preview-section" id="section-admin">
+
+    <div class="section-header">
+      <h2>🔐 Admin Panel Pages</h2>
+      <p>Full content management, analytics, user control, and AI training dashboard</p>
+    </div>
+
+    <div class="page-grid pg-2">
+      <!-- 1. Admin Dashboard -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📊</span> Admin Dashboard</div>
+          <span class="is-badge is-badge-admin">Overview</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar">
+              <div class="am-logo">🇩🇪 LearnGerman</div>
+              <div class="am-item is-active">📊 Dashboard</div>
+              <div class="am-item">📚 Courses</div>
+              <div class="am-item">📄 Lessons</div>
+              <div class="am-item">✍️ Exercises</div>
+              <div class="am-item">📝 Quizzes</div>
+              <div class="am-item">👥 Users</div>
+              <div class="am-item">🖼️ Media</div>
+              <div class="am-item">📈 Analytics</div>
+              <div class="am-item">🧠 AI Training</div>
+              <div class="am-item">🔐 Admin Mgmt</div>
+            </div>
+            <div class="am-main">
+              <div class="ad-stats">
+                <div class="ads"><div class="adv is-6">2,840</div><div class="adl">Total Users</div></div>
+                <div class="ads"><div class="adv is-4">6</div><div class="adl">Courses</div></div>
+                <div class="ads"><div class="adv is-11">342</div><div class="adl">Active Today</div></div>
+                <div class="ads"><div class="adv is-21">73%</div><div class="adl">Avg Score</div></div>
+              </div>
+              <div class="ad-charts">
+                <div class="adc">
+                  <div class="adc-title">📈 Weekly Activity</div>
+                  <div class="bar-chart">
+                    <div class="is-0"><div class="bc is-101"></div><div class="bc-lbl">Mon</div></div>
+                    <div class="is-0"><div class="bc is-102"></div><div class="bc-lbl">Tue</div></div>
+                    <div class="is-0"><div class="bc is-103"></div><div class="bc-lbl">Wed</div></div>
+                    <div class="is-0"><div class="bc is-104"></div><div class="bc-lbl">Thu</div></div>
+                    <div class="is-0"><div class="bc is-105"></div><div class="bc-lbl">Fri</div></div>
+                    <div class="is-0"><div class="bc is-106"></div><div class="bc-lbl">Sat</div></div>
+                    <div class="is-0"><div class="bc is-107"></div><div class="bc-lbl">Sun</div></div>
+                  </div>
+                </div>
+                <div class="adc">
+                  <div class="adc-title">🏆 Top Courses</div>
+                  <div class="is-44"><div class="is-24"><span>German Basics A1</span><span>1,240</span></div><div class="is-19"><div class="is-108"></div></div></div>
+                  <div class="is-44"><div class="is-24"><span>Everyday Conv. A2</span><span>980</span></div><div class="is-19"><div class="is-109"></div></div></div>
+                  <div><div class="is-24"><span>Grammar B1</span><span>756</span></div><div class="is-19"><div class="is-110"></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Admin Courses Management -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📚</span> Courses Management</div>
+          <span class="is-badge is-badge-admin">CRUD</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item is-active">📚 Courses</div><div class="am-item">📄 Lessons</div><div class="am-item">✍️ Exercises</div></div>
+            <div class="am-main">
+              <div class="is-3"><span class="is-7">Manage your course catalog</span><span class="is-btn is-btn-primary is-2">+ New Course</span></div>
+              <table><tbody> class="mockup-table">
+                <tr><th>Course</th><th>Level</th><th>Lessons</th><th>Students</th><th>Status</th><th>Actions</th></tr>
+                <tr><td>German Basics A1</td><td><span class="is-tag is-tag-green">Beginner</span></td><td>24</td><td>1,240</td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Everyday Conv. A2</td><td><span class="is-tag is-tag-purple">Beginner</span></td><td>32</td><td>980</td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Grammar Mastery B1</td><td><span class="is-tag is-tag-orange">Intermed.</span></td><td>40</td><td>756</td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Business German B2</td><td><span class="is-tag is-tag-red">Intermed.</span></td><td>28</td><td>423</td><td><span class="is-tag is-tag-orange">Draft</span></td><td>✏️ 👁️ 🗑️</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="page-grid pg-2">
+      <!-- 3. Admin Lessons Management -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📄</span> Lessons Management</div>
+          <span class="is-badge is-badge-admin">CRUD</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">📄 Lessons</div></div>
+            <div class="am-main">
+              <div class="is-3"><span class="is-7">Manage lesson content</span><span class="is-btn is-btn-primary is-2">+ New Lesson</span></div>
+              <table><tbody> class="mockup-table">
+                <tr><th>Lesson</th><th>Course</th><th>Duration</th><th>Status</th><th>Actions</th></tr>
+                <tr><td>Hallo! — Greetings</td><td>German Basics A1</td><td>15 min</td><td><span class="is-tag is-tag-green">Published</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Numbers 1-20</td><td>German Basics A1</td><td>20 min</td><td><span class="is-tag is-tag-green">Published</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Colors &amp; Descriptions</td><td>German Basics A1</td><td>18 min</td><td><span class="is-tag is-tag-green">Published</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Im Restaurant</td><td>Everyday Conv. A2</td><td>20 min</td><td><span class="is-tag is-tag-orange">Draft</span></td><td>✏️ 👁️ 🗑️</td></tr>
+                <tr><td>Nominativ &amp; Akkusativ</td><td>Grammar B1</td><td>30 min</td><td><span class="is-tag is-tag-orange">Draft</span></td><td>✏️ 👁️ 🗑️</td></tr>
+              </tbody></table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Admin Users Management -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>👥</span> Users Management</div>
+          <span class="is-badge is-badge-admin">Management</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item">📄 Lessons</div><div class="am-item is-active">👥 Users</div></div>
+            <div class="am-main">
+              <div class="is-3"><span class="is-7">2,840 registered users</span><div class="is-36"><span class="is-btn is-btn-secondary is-45">📤 Export</span><span class="is-btn is-btn-primary is-45">+ Invite</span></div></div>
+              <div class="mockup-users">
+                <table><tbody> class="mockup-table">
+                  <tr><th>User</th><th>Level</th><th>Joined</th><th>Progress</th><th>Status</th><th>Actions</th></tr>
+                  <tr><td><div class="usr-cell"><div class="usr-av">S</div>Sarah Schmidt</div></td><td><span class="is-tag is-tag-green">A1</span></td><td>2d ago</td><td><div class="is-20"><div class="is-111"></div></div></td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 🚫</td></tr>
+                  <tr><td><div class="usr-cell"><div class="usr-av is-46">T</div>Tom Weber</div></td><td><span class="is-tag is-tag-orange">B1</span></td><td>1w ago</td><td><div class="is-20"><div class="is-112"></div></div></td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 🚫</td></tr>
+                  <tr><td><div class="usr-cell"><div class="usr-av is-113">L</div>Lisa Fischer</div></td><td><span class="is-tag is-tag-green">A2</span></td><td>2w ago</td><td><div class="is-20"><div class="is-114"></div></div></td><td><span class="is-tag is-tag-red">Suspended</span></td><td>✏️ ✅</td></tr>
+                  <tr><td><div class="usr-cell"><div class="usr-av is-115">M</div>Markus Klein</div></td><td><span class="is-tag is-tag-blue">B2</span></td><td>3w ago</td><td><div class="is-20"><div class="is-116"></div></div></td><td><span class="is-tag is-tag-green">Active</span></td><td>✏️ 🚫</td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="page-grid pg-3">
+      <!-- 5. Media Library -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🖼️</span> Media Library</div>
+          <span class="is-badge is-badge-admin">Assets</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item is-active">🖼️ Media</div></div>
+            <div class="am-main">
+              <div class="is-3"><span class="is-7">6 files</span><span class="is-btn is-btn-primary is-47">📤 Upload</span></div>
+              <div class="mockup-media">
+                <div class="md"><div class="md-prev">🖼️</div><div class="md-info"><div class="md-name">germany-flag.png</div><div class="md-meta">240 KB • 2 days ago</div></div></div>
+                <div class="md"><div class="md-prev">📄</div><div class="md-info"><div class="md-name">alphabet-chart.pdf</div><div class="md-meta">1.2 MB • 5 days ago</div></div></div>
+                <div class="md"><div class="md-prev">🖼️</div><div class="md-info"><div class="md-name">lesson1-cover.jpg</div><div class="md-meta">890 KB • 1 week ago</div></div></div>
+                <div class="md"><div class="md-prev">🎵</div><div class="md-info"><div class="md-name">pronunciation.mp3</div><div class="md-meta">3.4 MB • 1 week ago</div></div></div>
+                <div class="md"><div class="md-prev">📄</div><div class="md-info"><div class="md-name">grammar-cheatsheet.pdf</div><div class="md-meta">520 KB • 2 weeks ago</div></div></div>
+                <div class="md"><div class="md-prev">🎬</div><div class="md-info"><div class="md-name">german-cities.mp4</div><div class="md-meta">24 MB • 2 weeks ago</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Admin Analytics -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>📈</span> Analytics Dashboard</div>
+          <span class="is-badge is-badge-admin">Reports</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">📈 Analytics</div></div>
+            <div class="am-main">
+              <div class="ad-stats">
+                <div class="ads"><div class="adv is-6">2,840</div><div class="adl">Users</div></div>
+                <div class="ads"><div class="adv is-4">68.5%</div><div class="adl">Retention</div></div>
+                <div class="ads"><div class="adv is-11">127</div><div class="adl">Completions</div></div>
+                <div class="ads"><div class="adv is-117">156</div><div class="adl">Exercises</div></div>
+              </div>
+              <div class="adc is-118">
+                <div class="adc-title">📅 User Growth (Monthly)</div>
+                <div class="bar-chart is-119">
+                  <div class="is-0"><div class="bc is-120"></div><div class="bc-lbl">J</div></div>
+                  <div class="is-0"><div class="bc is-121"></div><div class="bc-lbl">F</div></div>
+                  <div class="is-0"><div class="bc is-122"></div><div class="bc-lbl">M</div></div>
+                  <div class="is-0"><div class="bc is-123"></div><div class="bc-lbl">A</div></div>
+                  <div class="is-0"><div class="bc is-124"></div><div class="bc-lbl">M</div></div>
+                  <div class="is-0"><div class="bc is-125"></div><div class="bc-lbl">J</div></div>
+                  <div class="is-0"><div class="bc is-126"></div><div class="bc-lbl">J</div></div>
+                  <div class="is-0"><div class="bc is-127"></div><div class="bc-lbl">A</div></div>
+                  <div class="is-0"><div class="bc is-128"></div><div class="bc-lbl">S</div></div>
+                  <div class="is-0"><div class="bc is-129"></div><div class="bc-lbl">O</div></div>
+                  <div class="is-0"><div class="bc is-130"></div><div class="bc-lbl">N</div></div>
+                  <div class="is-0"><div class="bc is-131"></div><div class="bc-lbl">D</div></div>
+                </div>
+              </div>
+              <div class="adc is-132">
+                <div class="is-133">
+                  <div><span class="is-5">Popular Course:</span><br><span class="is-12">German Basics A1</span></div>
+                  <div><span class="is-5">Top Performer:</span><br><span class="is-41">A2 Conversations</span></div>
+                  <div><span class="is-5">Avg Session:</span><br><span class="is-9">24 min</span></div>
+                  <div><span class="is-5">Revenue:</span><br><span class="is-134">Free Tier</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Admin Settings -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>⚙️</span> Settings</div>
+          <span class="is-badge is-badge-admin">Config</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">⚙️ Settings</div></div>
+            <div class="am-main">
+              <div class="mockup-settings">
+                <div class="ms">
+                  <h4>⚙️ General</h4>
+                  <label>Site Name</label>
+                  <div class="ms-inp">LearnGerman</div>
+                  <label>Site Description</label>
+                  <div class="ms-inp is-135">Learn German with AI-powered interactive lessons</div>
+                  <label>Default Language</label>
+                  <div class="ms-inp">English</div>
+                  <div class="ms-btn is-136">💾 Save</div>
+                </div>
+                <div class="ms">
+                  <h4>📧 Email</h4>
+                  <label>SMTP Host</label>
+                  <div class="ms-inp">smtp.sendgrid.net</div>
+                  <label>SMTP Port</label>
+                  <div class="ms-inp">587</div>
+                  <label>From Email</label>
+                  <div class="ms-inp">noreply@learngerman.de</div>
+                  <div class="ms-btn is-137">💾 Save</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="page-grid pg-2">
+      <!-- 8. AI Training System -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🧠</span> AI Training System</div>
+          <span class="is-badge is-badge-ai">KILLER FEATURE</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">🧠 AI Training</div></div>
+            <div class="am-main">
+              <div class="is-138">🧠 Train and configure AI models for content generation, evaluation, and tutoring</div>
+              <div class="mockup-aitrain">
+                <div class="ait">
+                  <div class="ait-name">📝 Content Generator</div>
+                  <div class="ait-desc">Generates lessons, exercises, and quizzes</div>
+                  <div class="ait-row"><span>Provider</span><span class="is-tag is-tag-green">Gemini 2.5</span></div>
+                  <div class="ait-row"><span>Templates</span><span class="is-4">12 templates</span></div>
+                  <div class="ait-row"><span>Last Trained</span><span>2 days ago</span></div>
+                  <div class="ait-row"><span>Accuracy</span><span>94%</span></div>
+                  <div class="ait-btn">🧠 Train Model</div>
+                </div>
+                <div class="ait">
+                  <div class="ait-name">💬 Conversation Tutor</div>
+                  <div class="ait-desc">Powers AI chat for student practice</div>
+                  <div class="ait-row"><span>Provider</span><span class="is-tag is-tag-purple">Groq Llama 3</span></div>
+                  <div class="ait-row"><span>Templates</span><span class="is-4">8 templates</span></div>
+                  <div class="ait-row"><span>Context</span><span>128K tokens</span></div>
+                  <div class="ait-row"><span>Avg Response</span><span>1.2s</span></div>
+                  <div class="ait-btn">🧠 Train Model</div>
+                </div>
+                <div class="ait">
+                  <div class="ait-name">📖 Reading Evaluator</div>
+                  <div class="ait-desc">Level-appropriate text generation + analysis</div>
+                  <div class="ait-row"><span>Provider</span><span class="is-tag is-tag-orange">DeepSeek R1</span></div>
+                  <div class="ait-row"><span>Examples</span><span>25 few-shot</span></div>
+                  <div class="ait-row"><span>Levels</span><span>A1-C1</span></div>
+                  <div class="ait-btn">🧠 Train Model</div>
+                </div>
+                <div class="ait">
+                  <div class="ait-name">🎙️ Speech Analyzer</div>
+                  <div class="ait-desc">Pronunciation, fluency, and feedback</div>
+                  <div class="ait-row"><span>Provider</span><span class="is-tag is-tag-blue">Whisper</span></div>
+                  <div class="ait-row"><span>Phoneme Map</span><span>German IPA</span></div>
+                  <div class="ait-row"><span>Feedback</span><span>Phonetic + Prosody</span></div>
+                  <div class="ait-btn">🧠 Train Model</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Admin Management + Logs -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🔐</span> Admin Management &amp; Activity Log</div>
+          <span class="is-badge is-badge-admin">Security</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">🔐 Admin Mgmt</div></div>
+            <div class="am-main">
+              <div class="is-3"><span class="is-7">3 admin accounts</span><span class="is-btn is-btn-primary is-47">+ Add Admin</span></div>
+              <table><tbody> class="mockup-table">
+                <tr><th>Admin</th><th>Role</th><th>Permissions</th><th>Active</th><th>Actions</th></tr>
+                <tr><td><div class="usr-cell"><div class="usr-av">A</div>Admin Master</div></td><td><span class="is-tag is-tag-purple">Super Admin</span></td><td>All</td><td>Now</td><td>✏️ 🚫</td></tr>
+                <tr><td><div class="usr-cell"><div class="usr-av is-46">C</div>Content Editor</div></td><td><span class="is-tag is-tag-blue">Editor</span></td><td>Content Only</td><td>2h ago</td><td>✏️ 🚫</td></tr>
+                <tr><td><div class="usr-cell"><div class="usr-av is-139">M</div>Moderator</div></td><td><span class="is-tag is-tag-orange">Moderator</span></td><td>Users+Content</td><td>1d ago</td><td>✏️ 🚫</td></tr>
+              </tbody></table>
+              <div class="is-140">
+                <div class="is-141">📋 Recent Activity Log</div>
+                <div class="mockup-logs">
+                  <div class="log-row"><span>Admin Master edited course "German Basics A1"</span><span class="is-5">2m ago</span></div>
+                  <div class="log-row"><span>Content Editor created lesson "Numbers 1-20"</span><span class="is-5">15m ago</span></div>
+                  <div class="log-row"><span>Moderator suspended "Lisa Fischer"</span><span class="is-5">1h ago</span></div>
+                  <div class="log-row"><span>Admin Master updated AI training prompts</span><span class="is-5">3h ago</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-grid pg-2">
+      <!-- 10. HTML Content Editor -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>⚡</span> HTML Content Editor</div>
+          <span class="is-badge is-badge-admin">WordPress-Style</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item">📄 Lessons</div><div class="am-item is-active">⚡ Editor</div></div>
+            <div class="am-main">
+              <div class="mockup-editor">
+                <div class="ed-toolbar">
+                  <span class="ed-btn is-active"><b>B</b></span>
+                  <span class="ed-btn"><i>I</i></span>
+                  <span class="ed-btn"><u>U</u></span>
+                  <span class="ed-div"></span>
+                  <span class="ed-btn">H1</span>
+                  <span class="ed-btn">H2</span>
+                  <span class="ed-div"></span>
+                  <span class="ed-btn">≡</span>
+                  <span class="ed-btn">#</span>
+                  <span class="ed-div"></span>
+                  <span class="ed-btn">🔗</span>
+                  <span class="ed-btn">🖼️</span>
+                  <span class="ed-div"></span>
+                  <span class="ed-btn">↩️</span>
+                  <span class="ed-btn">↪️</span>
+                  <span class="ed-mode is-active">Visual</span>
+                  <span class="ed-mode">HTML</span>
+                  <span class="ed-mode">Preview</span>
+                </div>
+                <div class="ed-content">
+                  <h2>Willkommen zu Lektion 1! 👋</h2>
+                  <p>In this lesson you'll learn <strong>basic German greetings</strong> and how to introduce yourself. Practice each phrase aloud for best results!</p>
+                  <ul class="ed-list">
+                    <li><strong>Guten Morgen</strong> — Good morning</li>
+                    <li><strong>Guten Abend</strong> — Good evening</li>
+                    <li><strong>Tschüss</strong> — Bye!</li>
+                  </ul>
+                  <div class="ed-image">🖼️ greeting-illustration.jpg — Click to replace image</div>
+                  <div class="ed-blockquote">"Übung macht den Meister." — Practice makes perfect.</div>
+                </div>
+                <div class="ed-footer">
+                  <span class="is-btn is-btn-secondary is-2">📄 Source</span>
+                  <span class="is-btn is-btn-secondary is-2">💾 Save Draft</span>
+                  <span class="is-btn is-btn-primary is-2">✅ Publish</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Auto-Update System -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🔄</span> Auto-Update System</div>
+          <span class="is-badge is-badge-admin">DevOps</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-admin">
+            <div class="am-sidebar"><div class="am-logo">🇩🇪 LearnGerman</div><div class="am-item">📊 Dashboard</div><div class="am-item">📚 Courses</div><div class="am-item is-active">🔄 Updates</div></div>
+            <div class="am-main">
+              <div class="mockup-updater">
+                <div class="uu-header">
+                  <h4>🔄 Auto-Update System</h4>
+                  <span class="uu-version">v1.2.3</span>
+                </div>
+                <div class="uu-info">
+                  <div class="uu-info-item"><span class="uu-label">Current Version</span><span class="uu-value is-12">v1.2.3</span></div>
+                  <div class="uu-info-item"><span class="uu-label">Latest Available</span><span class="uu-value is-4">v1.3.0</span></div>
+                  <div class="uu-info-item"><span class="uu-label">Last Check</span><span class="uu-value is-5">2 hours ago</span></div>
+                </div>
+                <div class="uu-upload">
+                  <div class="uu-drop-icon">📦</div>
+                  <div class="uu-drop-text">Drop update package here or click to browse</div>
+                  <div class="uu-drop-hint">Supports .zip files up to 500MB</div>
+                </div>
+                <div class="uu-file">
+                  <span class="uu-file-icon">📁</span>
+                  <span class="uu-file-name">learngerman-update-v1.3.0.zip</span>
+                  <span class="uu-file-badge">✓ Validated</span>
+                </div>
+                <div class="uu-deploy">🚀 Deploy Update — v1.3.0</div>
+                <div class="uu-versions">
+                  <h5>📋 Version History</h5>
+                  <div class="uv-row"><span><strong>v1.3.0</strong> — May 28, 2026</span><div class="is-36"><span class="uv-tag deploy">Deploy</span><span class="uv-tag notes">Notes</span></div></div>
+                  <div class="uv-row"><span><strong>v1.2.3</strong> — May 15, 2026</span><div class="is-36"><span class="uv-tag active">● Active</span><span class="uv-tag notes">Notes</span></div></div>
+                  <div class="uv-row"><span><strong>v1.2.2</strong> — Apr 30, 2026</span><div class="is-36"><span class="uv-tag deploy">Rollback</span><span class="uv-tag notes">Notes</span></div></div>
+                  <div class="uv-row"><span><strong>v1.2.1</strong> — Apr 12, 2026</span><div class="is-36"><span class="uv-tag deploy">Rollback</span><span class="uv-tag notes">Notes</span></div></div>
+                </div>
+                <div class="uu-migrations">
+                  <div class="uu-mig-item">✅ Database: All 12 migrations pass — zero data loss expected</div>
+                  <div class="uu-mig-item">✅ Files: 142 updated · 12 new · 8 removed — zero downtime via blue-green</div>
+                  <div class="uu-mig-item">✅ Rollback: Instant rollback to v1.2.3 available if needed</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-grid pg-2">
+      <!-- 12. Main Website Page Editor -->
+      <div class="page-card">
+        <div class="is-header">
+          <div class="is-title"><span>🌐</span> Main Website Page Editor</div>
+          <span class="is-badge is-badge-admin">Page Builder</span>
+        </div>
+        <div class="is-body">
+          <div class="mockup-pageeditor">
+            <div class="mpe-tree">
+              <div class="mpe-tree-title">Pages</div>
+              <div class="mpe-page is-active"><span class="mpe-status published"></span>🏠 Home</div>
+              <div class="mpe-page"><span class="mpe-status published"></span>ℹ️ About</div>
+              <div class="mpe-page"><span class="mpe-status published"></span>✨ Features</div>
+              <div class="mpe-page"><span class="mpe-status draft"></span>💰 Pricing</div>
+              <div class="mpe-page"><span class="mpe-status draft"></span>❓ FAQ</div>
+              <div class="mpe-page"><span class="mpe-status draft"></span>📞 Contact</div>
+              <div class="mpe-page"><span class="mpe-status published"></span>📄 Footer</div>
+            </div>
+            <div class="mpe-main">
+              <div class="mpe-topbar">
+                <div class="mpe-breadcrumb">Pages / <strong>Home</strong></div>
+                <div class="is-36"><span class="is-btn is-btn-secondary is-2">👁️ Preview</span><span class="is-btn is-btn-primary is-2">💾 Save</span></div>
+              </div>
+              <div class="mpe-canvas">
+                <div class="mpe-block mpe-hero-block">
+                  <div class="mpe-block-label">HERO SECTION <span class="mpe-block-actions">↑↓ ✏️ 🗑️</span></div>
+                  <h3>Learn German with AI Power</h3>
+                  <p>Master German through interactive lessons, AI conversation practice...</p>
+                </div>
+                <div class="mpe-block">
+                  <div class="mpe-block-label">TEXT + IMAGE <span class="mpe-block-actions">↑↓ ✏️ 🗑️</span></div>
+                  <div class="mpe-text-img">
+                    <div class="mpe-ti-text">Discover our structured A1-C1 curriculum designed by language experts with over 300 interactive lessons...</div>
+                    <div class="mpe-ti-img">🖼️</div>
+                  </div>
+                </div>
+                <div class="mpe-block mpe-feat-grid">
+                  <div class="mpe-block-label mpe-full">FEATURES GRID <span class="mpe-block-actions">↑↓ ✏️ 🗑️</span></div>
+                  <div class="mpe-feat">🗣️ AI Conversation</div>
+                  <div class="mpe-feat">📚 Structured Courses</div>
+                  <div class="mpe-feat">📊 Progress Tracking</div>
+                </div>
+                <div class="mpe-block mpe-cta-block">
+                  <div class="mpe-block-label">CALL TO ACTION <span class="mpe-block-actions">↑↓ ✏️ 🗑️</span></div>
+                  <div class="mpe-cta-title">Start Speaking German Today</div>
+                  <div class="mpe-cta-sub">It's free, it's fun, and it works.</div>
+                  <span class="mpe-cta-btn">✨ Create Free Account</span>
+                </div>
+              </div>
+              <div class="mpe-seo">
+                <div class="mpe-seo-title">🔍 SEO Settings</div>
+                <div class="mpe-seo-row">
+                  <div class="mpe-seo-field"><label>Meta Title</label><div class="mpe-seo-inp">Learn German with AI | LEARNGERMAN</div></div>
+                  <div class="mpe-seo-field"><label>Meta Description</label><div class="mpe-seo-inp">Master German through AI-powered interactive lessons for free. A1-C1...</div></div>
+                  <div class="mpe-seo-field"><label>URL Slug</label><div class="mpe-seo-inp">/</div></div>
+                </div>
+                <div class="mpe-seo-note">Changes are auto-saved as drafts. Published pages updated immediately.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Provider Stack Info -->
+    <div class="page-card is-142">
+      <div class="is-header">
+        <div class="is-title"><span>🤖</span> AI Provider Stack (Free Tier)</div>
+        <span class="is-badge is-badge-ai">Infrastructure</span>
+      </div>
+      <div class="is-body is-143">
+        <div class="is-144">
+          <div class="is-13">
+            <div class="is-14">🧠</div>
+            <div class="is-15">Google Gemini</div>
+            <div class="is-1">1,500 req/day • Content gen</div>
+            <div class="is-8">Primary provider</div>
+          </div>
+          <div class="is-13">
+            <div class="is-14">⚡</div>
+            <div class="is-15">Groq</div>
+            <div class="is-1">1,000 req/day • Real-time chat</div>
+            <div class="is-8">Low latency</div>
+          </div>
+          <div class="is-13">
+            <div class="is-14">🔄</div>
+            <div class="is-15">OpenRouter</div>
+            <div class="is-1">200 req/day • Fallback</div>
+            <div class="is-8">Multiple models</div>
+          </div>
+          <div class="is-13">
+            <div class="is-14">🔍</div>
+            <div class="is-15">SambaNova</div>
+            <div class="is-1">Free tier • Grammar checking</div>
+            <div class="is-8">DeepSeek R1</div>
+          </div>
+          <div class="is-13">
+            <div class="is-14">📊</div>
+            <div class="is-15">Cerebras</div>
+            <div class="is-1">1,700 req/day • Batch eval</div>
+            <div class="is-8">High volume</div>
+          </div>
+        </div>
+        <div class="is-145">
+          <strong class="is-6">Smart Routing:</strong> Lesson generation → Gemini • Chat → Groq • Quiz gen → OpenRouter • Grammar → SambaNova • Batch eval → Cerebras • All fallback → Next available provider
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="is-146">
+    <div class="is-147">🇩🇪</div>
+    <div class="is-148">LEARNGERMAN — Complete Platform Preview</div>
+    <div class="is-149">
+      Built with React 18 • Tailwind CSS • Node.js • PostgreSQL • 5 AI Providers<br>
+      Dark theme • Glass-morphism • Fully responsive • A1-C1 CEFR curriculum<br>
+      <a href="preview.html" target="_blank" class="is-4">▶️ Try the interactive demo →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchMode(mode){
+  document.querySelectorAll('.preview-section').forEach(s=>s.classList.remove('is-active'));
+  document.getElementById('section-'+mode).classList.add('is-active');
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('is-active'));
+  document.querySelector(`[data-mode="${mode}"]`).classList.add('is-active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>

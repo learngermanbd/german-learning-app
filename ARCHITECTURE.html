@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🇩🇪 German Learning App — Architecture Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #0a0a0f;
+      color: #e1e1e1;
+      line-height: 1.7;
+    }
+    .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    .header {
+      text-align: center;
+      padding: 4rem 0 2.5rem;
+      background: linear-gradient(180deg, #0f0f1a 0%, #0a0a0f 100%);
+      border-bottom: 1px solid #1a1a2e;
+    }
+    .header h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6, #ec4899);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+    .header .subtitle {
+      font-size: 1.1rem;
+      color: #888;
+      margin-top: 0.75rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .header .badge-row {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .badge.green { background: #064e3b; color: #6ee7b7; }
+    .badge.blue { background: #0c4a6e; color: #7dd3fc; }
+    .badge.purple { background: #2e1065; color: #c084fc; }
+    .badge.pink { background: #4a0e3b; color: #f9a8d4; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 15, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #1a1a2e;
+      padding: 0.7rem 0;
+    }
+    .nav-inner {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .nav a {
+      color: #777;
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav a:hover { color: #fbbf24; }
+
+    section { margin: 3.5rem 0; }
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #f0f0f0;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid #1e1e30;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    h3 { font-size: 1.2rem; font-weight: 700; color: #f0f0f0; margin: 1.8rem 0 0.8rem; }
+    h4 { font-size: 1rem; font-weight: 600; color: #d0d0d0; margin: 1.2rem 0 0.5rem; }
+    p { margin-bottom: 1rem; color: #b0b0b0; }
+
+    pre {
+      background: #0d0d14;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.6;
+      color: #c0c0c0;
+      overflow-x: auto;
+      margin: 1.2rem 0;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      background: #111118;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: #7dd3fc;
+    }
+    pre code { background: none; padding: 0; border-radius: 0; color: inherit; font-size: inherit; }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .card {
+      background: #111118;
+      border: 1px solid #1e1e30;
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: all 0.3s ease;
+    }
+    .card:hover { border-color: #3a3a5e; transform: translateY(-2px); }
+    .card .card-icon { font-size: 1.6rem; margin-bottom: 0.5rem; display: block; }
+    .card h4 { margin: 0 0 0.3rem; color: #f0f0f0; font-size: 0.95rem; }
+    .card p { font-size: 0.82rem; color: #888; margin: 0; }
+
+    .table-wrap { overflow-x: auto; margin: 1.2rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th {
+      background: #111118;
+      color: #f0f0f0;
+      padding: 0.7rem 0.8rem;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #2a2a4e;
+      white-space: nowrap;
+    }
+    td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #1a1a2e; color: #999; }
+    tr:hover td { background: #111118; }
+    td:first-child { font-weight: 600; color: #ddd; }
+
+    .tip {
+      background: #1a1a2e;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.5rem 0;
+    }
+    .tip strong { color: #7dd3fc; }
+    .tip p { margin: 0; font-size: 0.9rem; }
+
+    .warning {
+      background: #2e0a0a;
+      border-left: 4px solid #ef4444;
+      padding: 1rem 1.25rem;
+      border-radius: 0 10px 10px 0;
+      margin: 1.5rem 0;
+    }
+    .warning strong { color: #f87171; }
+    .warning p { margin: 0; font-size: 0.9rem; color: #fca5a5; }
+
+    .arch-box {
+      background: #0d0d14;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: #888;
+      overflow-x: auto;
+      white-space: pre;
+      margin: 1rem 0;
+    }
+
+    .tree {
+      background: #0d0d14;
+      border: 1px solid #1a1a2e;
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.5;
+      color: #888;
+      overflow-x: auto;
+      white-space: pre;
+      margin: 1rem 0;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    .tree .folder { color: #7dd3fc; }
+    .tree .highlight { color: #6ee7b7; }
+    .tree .comment { color: #555; }
+
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 1.5rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #2a2a4e;
+    }
+    .tl-item {
+      position: relative;
+      padding: 0.8rem 0 0.8rem 1.5rem;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -1.75rem;
+      top: 1.3rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #3b82f6;
+    }
+    .tl-item h4 { margin: 0 0 0.2rem; color: #f0f0f0; }
+    .tl-item p { font-size: 0.85rem; color: #888; margin: 0; }
+    .tl-item .duration {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.15rem 0.5rem;
+      background: #1a1a2e;
+      border-radius: 6px;
+      color: #999;
+      margin-top: 0.3rem;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .principle {
+      background: #111118;
+      border: 1px solid #1e1e30;
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+    .principle .num {
+      display: inline-block;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #3b82f6;
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .principle h4 { margin: 0 0 0.3rem; }
+    .principle p { font-size: 0.82rem; color: #888; margin: 0; }
+
+    .footer {
+      text-align: center;
+      padding: 3rem 0;
+      border-top: 1px solid #1a1a2e;
+      margin-top: 3rem;
+    }
+    .footer p { color: #555; font-size: 0.85rem; }
+
+    hr { border: none; border-top: 1px solid #1a1a2e; margin: 2.5rem 0; }
+
+    @media (max-width: 600px) {
+      .header h1 { font-size: 1.8rem; }
+      h2 { font-size: 1.3rem; }
+      .tree { font-size: 0.65rem; max-height: 400px; }
+      .arch-box { font-size: 0.65rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#stack">Tech Stack</a>
+    <a href="#structure">Structure</a>
+    <a href="#api-strategy">Free APIs</a>
+    <a href="#hosting">Hosting</a>
+    <a href="#ai-engine">AI Engine</a>
+    <a href="#admin-training">Admin Training</a>
+    <a href="#database">Database</a>
+    <a href="#deployment">Deployment</a>
+    <a href="#roadmap">Roadmap</a>
+  </div>
+</nav>
+
+<div class="header">
+  <div class="container" style="padding: 0;">
+    <h1>🇩🇪 German Learning App</h1>
+    <p class="subtitle">AI-Powered Language Learning Platform with Admin Training System<br>Built on free APIs, hosted on Render (dev) → VPS + Coolify (production)</p>
+    <div class="badge-row">
+      <span class="badge green">💰 $0 / month to start</span>
+      <span class="badge blue">🤖 5 AI providers stacked</span>
+      <span class="badge purple">🎓 Train AI from admin</span>
+      <span class="badge pink">🚀 VPS ready ~$10/mo</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TECH STACK -->
+  <section id="stack">
+    <h2>🛠 Tech Stack Overview</h2>
+
+    <h3>Frontend (Student Website)</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">⚛️</span><h4>React 18 + Vite</h4><p>SPA framework</p></div>
+      <div class="card"><span class="card-icon">🎨</span><h4>Tailwind CSS</h4><p>Styling</p></div>
+      <div class="card"><span class="card-icon">🗄️</span><h4>Zustand</h4><p>State management</p></div>
+      <div class="card"><span class="card-icon">🧭</span><h4>React Router v6</h4><p>Routing</p></div>
+      <div class="card"><span class="card-icon">📡</span><h4>Axios</h4><p>HTTP client</p></div>
+    </div>
+
+    <h3>Admin Panel</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">⚛️</span><h4>React 18 + Vite</h4><p>SPA (separate app)</p></div>
+      <div class="card"><span class="card-icon">📊</span><h4>Recharts / Chart.js</h4><p>Analytics charts</p></div>
+      <div class="card"><span class="card-icon">✍️</span><h4>TipTap / React-Quill</h4><p>Rich text editor</p></div>
+    </div>
+
+    <h3>Backend</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">🟢</span><h4>Node.js + Express</h4><p>Server</p></div>
+      <div class="card"><span class="card-icon">🔮</span><h4>Prisma ORM</h4><p>Database management</p></div>
+      <div class="card"><span class="card-icon">🐘</span><h4>PostgreSQL</h4><p>Database</p></div>
+      <div class="card"><span class="card-icon">🔐</span><h4>JWT</h4><p>Authentication</p></div>
+      <div class="card"><span class="card-icon">📸</span><h4>Multer / Sharp</h4><p>Media upload</p></div>
+    </div>
+
+    <h3>AI Engine</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">🧠</span><h4>Google Gemini API</h4><p>Primary AI provider (free)</p></div>
+      <div class="card"><span class="card-icon">⚡</span><h4>Groq API</h4><p>Real-time chat (free)</p></div>
+      <div class="card"><span class="card-icon">🔄</span><h4>OpenRouter API</h4><p>Fallback (free)</p></div>
+      <div class="card"><span class="card-icon">📊</span><h4>SambaNova / Cerebras</h4><p>Evaluation tasks (free)</p></div>
+    </div>
+  </section>
+
+  <!-- PROJECT STRUCTURE -->
+  <section id="structure">
+    <h2>📁 Project Structure</h2>
+    <p>Three main apps + an AI engine, all in one repository.</p>
+
+    <h3>🎓 Student Website (frontend/)</h3>
+    <div class="tree">german-learning-app/
+  frontend/
+    src/pages/
+      Home.jsx
+      Dashboard.jsx
+      Courses.jsx
+      Lesson.jsx
+      Exercise.jsx
+      Quiz.jsx
+      Profile.jsx
+      <span class="highlight">AIChat.jsx</span>              <span class="comment">← 🆕 AI Conversation Practice</span>
+      <span class="highlight">SpeakingPractice.jsx</span>     <span class="comment">← 🆕 Speaking with AI feedback</span>
+      <span class="highlight">PronunciationAnalysis.jsx</span><span class="comment">← 🆕 Voice analysis</span>
+      <span class="highlight">ReadingLesson.jsx</span>        <span class="comment">← 🆕 AI-generated reading</span>
+      <span class="highlight">WritingExercise.jsx</span>      <span class="comment">← 🆕 AI-graded writing</span>
+      <span class="highlight">VocabularyDrills.jsx</span>     <span class="comment">← 🆕 AI-powered vocab</span>
+      Auth/Login.jsx
+      Auth/Register.jsx
+    src/components/
+      Navbar.jsx, Footer.jsx
+      <span class="highlight">AITutorBadge.jsx</span>     <span class="comment">← 🆕 Floating AI tutor</span>
+      <span class="highlight">VoiceRecorder.jsx</span>    <span class="comment">← 🆕 Speech input</span>
+      <span class="highlight">FeedbackCard.jsx</span>     <span class="comment">← 🆕 AI feedback display</span></div>
+
+    <h3>🛠 Admin Panel (admin/)</h3>
+    <div class="tree">  admin/
+    src/pages/
+      AdminLogin.jsx
+      AdminDashboard.jsx
+      courses/       (CRUD)
+      lessons/       (CRUD + Editor)
+      exercises/     (CRUD + Builder)
+      quizzes/       (CRUD + Builder)
+      users/         (View, Edit, Admins)
+      media/         (Library, Upload, Grid)
+      analytics/     (Dashboard, Charts)
+      settings/      (General, Email, Payment, Notifications, Backup)
+      adminManagement/ (Admins, Permissions, Logs)
+      <span class="highlight">ai-training/</span>              <span class="comment">← 🆕 KEY SECTION</span>
+        TrainingDashboard.jsx
+        LessonGenerator.jsx
+        ExamGenerator.jsx
+        VocabularyManager.jsx
+        SpeakingScorer.jsx
+        ReadingSets.jsx
+        WritingPrompts.jsx
+        HearingExercises.jsx
+        PromptTemplates.jsx
+        ModelConfig.jsx
+        TrainingDataUploader.jsx
+    src/components/
+      AdminLayout.jsx, Sidebar.jsx, TopBar.jsx
+      DataTable.jsx, FormBuilder.jsx, RichEditor.jsx
+      ImageUploader.jsx, Modal.jsx, Charts.jsx
+      <span class="highlight">AIPreview.jsx</span>            <span class="comment">← 🆕 Preview AI content</span></div>
+
+    <h3>⚙ Backend (backend/)</h3>
+    <div class="tree">  backend/
+    src/
+      routes/
+        auth.js, courses.js, lessons.js, exercises.js
+        progress.js, quizzes.js, flashcards.js
+        <span class="highlight">ai/</span>                     <span class="comment">← 🆕 AI Routes</span>
+          generate.js, evaluate.js, chat.js
+          speaking.js, writing.js, vocabulary.js, train.js
+        admin/
+          <span class="highlight">ai-training.js</span>         <span class="comment">← 🆕 Training routes</span>
+      controllers/
+        <span class="highlight">ai/</span>                     <span class="comment">← 🆕 AI Controllers</span>
+          aiController.js, aiProvider.js, promptEngine.js
+          trainingEngine.js, evaluationEngine.js
+      <span class="highlight">services/</span>                 <span class="comment">← 🆕 Service Layer</span>
+        ai/
+          LessonAIService.js, QuizAIService.js, ChatAIService.js
+          SpeakingAIService.js, ReadingAIService.js
+          WritingAIService.js, HearingAIService.js, VocabularyAIService.js
+        aiProviderRouter.js, promptBuilder.js, contextManager.js</div>
+
+    <h3>🧠 AI Engine (ai-engine/)</h3>
+    <div class="tree">  ai-engine/
+    providers/
+      geminiProvider.js, groqProvider.js
+      openRouterProvider.js, providerManager.js
+    training/
+      promptTemplates/
+        lessonGeneration.json, quizGeneration.json
+        conversation.json, vocabulary.json
+        writingEval.json, speakingEval.json
+      fewShotExamples/ (lessons/, quizzes/, exercises/)
+      trainingDataManager.js
+    evaluation/
+      grammarChecker.js, pronunciationScorer.js
+      writingGrader.js, comprehensionChecker.js
+    config/
+      apiKeys.js, providerConfig.js</div>
+  </section>
+
+  <!-- FREE API STRATEGY -->
+  <section id="api-strategy">
+    <h2>🆓 Free API Strategy</h2>
+    <p>Route different AI tasks to different free providers. Total free capacity: <strong>~3,500 – 5,000 requests/day</strong> — enough for ~1,000–1,500 active users.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Provider</th><th>Free Model</th><th>Daily Limit</th><th>Best For</th><th>Cost</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Google AI Studio</td><td>Gemini 2.5 Flash</td><td>~1,500 req/day</td><td>Lesson generation, content creation</td><td>$0</td></tr>
+          <tr><td>Groq</td><td>Llama 3.3 70B</td><td>~1,000 req/day</td><td>Real-time chat</td><td>$0</td></tr>
+          <tr><td>OpenRouter</td><td>Multiple free models</td><td>~200 req/day</td><td>Testing & fallback</td><td>$0</td></tr>
+          <tr><td>SambaNova</td><td>DeepSeek R1</td><td>Free tier</td><td>Grammar explanations</td><td>$0</td></tr>
+          <tr><td>Cerebras</td><td>Llama 3.3 70B</td><td>~1,700 req/day</td><td>Batch answer evaluation</td><td>$0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Smart Routing Logic</h3>
+    <div class="arch-box">Student Request
+      ↓
+[aiProviderRouter.js]
+  ├── Lesson generation  →  Google Gemini (large context)
+  ├── Chat/conversation  →  Groq (ultra-low latency)
+  ├── Quiz generation    →  OpenRouter (structured output)
+  ├── Grammar checking   →  SambaNova (reasoning)
+  ├── Answer evaluation  →  Cerebras (high volume)
+  └── All fallback       →  Next available provider</div>
+
+    <h3>Failover Logic</h3>
+    <pre><code>async function getAIResponse(taskType, prompt) {
+  const providers = getPriorityOrder(taskType);
+  for (const provider of providers) {
+    try {
+      if (await hasRemainingQuota(provider)) {
+        return await provider.call(prompt);
+      }
+    } catch (error) {
+      logFailure(provider, error);
+      continue;
+    }
+  }
+  return getFallbackResponse(taskType, prompt);
+}</code></pre>
+  </section>
+
+  <!-- HOSTING -->
+  <section id="hosting">
+    <h2>🏠 Hosting Strategy</h2>
+
+    <h3>Phase 1: Development — $0/month</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">📦</span><h4>Supabase Free</h4><p>PostgreSQL + Auth. 500MB, never expires.</p></div>
+      <div class="card"><span class="card-icon">🚀</span><h4>Render</h4><p>Free web hosting. Spins down after 15min idle.</p></div>
+      <div class="card"><span class="card-icon">🧠</span><h4>Google Gemini</h4><p>Free AI. 1,500 req/day.</p></div>
+      <div class="card"><span class="card-icon">⚡</span><h4>Groq</h4><p>Free AI for chat. 1,000 req/day.</p></div>
+      <div class="card"><span class="card-icon">☁️</span><h4>Cloudinary Free</h4><p>Image/video hosting. 25GB storage.</p></div>
+    </div>
+
+    <div class="warning">
+      <strong>⚠️ Render Free Tier Caveats:</strong> Cold starts after 15min idle • PostgreSQL expires in 30 days (use Supabase) • 1 GB storage • No persistent disk
+    </div>
+
+    <h3>Phase 2: Production — ~$10–25/month</h3>
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">🖥️</span><h4>Hetzner VPS CX22</h4><p>2 vCPU, 4GB RAM, 40GB SSD. ~€4.99/mo</p></div>
+      <div class="card"><span class="card-icon">🐳</span><h4>Coolify</h4><p>Self-hosted. Open source. $0.</p></div>
+      <div class="card"><span class="card-icon">💵</span><h4>DeepSeek V4 API</h4><p>~$0.30/M tokens. ~$5-20/mo</p></div>
+    </div>
+
+    <pre><code># Install Coolify on your VPS
+curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
+# Then connect GitHub → one-click deploy</code></pre>
+  </section>
+
+  <!-- AI ENGINE -->
+  <section id="ai-engine">
+    <h2>🧠 AI Engine Architecture</h2>
+
+    <div class="arch-box">┌─────────────────────────────────────────────────────────┐
+│                    AI ENGINE                             │
+├─────────────────────────────────────────────────────────┤
+│  [Request] → ProviderManager → Gemini/Groq/OpenRouter   │
+│                          ↓                              │
+│              PromptBuilder (templates)                   │
+│                          ↓                              │
+│              ContextManager (examples)                   │
+└─────────────────────────────────────────────────────────┘</div>
+
+    <div class="tree">backend/src/services/ai/
+  LessonAIService.js       →  Structured lessons
+  QuizAIService.js          →  Quizzes with varied types
+  ChatAIService.js          →  Conversational tutor
+  SpeakingAIService.js      →  Pronunciation analysis
+  ReadingAIService.js       →  Passages + questions
+  WritingAIService.js       →  Essay grading
+  HearingAIService.js       →  Listening exercises
+  VocabularyAIService.js    →  Word lists with mnemonics</div>
+
+    <pre><code>class LessonAIService {
+  async generateLesson({ topic, level, skillArea, duration }) {
+    const prompt = this.promptBuilder.build('lessonGeneration', {
+      topic, level, skillArea, duration,
+      numVocabulary: 10, numGrammarPoints: 3
+    });
+    const examples = await this.getFewShotExamples('lessons', level);
+    prompt.addExamples(examples);
+    return await this.providerManager.call('GEMINI', prompt);
+  }
+}</code></pre>
+  </section>
+
+  <!-- ADMIN TRAINING -->
+  <section id="admin-training">
+    <h2>🎓 Admin Training System</h2>
+    <div class="tip">
+      <strong>💡 No fine-tuning needed.</strong> Uses <strong>Prompt Engineering + Few-Shot Learning</strong> — free, instant updates from admin panel.
+    </div>
+
+    <div class="arch-box">Admin Panel                      AI Engine
+  Prompt Editor  ──Edit──→  Prompt Templates
+  Upload Content ──Save──→  Few-Shot Examples
+  Preview Output ←──Render─ AI Generation</div>
+
+    <div class="card-grid">
+      <div class="card"><span class="card-icon">📚</span><h4>Lesson Generator</h4><p>Upload examples → AI matches your style</p></div>
+      <div class="card"><span class="card-icon">📝</span><h4>Exam Generator</h4><p>Upload past exams → AI creates new ones</p></div>
+      <div class="card"><span class="card-icon">📖</span><h4>Vocabulary Manager</h4><p>Word lists → sentences, mnemonics, audio</p></div>
+      <div class="card"><span class="card-icon">🎙️</span><h4>Speaking Scorer</h4><p>Sample recordings → train evaluation</p></div>
+      <div class="card"><span class="card-icon">📄</span><h4>Reading Sets</h4><p>Passages + comprehension questions</p></div>
+      <div class="card"><span class="card-icon">✏️</span><h4>Writing Prompts</h4><p>Rubric → AI grading</p></div>
+      <div class="card"><span class="card-icon">🎧</span><h4>Hearing Exercises</h4><p>TTS + listening tests</p></div>
+      <div class="card"><span class="card-icon">⚙️</span><h4>Prompt Templates</h4><p>Edit AI prompts. Versioned.</p></div>
+    </div>
+  </section>
+
+  <!-- DATABASE -->
+  <section id="database">
+    <h2>🗄 Database Schema</h2>
+    <div class="tree">User              — id, email, password, level, role
+  └── UserProgress  — scores, answers, aiFeedback
+  └── ChatHistory   — AI conversations
+
+Admin             — id, email, permissions[]
+  └── AdminLog     — audit trail
+
+Course            — title, description, level, isPublished
+  └── Lesson       — content (JSON), skillArea, duration
+        ├── Exercise — type, question/answer (JSON)
+        └── Quiz     — questions (JSON), passingScore
+
+<span class="highlight">AITrainingData</span>   — type, level, content (JSON), tags[]
+<span class="highlight">PromptTemplate</span>   — template with {variables}, versioned
+<span class="highlight">AIUsageLog</span>       — provider, tokens, cost (track free limits)</div>
+  </section>
+
+  <!-- DEPLOYMENT -->
+  <section id="deployment">
+    <h2>🚀 Deployment</h2>
+
+    <pre><code># Development (Free)
+git clone ...
+cd backend && npm install && npx prisma migrate dev
+cd frontend && npm install
+cd admin && npm install
+cd ai-engine && npm install</code></pre>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Phase</th><th>Weeks</th><th>What You Build</th></tr></thead>
+        <tbody>
+          <tr><td>1. Foundation</td><td>1–2</td><td>Scaffold, Supabase, Express, Auth, Render deploy</td></tr>
+          <tr><td>2. Core Features</td><td>3–5</td><td>Courses, Lessons, Exercises, Quizzes, Progress</td></tr>
+          <tr><td>3. Admin Panel</td><td>6–8</td><td>Admin auth, Content/User/Media management, Analytics</td></tr>
+          <tr><td>4. AI Integration</td><td>9–12</td><td>AI Engine, Gemini, Groq, Lesson/Quiz/Chat/Feedback AI</td></tr>
+          <tr><td>5. Admin AI Training</td><td>13–14</td><td>Training dashboard, Prompt editor, Preview system</td></tr>
+          <tr><td>6. Production</td><td>15–16</td><td>VPS, Coolify, Docker, SSL, CI/CD</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Users</th><th>VPS</th><th>Total Cost</th></tr></thead>
+        <tbody>
+          <tr><td>0 (Dev)</td><td>—</td><td>$0/month</td></tr>
+          <tr><td>0–1,000</td><td>CX22 (€5)</td><td>~$10/month</td></tr>
+          <tr><td>1,000–5,000</td><td>CX32 (€8)</td><td>~$28/month</td></tr>
+          <tr><td>5,000–20,000</td><td>CX42 (€14)</td><td>~$94/month</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- KEY PRINCIPLES -->
+  <section>
+    <h2>🔑 Key Principles</h2>
+    <div class="principles">
+      <div class="principle"><div class="num">01</div><h4>Start Free, Scale Paid</h4><p>Build on free tiers. Pay only when users arrive.</p></div>
+      <div class="principle"><div class="num">02</div><h4>API Stacking</h4><p>Use multiple free AI providers, not one.</p></div>
+      <div class="principle"><div class="num">03</div><h4>No Fine-Tuning</h4><p>Prompt engineering + few-shot learning is free.</p></div>
+      <div class="principle"><div class="num">04</div><h4>Containerized</h4><p>Docker makes Render → VPS migration seamless.</p></div>
+      <div class="principle"><div class="num">05</div><h4>Admin is the Product</h4><p>AI training dashboard = competitive advantage.</p></div>
+      <div class="principle"><div class="num">06</div><h4>Portable Data</h4><p>PostgreSQL everywhere. No vendor lock-in.</p></div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <p>German Learning App — Architecture Guide</p>
+    <p style="color: #3a3a3a;">$0 to start • 4GB laptop • AI-powered • VPS ready • No coding needed</p>
+  </div>
+
+</div>
+</body>
+</html>
