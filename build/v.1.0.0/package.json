@@ -8,7 +8,7 @@
     "dev:admin": "npm -w admin run dev",
     "dev:backend": "npm -w backend run dev",
     "dev:ai": "npm -w ai-engine run dev",
-    "build": "npm -w frontend run build && npm -w admin run build",
+    "build": "npm install --include=optional && npm -w frontend run build && npm -w admin run build",
     "build:backend": "npm -w backend run build",
     "build:ai": "npm -w ai-engine run build",
     "db:migrate": "npm -w backend run db:migrate",
