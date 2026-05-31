@@ -1,9 +1,11 @@
 # PHASE 2 — Courses & Lessons Engine
 
 ## Objective
+
 Build the complete course and lesson management system. Students can browse courses, view lessons, and track progress. Admins can create, edit, and manage courses/lessons with a rich lesson editor.
 
 ## Prerequisites
+
 - Phase 1 complete (DB + Auth working)
 - Prisma tables migrated
 - Auth middleware working
@@ -13,6 +15,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 1. Course Controller (Student-facing)
 
 **`backend/src/controllers/courseController.js`** — Public course API:
+
 - GET /api/courses — List published courses (with pagination, level filter, search)
 - GET /api/courses/:id — Get course with lessons list
 - GET /api/courses/:id/lessons — Get lessons for a course
@@ -24,6 +27,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 3. Lesson Controller (Student-facing)
 
 **`backend/src/controllers/lessonController.js`** — Add this file:
+
 - GET /api/lessons/:id — Get lesson with exercises and quizzes (auth required)
 - POST /api/lessons/:id/complete — Mark lesson as complete (track progress)
 
@@ -34,6 +38,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 5. Admin Course Controller
 
 **`backend/src/controllers/admin/courseAdminController.js`** — Full CRUD:
+
 - GET /api/admin/courses — List ALL courses (including unpublished), paginated, searchable
 - GET /api/admin/courses/:id — Get course with full lesson details
 - POST /api/admin/courses — Create course
@@ -49,6 +54,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 7. Admin Lesson Controller
 
 **`backend/src/controllers/admin/lessonAdminController.js`** — Full CRUD:
+
 - GET /api/admin/lessons — List lessons (filter by course, level, skillArea)
 - GET /api/admin/lessons/:id — Get lesson with exercises and quizzes
 - POST /api/admin/lessons — Create lesson (with courseId, title, content JSON, level, skillArea, duration, order)
@@ -66,6 +72,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 9. Course Listing Page
 
 **`frontend/src/pages/Courses.jsx`** — Course catalog:
+
 - Grid of course cards with image, title, level badge, description
 - Level filter tabs (A1, A2, B1, B2, C1, All)
 - Search bar
@@ -77,6 +84,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 10. Lesson View Page
 
 **`frontend/src/pages/Lesson.jsx`** — Lesson player:
+
 - Lesson title, level badge, skill area, duration
 - Rich content renderer (parses JSON content structure)
 - Progress bar at top
@@ -89,6 +97,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 11. Frontend Hooks
 
 **`frontend/src/hooks/useCourses.js`** — Custom hook:
+
 - fetchCourses(filters) — GET /api/courses
 - fetchCourse(id) — GET /api/courses/:id
 - fetchLessons(courseId) — GET /api/courses/:id/lessons
@@ -100,6 +109,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 12. Admin Course Pages
 
 **`admin/src/pages/courses/CoursesList.jsx`** — Data table:
+
 - Columns: Title, Level, Lessons count, Published status, Order, Actions
 - Search bar, level filter, publish status filter
 - Create button → /admin/courses/new
@@ -109,6 +119,7 @@ Build the complete course and lesson management system. Students can browse cour
 - Drag-to-reorder (simple up/down buttons)
 
 **`admin/src/pages/courses/CreateCourse.jsx`** — Form:
+
 - Title, description (textarea), level (select A1-C1), image URL, order number
 - Validation on submit
 - On success → redirect to edit page or list
@@ -120,6 +131,7 @@ Build the complete course and lesson management system. Students can browse cour
 **`admin/src/pages/lessons/LessonsList.jsx`** — Table with course filter.
 
 **`admin/src/pages/lessons/CreateLesson.jsx`** — Form:
+
 - Course selector (dropdown)
 - Title, level, skill area (select: reading/writing/speaking/hearing/vocabulary/grammar)
 - Duration (minutes), order
@@ -128,6 +140,7 @@ Build the complete course and lesson management system. Students can browse cour
 **`admin/src/pages/lessons/EditLesson.jsx`** — Same form pre-filled.
 
 **`admin/src/pages/lessons/LessonEditor.jsx`** — Rich lesson editor with WordPress-style WYSIWYG:
+
 - Section builder (add/remove/reorder content sections)
 - Section types: Text, Vocabulary List, Grammar Explanation, Example Dialog, Exercise Reference, Image, Audio
 - Each section has title + content
@@ -138,6 +151,7 @@ Build the complete course and lesson management system. Students can browse cour
 ### 13b. HTML Content Editor Component
 
 **`admin/src/components/WYSIWYGEditor.jsx`** — WordPress-style visual content editor:
+
 - **Toolbar:** Bold (B), Italic (I), Underline (U), Heading H1/H2, bullet list, numbered list, link insert, image insert, undo/redo
 - **Mode tabs:** Visual, HTML, Preview — toggle between editing modes
 - **Visual mode:** Rich text editing with formatting preserved (contenteditable or React Quill)
@@ -150,6 +164,7 @@ Build the complete course and lesson management system. Students can browse cour
 - **Responsive:** Toolbar wraps on narrow screens
 
 **`admin/src/api/courseAdminAPI.js`** — Add WYSIWYG content save endpoints:
+
 - PUT /api/admin/lessons/:id/content — Save WYSIWYG content as HTML
 - GET /api/admin/lessons/:id/content — Fetch saved HTML content
 
@@ -160,11 +175,13 @@ Build the complete course and lesson management system. Students can browse cour
 ### 15. Admin API
 
 **`admin/src/api/courseAdminAPI.js`** — Axios calls:
+
 - getCourses(params), getCourse(id), createCourse(data), updateCourse(id, data), deleteCourse(id), reorderCourses(orders)
 
 ## Store Updates
 
 **`frontend/src/store/store.js`** — Add courses slice:
+
 ```javascript
 courses: [],
 currentCourse: null,
@@ -178,9 +195,10 @@ enrollCourse: async (courseId) => { ... },
 ```
 
 ## Validation
+
 1. Test all course CRUD endpoints with curl
 2. Test all lesson CRUD endpoints with curl
 3. Frontend course list renders correctly
 4. Lesson player loads lesson content
 5. Admin course creation + editing works end-to-end
-6. `npm run build` for both frontends
+6. `npm run build` for both frontend

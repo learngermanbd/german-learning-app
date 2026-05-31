@@ -1,6 +1,10 @@
-# LearnGerman — Master Code Generation Orchestrator (Optimized)
+# 🇩🇪 LEARNGERMAN — Master Code Generation Orchestrator (Optimized)
 
 > **Purpose:** Orchestrator prompt for building the LEARNGERMAN AI-Powered German Learning Platform. Tells the AI what to build, in what order, prerequisites, validation steps, and troubleshooting guides.
+>
+> **Project Root:** `C:\Users\NIRBAN\Desktop\Coding`
+> **Generated Code Root:** `build/v.1.0.0/`
+> **Last Updated:** May 31, 2026
 
 ---
 
@@ -24,13 +28,14 @@
 
 ```bash
 # 1. Read the memory file for project context
-cat /root/LEARNGERMAN/CHAT_MEMORY.md
+cat CHAT_MEMORY.md
 
 # 2. Read this orchestrator for execution plan
-cat /root/LEARNGERMAN/MASTER_PROMPT.md
+cat MASTER_PROMPT_OPTIMIZED.md
 
-# 3. Pick a phase prompt and start building
-cat "/root/LEARNGERMAN/PHASE 0 - Project Scaffolding/CODE_GENERATION_PROMPT.md"
+# 3. Pick a phase and start building
+# Code goes under build/v.1.0.0/
+cat "PHASE 0 - Project Scaffolding/CODE_GENERATION_PROMPT.md"
 
 # 4. After completing a phase, update memory
 # Edit CHAT_MEMORY.md with completion status
@@ -45,7 +50,7 @@ Build the project by executing phases **in order**. Each phase depends on the pr
 | Phase | Name | Description | Est. Files | Est. Time | Priority |
 |-------|------|-------------|-----------|-----------|----------|
 | **0** | Project Scaffolding | Directory structure, configs, Prisma schema, Express server, Vite setup | ~30 | 2-3h | Core |
-| **1** | Database & Authentication | All Prisma models, JWT auth, login/register, admin auth | ~15 | 3-4h | Core |
+| **1** | Database & Authentication | All Prisma models, Supabase Auth, login/register, admin auth | ~15 | 3-4h | Core |
 | **2** | Courses & Lessons Engine | Course CRUD, lesson player, admin management, lesson editor | ~25 | 4-5h | Core |
 | **3** | Exercises & Quizzes Engine | 5 exercise types, quiz engine with timer, scoring, progress | ~25 | 4-5h | Core |
 | **4** | Dashboard & User Profile | Student dashboard, progress charts, admin analytics | ~20 | 3-4h | Core |
@@ -134,21 +139,21 @@ Phase 10 (Testing) ---------> Phase 14 (API Docs)
 
 ```bash
 # Backend validation
-cd backend && npm run lint          # Check for lint errors
-cd backend && npx prisma generate   # Verify Prisma schema compiles
-cd backend && node -e "require('./src/index.js')"  # Server starts without crash
+cd build/v.1.0.0/backend && npx tsc --noEmit   # TypeScript check
+cd build/v.1.0.0/backend && npx prisma generate # Verify Prisma schema compiles
+cd build/v.1.0.0/backend && npm run lint        # ESLint check
 
 # Frontend validation
-cd frontend && npm run lint         # Check for lint errors
-cd frontend && npm run build        # Build succeeds
+cd build/v.1.0.0/frontend && npx tsc --noEmit    # TypeScript check
+cd build/v.1.0.0/frontend && npm run build       # Build succeeds
 
 # Admin validation
-cd admin && npm run lint
-cd admin && npm run build
+cd build/v.1.0.0/admin && npx tsc --noEmit
+cd build/v.1.0.0/admin && npm run build
 
 # Cross-check
-ls -la backend/src/routes/          # Verify routes exist
-ls -la frontend/src/pages/          # Verify pages exist
+ls -la build/v.1.0.0/backend/src/routes/    # Verify routes exist
+ls -la build/v.1.0.0/frontend/src/pages/    # Verify pages exist
 ```
 
 ### Quality Checkpoints
@@ -197,50 +202,56 @@ git commit -m "Phase X: [description] — [N] files created/updated"
 ## Project Structure (After All Phases)
 
 ```
-LEARNGERMAN/
-├── frontend/                    # React + Vite + Tailwind (Student app, port 5173)
-│   └── src/
-│       ├── pages/               # Route pages (Home, Dashboard, Courses, AI features)
-│       ├── components/          # Reusable UI components
-│       ├── hooks/               # Custom React hooks
-│       ├── store/               # Zustand state management
-│       └── utils/               # API client, helpers
+C:\Users\NIRBAN\Desktop\Coding\
+├── build/v.1.0.0/               # All generated code
+│   ├── frontend/                 # React + Vite + Tailwind + TypeScript (Student app, port 5173)
+│   │   └── src/
+│   │       ├── pages/            # Route pages (Home, Dashboard, Courses, AI features)
+│   │       ├── components/       # Reusable UI components (TSX)
+│   │       ├── hooks/            # Custom React hooks (TS)
+│   │       ├── store/            # Zustand state management (TS)
+│   │       └── utils/            # API client, Supabase client, helpers (TS)
+│   │
+│   ├── admin/                    # React + Vite + Tailwind + TypeScript (Admin panel, port 5174)
+│   │   └── src/
+│   │       ├── pages/            # Admin pages (Dashboard, Content, Users, AI Training)
+│   │       ├── components/       # Admin-specific components (TSX)
+│   │       ├── hooks/            # Admin hooks (TS)
+│   │       ├── store/            # Admin Zustand stores (TS)
+│   │       ├── api/              # Admin API functions (TS)
+│   │       └── utils/            # Admin utilities (TS)
+│   │
+│   ├── backend/                  # Express + Prisma + TypeScript (API server, port 5000)
+│   │   └── src/
+│   │       ├── routes/           # Express routers (TS)
+│   │       ├── controllers/      # Route handlers (TS)
+│   │       ├── services/         # Business logic — AI orchestration, Redis, BullMQ (TS)
+│   │       ├── middleware/       # Supabase auth, validation, error handling (TS)
+│   │       ├── cache/            # Redis caching service (TS)
+│   │       ├── queue/            # BullMQ job queue (TS)
+│   │       ├── prisma/           # Schema and migrations
+│   │       └── utils/            # Helpers, formatters, validation (TS)
+│   │
+│   └── ai-engine/                # AI orchestration + TypeScript (port 6000)
+│       ├── providers/            # Gemini, Groq, OpenRouter, SambaNova, Cerebras
+│       ├── services/             # Content generation, evaluation, vocab extraction
+│       └── templates/            # Prompt templates per task type
 │
-├── admin/                       # React + Vite + Tailwind (Admin panel, port 5174)
-│   └── src/
-│       ├── pages/               # Admin pages (Dashboard, Content, Users, AI Training)
-│       ├── components/          # Admin-specific components
-│       ├── hooks/               # Admin hooks
-│       ├── store/               # Admin state
-│       └── api/                 # Admin API functions
-│
-├── backend/                     # Express + Prisma (API server, port 5000)
-│   └── src/
-│       ├── routes/              # Express routes (auth, courses, AI, admin)
-│       ├── controllers/         # Route handlers
-│       ├── services/            # Business logic (AI services, etc.)
-│       ├── middleware/          # Auth, validation, error handling
-│       ├── prisma/              # Schema and migrations
-│       └── utils/               # Helpers (tokens, uploads, validation)
-│
-├── ai-engine/                   # Standalone AI engine (providers, templates, evaluation)
-│   ├── providers/               # Gemini, Groq, OpenRouter, SambaNova, Cerebras
-│   ├── training/                # Prompt templates, few-shot examples
-│   └── evaluation/              # Grammar checker, pronunciation scorer, writing grader
-│
-├── PHASE 0-16/                  # Code generation prompts (these files)
-├── MASTER_PROMPT.md             # Original orchestrator
-├── MASTER_PROMPT_OPTIMIZED.md   # This file (enhanced orchestrator)
-├── CHAT_MEMORY.md               # Session memory (auto-updated)
-├── ARCHITECTURE.md              # Full architecture documentation
-├── COMPETITIVE_LANDSCAPE.md     # Competitive analysis
-├── DESIGN_REFERENCE.md          # Design system and UI specs
-├── render.yaml                  # Render deployment config
-├── docker-compose.yml           # Docker orchestration
-├── Dockerfile                   # Multi-stage build
-├── nginx.conf                   # Nginx config
+├── PHASE 0-16/                   # Code generation prompts (these files)
+├── roo-code-mega-prompt.txt      # Consolidated 16-phase mega-prompt
+├── MASTER_PROMPT_OPTIMIZED.md    # This file (enhanced orchestrator)
+├── CHAT_MEMORY.md                # Session memory (auto-updated)
+├── ARCHITECTURE.md               # Full architecture documentation
+├── COMPETITIVE_LANDSCAPE.md      # Competitive analysis
+├── DESIGN_REFERENCE.md           # Design system and UI specs
+├── AI_CODING_RULES.md            # Agent coding conventions
+├── .editorconfig
+├── .eslintrc.json
+├── .prettierrc
 ├── .gitignore
 ├── .env.example
+├── tsconfig.json
+├── package.json
 └── README.md
 ```
 
@@ -267,7 +278,7 @@ LEARNGERMAN/
 ### Competitive Advantage Verification (Check After Each Phase)
 
 - [ ] **Phase 1-4:** Does our DB schema support structured CEFR courses that Talkpal lacks?
-- [ ] **Phase 5-6:** Is our AI routing smarter than Talkpal's single-provider approach?
+- [ ] **Phase 5-6:** Is our AI routing (with Redis caching + BullMQ queuing) smarter than Talkpal's single-provider approach?
 - [ ] **Phase 7:** Can teachers customize AI behavior in ways Talkpal doesn't offer?
 - [ ] **Phase 9:** Is our UI cleaner and more professional than Talkpal?
 - [ ] **Phase 11-12:** Are we faster and more secure than competitors?
@@ -279,14 +290,17 @@ LEARNGERMAN/
 
 1. **4 separate apps** under one repo: frontend, admin, backend, ai-engine
 2. **Dark theme by default** with purple (#6c5ce7) as primary color
-3. **JWT auth** with separate middleware for students and admins
+3. **Supabase Auth** as the **sole** authentication provider (no custom JWT, no bcrypt, no jsonwebtoken)
 4. **Prisma ORM** with PostgreSQL (Supabase dev, self-hosted prod)
-5. **AI providers** via smart router with automatic fallback
+5. **AI providers** via smart router with automatic fallback across 5 providers
 6. **Admin Training** uses prompt engineering + few-shot (no fine-tuning)
 7. **Containerized** from day 1 (Docker multi-stage build)
 8. **Free tier first** — all dependencies have free tiers
 9. **Structured learning first, AI second** — courses & exercises are core, AI chat is enhancement
-10. **Talkpal-inspired landing page** — see DESIGN_REFERENCE.md for full design specs
+10. **TypeScript strict mode** from Phase 0 across all 4 workspaces
+11. **Redis + BullMQ** for AI response caching and async job queuing
+12. **Tailwind CSS v4** (CSS-first configuration, no tailwind.config.js needed)
+13. **Talkpal-inspired landing page** — see DESIGN_REFERENCE.md for full design specs
 
 ---
 
@@ -295,12 +309,12 @@ LEARNGERMAN/
 | Layer | Technology | Version | Purpose |
 |-------|-----------|---------|---------|
 | Frontend | React + Vite | 18.x / 5.x | SPA framework |
-| Styling | Tailwind CSS | 3.x | Utility-first CSS |
-| State | Zustand | 4.x | Lightweight state management |
-| Routing | React Router | 6.x | Client-side routing |
-| Backend | Node.js + Express | 20.x / 4.x | API server |
-| Database | PostgreSQL + Prisma | 16.x / 5.x | Data persistence |
-| Auth | JWT (jsonwebtoken) | 9.x | Authentication |
+| Styling | Tailwind CSS v4 | Latest | CSS-first config, no tailwind.config needed |
+| State | Zustand | 5.x | Lightweight state management |
+| Routing | React Router | 7.x | Client-side routing |
+| Backend | Node.js + Express (TypeScript) | 22.x / 5.x | API server |
+| Database | PostgreSQL + Prisma | 17.x / 6.x | Data persistence |
+| Auth | Supabase Auth (sole provider) | Latest | All auth — no custom JWT, no bcrypt, no jsonwebtoken |
 | AI Primary | Google Gemini | Latest | Content generation (1,500 req/day free) |
 | AI Real-time | Groq (Llama 3.3) | Latest | Chat/conversation (1,000 req/day free) |
 | AI Grammar | SambaNova (DeepSeek R1) | Latest | Grammar/reasoning tasks |
@@ -330,7 +344,7 @@ LEARNGERMAN/
 
 | Problem | Solution |
 |---------|----------|
-| 404 on API routes | Check route files are imported in `routes/index.js` |
+| 404 on API routes | Check route files are imported in `routes/index.ts` |
 | Prisma relation errors | Verify schema has correct `@relation` fields |
 | CORS errors | Ensure backend CORS middleware allows frontend URL |
 
@@ -411,6 +425,11 @@ Record significant architecture decisions here:
 | 2026-05-29 | Multi-provider AI routing | Free tier stacking, fallback resilience | Single provider (Gemini) |
 | 2026-05-29 | Dark theme default | Modern SaaS aesthetic, reduces eye strain | Light theme default |
 | 2026-05-29 | Prompt engineering over fine-tuning | Free, instant updates, admin-controllable | Fine-tuning (expensive, slow) |
+| 2026-05-31 | TypeScript (strict mode) from Phase 0 | Type safety across 4 workspaces, catches bugs early | JavaScript (original plan) |
+| 2026-05-31 | Supabase Auth only (no custom JWT) | Single auth provider, simpler security model, free | Custom JWT + bcrypt (original plan) |
+| 2026-05-31 | Redis + BullMQ for AI engine | Prevents quota drain (caching) + request timeouts (queue) | Direct API calls (original plan) |
+| 2026-05-31 | Tailwind CSS v4 (CSS-first) | Simpler config, no tailwind.config.js or postcss needed | Tailwind v3 with traditional config |
+| 2026-05-31 | All 16 phases in single mega-prompt | One-shot generation, no context fragmentation | Separate per-phase prompts |
 
 ---
 
@@ -428,4 +447,4 @@ Record significant architecture decisions here:
 
 ---
 
-*Last updated: Session 5 — Optimized orchestrator with 16 phases*
+*Last updated: Session 8 — Updated to reflect TypeScript, Supabase-only auth, Redis/BullMQ decisions*

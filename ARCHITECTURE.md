@@ -20,34 +20,44 @@
 
 ## 🛠 Tech Stack Overview
 
+### Language
+| Technology | Purpose |
+|---|---|
+| **TypeScript (strict mode)** | Full-stack type safety across all 4 apps |
+
 ### Frontend (Student Website)
 | Technology | Purpose |
 |---|---|
 | **React 18 + Vite** | SPA framework |
-| **Tailwind CSS** | Styling |
+| **Tailwind CSS v4** | Styling (CSS-first config, no tailwind.config needed) |
 | **Zustand** | State management |
 | **React Router v6** | Routing |
 | **Axios** | HTTP client |
+| **Supabase JS Client** | Auth (login, register, session, social login) |
 
 ### Admin Panel
 | Technology | Purpose |
 |---|---|
 | **React 18 + Vite** | SPA framework (separate app) |
-| **Tailwind CSS** | Styling |
+| **Tailwind CSS v4** | Styling |
 | **Zustand** | State management |
 | **React Router v6** | Routing |
 | **Recharts / Chart.js** | Analytics charts |
 | **React-Quill / TipTap** | Rich text editor |
+| **Supabase JS Client** | Admin auth |
 
 ### Backend
 | Technology | Purpose |
 |---|---|
 | **Node.js + Express** | Server |
+| **TypeScript** | Type safety with ts-node/tsx |
 | **Prisma ORM** | Database management |
 | **PostgreSQL** | Database |
-| **JWT** | Authentication |
+| **Supabase Auth** | All authentication (email verification, password reset, social login) |
 | **Multer / Sharp** | Media upload & processing |
 | **Nodemailer** | Email sending |
+| **Redis** | AI response caching, session store, rate limiter backing store |
+| **BullMQ** | Job queue for async AI generation (prevents timeouts) |
 
 ### AI Engine
 | Technology | Purpose |
@@ -56,6 +66,8 @@
 | **Groq API** | Real-time chat (free tier) |
 | **OpenRouter API** | Fallback provider (free tier) |
 | **SambaNova / Cerebras** | Evaluation tasks (free tier) |
+| **Redis** | Cache AI responses to avoid duplicate API calls |
+| **BullMQ** | Queue AI generation jobs with retry logic |
 
 ---
 
@@ -80,6 +92,8 @@ german-learning-app/
 │       │   ├── ReadingLesson.jsx          ← 🆕 AI-generated reading
 │       │   ├── WritingExercise.jsx        ← 🆕 AI-graded writing
 │       │   ├── VocabularyDrills.jsx       ← 🆕 AI-powered vocab practice
+│       │   ├── HearingPractice.jsx        ← 🆕 AI-powered listening exercises
+│       │   ├── GrammarPractice.jsx        ← 🆕 Rule-based grammar drills
 │       │   └── Auth/
 │       │       ├── Login.jsx
 │       │       └── Register.jsx
@@ -96,7 +110,9 @@ german-learning-app/
 │       │   ├── useProgress.js
 │       │   ├── useAIChat.js              ← 🆕
 │       │   ├── useSpeechRecognition.js   ← 🆕
-│       │   └── useAIFeedback.js          ← 🆕
+│       │   ├── useAIFeedback.js          ← 🆕
+│       │   ├── useHearing.js             ← 🆕
+│       │   └── useGrammarPractice.js     ← 🆕
 │       ├── store/
 │       │   └── store.js
 │       ├── utils/
@@ -154,7 +170,7 @@ german-learning-app/
 │       │   │   ├── CreateAdmin.jsx
 │       │   │   ├── PermissionsList.jsx
 │       │   │   └── AdminLogs.jsx
-│       │   └── ai-training/               ← 🆕 KEY SECTION
+│       │   ├── ai-training/               ← 🆕 KEY SECTION
 │       │       ├── TrainingDashboard.jsx
 │       │       ├── LessonGenerator.jsx
 │       │       ├── ExamGenerator.jsx
@@ -166,6 +182,14 @@ german-learning-app/
 │       │       ├── PromptTemplates.jsx
 │       │       ├── ModelConfig.jsx
 │       │       └── TrainingDataUploader.jsx
+│       │   ├── website-editor/             ← 🆕 Main Website Page Editor
+│       │   │   ├── WebsitePagesList.jsx
+│       │   │   ├── WebsitePageEditor.jsx
+│       │   │   └── SectionBuilder.jsx
+│       │   └── updates/                   ← 🆕 Auto-Update System
+│       │       ├── UpdateManager.jsx
+│       │       ├── UploadVersion.jsx
+│       │       └── VersionHistory.jsx
 │       ├── components/
 │       │   ├── AdminLayout.jsx
 │       │   ├── Sidebar.jsx
@@ -176,13 +200,17 @@ german-learning-app/
 │       │   ├── ImageUploader.jsx
 │       │   ├── Modal.jsx
 │       │   ├── Charts.jsx
-│       │   └── AIPreview.jsx             ← 🆕 Preview AI content
+│       │   ├── AIPreview.jsx             ← 🆕 Preview AI content
+│       │   ├── WYSIWYGEditor.jsx          ← 🆕 WordPress-style content editor
+│       │   └── VersionUploader.jsx        ← 🆕 Version file uploader
 │       ├── hooks/
 │       │   ├── useAdminAuth.js
 │       │   ├── useCourseAdmin.js
 │       │   ├── useUserAdmin.js
 │       │   ├── useMediaAdmin.js
-│       │   └── useAITraining.js          ← 🆕
+│       │   ├── useAITraining.js          ← 🆕
+│       │   ├── useWebsiteEditor.js       ← 🆕
+│       │   └── useUpdateAdmin.js         ← 🆕
 │       ├── store/
 │       │   ├── adminAuthStore.js
 │       │   ├── adminUIStore.js
@@ -193,7 +221,9 @@ german-learning-app/
 │       │   ├── userAdminAPI.js
 │       │   ├── mediaAdminAPI.js
 │       │   ├── analyticsAPI.js
-│       │   └── aiTrainingAPI.js          ← 🆕
+│       │   ├── aiTrainingAPI.js          ← 🆕
+│       │   ├── websiteAdminAPI.js        ← 🆕
+│       │   └── updateAdminAPI.js         ← 🆕
 │       ├── utils/
 │       │   ├── adminConfig.js
 │       │   ├── permissions.js
@@ -211,6 +241,7 @@ german-learning-app/
 │       │   ├── quizzes.js
 │       │   ├── flashcards.js
 │       │   ├── ai/                         ← 🆕 AI ROUTES
+│       │   │   ├── index.js               ← 🆕 Aggregates all AI routes
 │       │   │   ├── generate.js
 │       │   │   ├── evaluate.js
 │       │   │   ├── chat.js
@@ -232,7 +263,10 @@ german-learning-app/
 │       │       ├── emailTemplates.js
 │       │       ├── backups.js
 │       │       ├── logs.js
-│       │       └── ai-training.js          ← 🆕
+│       │       ├── ai-training.js          ← 🆕
+│       │       ├── website.js              ← 🆕
+│       │       ├── updates.js              ← 🆕
+│       │       └── index.js                ← 🆕 Aggregates all admin routes
 │       ├── controllers/
 │       │   ├── authController.js
 │       │   ├── courseController.js
@@ -250,7 +284,9 @@ german-learning-app/
 │       │   │   ├── mediaController.js
 │       │   │   ├── analyticsController.js
 │       │   │   ├── settingsController.js
-│       │   │   └── trainingController.js
+│       │   │   ├── trainingController.js
+│       │   │   ├── websiteController.js    ← 🆕
+│       │   │   └── updateController.js     ← 🆕
 │       │   └── ... (other controllers)
 │       ├── services/                       ← 🆕 AI SERVICE LAYER
 │       │   ├── ai/
@@ -283,6 +319,7 @@ german-learning-app/
 │       │   ├── aiCostTracker.js            ← 🆕
 │       │   └── textToSpeech.js             ← 🆕
 │       └── index.js
+│   └── uploads/                            ← 🆕 Media uploads directory
 │
 ├── ai-engine/                              ← 🆕 CORE AI ENGINE
 │   ├── index.js
@@ -318,6 +355,7 @@ german-learning-app/
 ├── render.yaml
 ├── docker-compose.yml
 ├── Dockerfile
+├── nginx.conf                             ← 🆕 Nginx config
 ├── .gitignore
 ├── .env.example
 └── README.md
@@ -341,30 +379,71 @@ Route different AI tasks to different free providers to maximize your daily allo
 
 **Total free capacity: ~3,500–5,000 requests/day** — enough for ~1,000–1,500 active users.
 
-### Smart Routing Logic
+### AI Request Pipeline (with Redis Cache + BullMQ Queue)
 
 ```
 Student Request
       ↓
-[aiProviderRouter.js]
+[Redis Cache] ──cache hit──→ Return cached response (instant, no API cost)
+      | (miss)
+      ↓
+[BullMQ Queue] → Job scheduled for async AI generation
+      |
+      ↓ (worker picks up job)
+[aiProviderRouter.ts]
   ├── Lesson generation  →  Google Gemini (large context, 1M tokens)
   ├── Chat/conversation  →  Groq (ultra-low latency)
   ├── Quiz generation    →  OpenRouter (structured JSON output)
   ├── Grammar checking   →  SambaNova (reasoning-focused)
   ├── Answer evaluation  →  Cerebras (high volume)
   └── All fallback       →  Next available provider
+      |
+      ↓
+[Redis Cache] ← Store result (cached for TTL) → Notify frontend via WebSocket/polling
 ```
+
+### Why Redis Cache?
+- Free AI API tiers have **daily caps** (1,000–1,700 req/day each)
+- Without caching, the same prompt (e.g., "Explain dative case") burns quota on every identical request
+- **Cache key:** hash of (userId, taskType, prompt) — returns same response for repeat queries
+- **TTL:** 1 hour for static content (explanations, grammar rules), 5 min for dynamic (conversation)
+- LRU eviction when Redis memory is full
+
+### Why BullMQ Queue?
+- AI generation calls can take **3–30 seconds** — HTTP requests will timeout under load
+- Without a queue, 5+ concurrent users trigger simultaneous API calls → quota exhaustion
+- Queue ensures **one-at-a-time processing** with backpressure handling
+- Failed jobs retry with exponential backoff (3 retries, 1s → 5s → 15s)
+- Job progress tracked in Redis, status polled by frontend
 
 ### Provider Manager Failover Logic
 
-```javascript
+```typescript
 async function getAIResponse(taskType, prompt) {
-  const providers = getPriorityOrder(taskType);
+  // 1. Check cache first
+  const cacheKey = hash(`${taskType}:${prompt}`);
+  const cached = await redis.get(cacheKey);
+  if (cached) return JSON.parse(cached);
+
+  // 2. Queue the job (async)
+  const job = await aiQueue.add('generate', { taskType, prompt });
+  return { jobId: job.id, status: 'queued' }; // Frontend polls for result
+}
+
+// Worker processes jobs:
+async function workerProcess(job) {
+  const { taskType, prompt } = job.data;
   
-  for (const provider of providers) {
+  // Try providers in priority order
+  for (const provider of getPriorityOrder(taskType)) {
     try {
       if (await hasRemainingQuota(provider)) {
-        return await provider.call(prompt);
+        const result = await provider.call(prompt);
+        
+        // Cache successful responses
+        await redis.setex(cacheKey, getTTL(taskType), JSON.stringify(result));
+        
+        return result;
       }
     } catch (error) {
       logFailure(provider, error);
@@ -372,7 +451,7 @@ async function getAIResponse(taskType, prompt) {
     }
   }
   
-  // All providers exhausted — return cached or simplified response
+  // All providers exhausted
   return getFallbackResponse(taskType, prompt);
 }
 ```
@@ -434,41 +513,60 @@ curl -fsSL https://cdn.coollabs.io/coolify/install.sh | bash
 
 ---
 
-## 🧠 AI Engine Architecture
-
-### System Design
+## 🧠 AI Engine Architecture### System Design (with Redis + BullMQ)
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│                    AI ENGINE                             │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  [API Request]                                           │
-│       │                                                  │
-│       ▼                                                  │
-│  ┌─────────────────┐                                    │
-│  │ ProviderManager  │──→ Gemini (primary)               │
-│  │ (Smart Router)   │──→ Groq (real-time)               │
-│  │                  │──→ OpenRouter (fallback)          │
-│  └────────┬────────┘──→ Cerebras (batch)                │
-│           │                                              │
-│           ▼                                              │
-│  ┌─────────────────┐    ┌──────────────────────┐        │
-│  │  PromptBuilder   │──→│  Prompt Templates    │        │
-│  │  (Builds prompts │    │  • lessonGeneration │        │
-│  │   from templates)│    │  • quizGeneration   │        │
-│  └────────┬────────┘    │  • conversation     │        │
-│           │             │  • writingEval      │        │
-│           │             │  • speakingEval     │        │
-│           │             └──────────────────────┘        │
-│           ▼                                              │
-│  ┌─────────────────┐    ┌──────────────────────┐        │
-│  │  ContextManager  │──→│  Few-Shot Examples   │        │
-│  │  (Adds examples  │    │  • Admin-created     │        │
-│  │   to prompts)    │    │  • Curated content   │        │
-│  └─────────────────┘    └──────────────────────┘        │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│                    AI ENGINE                              │
+├──────────────────────────────────────────────────────────┤
+│                                                           │
+│  [API Request]                                            │
+│       │                                                   │
+│       ▼                                                   │
+│  ┌──────────────┐  ┌──────────────────┐                  │
+│  │  Redis Cache  │──│ Check cache first │──cache hit──→ Return|
+│  │  (response)   │  └──────────────────┘                  │
+│  └──────┬───────┘                                         │
+│         │ cache miss                                       │
+│         ▼                                                  │
+│  ┌──────────────┐  ┌──────────────────┐                  │
+│  │  BullMQ Queue │──│ Job: generate AI  │──→ Worker       │
+│  │  (ai-generation)  │   response        │    processes     │
+│  └──────┬───────┘  └──────────────────┘    │              │
+│         │                                   ▼              │
+│         │                           ┌──────────────┐      │
+│         │                           │ ProviderMgr   │      │
+│         │                           │ Smart Router  │      │
+│         │                           ├──────────────┤      │
+│         │                           │→ Gemini       │      │
+│         │                           │→ Groq         │      │
+│         │                           │→ OpenRouter   │      │
+│         │                           │→ SambaNova    │      │
+│         │                           │→ Cerebras     │      │
+│         │                           └───────┬──────┘      │
+│         │                                   │              │
+│         ▼                                   ▼              │
+│  ┌──────────────┐    ┌──────────────────────┐             │
+│  │ Redis Cache   │◄───│  Store result +     │             │
+│  │ (write-back)  │    │  Notify frontend    │             │
+│  └──────────────┘    └──────────────────────┘             │
+│                                                           │
+│  ┌─────────────────┐    ┌──────────────────────┐         │
+│  │  PromptBuilder   │──→│  Prompt Templates    │         │
+│  │  (Builds prompts │    │  • lessonGeneration │         │
+│  │   from templates)│    │  • quizGeneration   │         │
+│  └────────┬────────┘    │  • conversation     │         │
+│           │             │  • writingEval      │         │
+│           │             │  • speakingEval     │         │
+│           │             └──────────────────────┘         │
+│           ▼                                               │
+│  ┌─────────────────┐    ┌──────────────────────┐         │
+│  │  ContextManager  │──→│  Few-Shot Examples   │         │
+│  │  (Adds examples  │    │  • Admin-created     │         │
+│  │   to prompts)    │    │  • Curated content   │         │
+│  └─────────────────┘    └──────────────────────┘         │
+│                                                           │
+└──────────────────────────────────────────────────────────┘
 ```
 
 ### AI Service Layer (Backend)
@@ -713,12 +811,13 @@ Every single one of these is LEARNGERMAN's opportunity.
 model User {
   id            String   @id @default(uuid())
   email         String   @unique
-  passwordHash  String
+  supabaseId    String   @unique // Supabase Auth user ID
   name          String
   nativeLanguage String  @default("en")
   level         String   @default("A1") // A1, A2, B1, B2, C1
   role          String   @default("student") // student | admin | superadmin
   isActive      Boolean  @default(true)
+  emailVerified Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   
@@ -728,10 +827,16 @@ model User {
   writingSubmissions WritingSubmission[]
 }
 
+// NOTE: No passwordHash field — authentication is handled entirely by Supabase Auth.
+// The User model stores only the Supabase Auth UID as a reference.
+// All auth flows (register, login, password reset, email verification, social login)
+// go through Supabase Auth JS client on the frontend.
+// The backend validates requests by verifying the Supabase session token.
+
 model Admin {
   id            String   @id @default(uuid())
   email         String   @unique
-  passwordHash  String
+  supabaseId    String   @unique // Supabase Auth user ID (admin user)
   name          String
   role          String   @default("admin") // admin | superadmin
   permissions   String[] // ["courses:create", "users:delete", "ai:train", ...]
@@ -926,9 +1031,13 @@ OPENROUTER_API_KEY="your-openrouter-api-key"
 SAMBANOVA_API_KEY="your-sambanova-api-key"
 CEREBRAS_API_KEY="your-cerebras-api-key"
 
-# Auth
-JWT_SECRET="your-jwt-secret"
-JWT_EXPIRES_IN="7d"
+# Supabase (handles ALL auth — no custom JWT)
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_ANON_KEY="your-supabase-anon-key"
+SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
+
+# Redis + BullMQ
+REDIS_URL="redis://default:password@localhost:6379"
 
 # Media (Free tier)
 CLOUDINARY_CLOUD_NAME="your-cloud-name"
@@ -963,8 +1072,8 @@ services:
           property: connectionString
       - key: GEMINI_API_KEY
         sync: false
-      - key: JWT_SECRET
-        generateValue: true
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
 
   - type: web
     name: german-learning-frontend
@@ -1040,19 +1149,48 @@ services:
       - postgres_data:/var/lib/postgresql/data
     restart: always
 
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    restart: always
+
   backend:
     build:
       context: .
       target: backend
     environment:
       DATABASE_URL: postgresql://germanapp:${DB_PASSWORD}@postgres:5432/germanapp
+      REDIS_URL: redis://default:${REDIS_PASSWORD}@redis:6379
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       GROQ_API_KEY: ${GROQ_API_KEY}
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
-      JWT_SECRET: ${JWT_SECRET}
       NODE_ENV: production
     depends_on:
       - postgres
+      - redis
+    restart: always
+
+  ai-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      DATABASE_URL: postgresql://germanapp:${DB_PASSWORD}@postgres:5432/germanapp
+      REDIS_URL: redis://default:${REDIS_PASSWORD}@redis:6379
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      SAMBANOVA_API_KEY: ${SAMBANOVA_API_KEY}
+      CEREBRAS_API_KEY: ${CEREBRAS_API_KEY}
+    depends_on:
+      - redis
     restart: always
 
   frontend:
@@ -1067,6 +1205,7 @@ services:
 
 volumes:
   postgres_data:
+  redis_data:
 ```
 
 ---
@@ -1074,10 +1213,10 @@ volumes:
 ## 🎯 Development Roadmap
 
 ### Phase 1: Foundation (Weeks 1–2)
-- [ ] Set up project scaffolding with the full directory structure
-- [ ] Configure Supabase (free PostgreSQL + Auth)
+- [ ] Set up project scaffolding with TypeScript + full directory structure
+- [ ] Configure Supabase (free PostgreSQL + Auth) — single auth provider for everything
 - [ ] Build Express server with Prisma
-- [ ] Implement student authentication (JWT)
+- [ ] Implement authentication via Supabase Auth (no custom JWT)
 - [ ] Create basic frontend with routing + navigation
 - [ ] Deploy to Render free tier
 
@@ -1106,6 +1245,8 @@ volumes:
 - [ ] Build AI conversation tutor
 - [ ] Build AI writing evaluator
 - [ ] Build AI speaking feedback
+- [ ] **Set up Redis caching for AI responses** (prevents quota drain)
+- [ ] **Set up BullMQ job queue** (handles concurrent AI generation requests)
 
 ### Phase 5: Admin AI Training (Weeks 13–14)
 - [ ] Build prompt template editor
@@ -1117,7 +1258,7 @@ volumes:
 ### Phase 6: Production (Weeks 15–16)
 - [ ] Set up VPS (Hetzner CX22)
 - [ ] Install Coolify and configure
-- [ ] Set up Docker Compose for all services
+- [ ] Set up Docker Compose for all services (PostgreSQL + Redis + Backend + Worker + Frontend)
 - [ ] Configure automatic SSL
 - [ ] Migrate from Supabase to self-hosted PostgreSQL
 - [ ] Set up CI/CD pipeline
@@ -1132,7 +1273,7 @@ volumes:
 | Item | Cost |
 |---|---|
 | Render (Frontend + Backend) | $0 |
-| Supabase (PostgreSQL + Auth) | $0 |
+| Supabase (PostgreSQL + Auth + Email) | $0 |
 | Google Gemini API | $0 |
 | Groq API | $0 |
 | OpenRouter API | $0 |
@@ -1142,10 +1283,10 @@ volumes:
 ### Production (VPS + Coolify)
 | Item | Cost |
 |---|---|
-| Hetzner VPS (CX22) | ~€4.99/month |
+| Hetzner VPS (CX32, need more RAM for Redis) | ~€8.99/month |
 | Domain name | ~$10/year |
 | DeepSeek V4 API (~500K tokens/day) | ~$5-20/month |
-| **Total** | **~$10-25/month** |
+| **Total** | **~$14-29/month** |
 
 ### Scaling Costs
 | Users/Month | VPS Needed | AI Cost | Total |
@@ -1164,6 +1305,8 @@ volumes:
 4. **Containerized from day 1** — Docker makes Render → Coolify migration seamless
 5. **Admin is the product** — The admin training dashboard is your competitive advantage
 6. **Data portable** — PostgreSQL everywhere, no vendor lock-in
+7. **Single auth provider** — Supabase Auth for everything (no dual auth complexity)
+8. **TypeScript from day 1** — Full-stack type safety across all 4 workspaces
 
 ---
 

@@ -1,0 +1,22 @@
+{
+  "name": "learngerman",
+  "private": true,
+  "workspaces": ["frontend", "admin", "backend", "ai-engine"],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\" \"npm run dev:admin\" \"npm run dev:ai\"",
+    "dev:frontend": "npm -w frontend run dev",
+    "dev:admin": "npm -w admin run dev",
+    "dev:backend": "npm -w backend run dev",
+    "dev:ai": "npm -w ai-engine run dev",
+    "build": "npm -w frontend run build && npm -w admin run build",
+    "build:backend": "npm -w backend run build",
+    "build:ai": "npm -w ai-engine run build",
+    "db:migrate": "npm -w backend run db:migrate",
+    "db:seed": "npm -w backend run db:seed",
+    "setup": "npm install && npm run db:migrate && npm run db:seed",
+    "test": "npm -w backend run test && npm -w frontend run test && npm -w ai-engine run test"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
